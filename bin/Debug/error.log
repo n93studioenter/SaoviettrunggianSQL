@@ -1,0 +1,21 @@
+29/04/26 4:00:45 PM: System.IO.IOException: The handle is invalid.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.Console.get_Title()
+   at SaovietTax.APIInvoice.TestBrowser() in D:\DA3\SourcePmTrungGiang\SaovietTax\SaovietTax\APIInvoice.cs:line 612
+29/04/26 4:06:10 PM: System.IO.IOException: The handle is invalid.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.Console.get_Title()
+   at SaovietTax.APIInvoice.TestBrowser() in D:\DA3\SourcePmTrungGiang\SaovietTax\SaovietTax\APIInvoice.cs:line 612
+29/04/26 4:49:49 PM: OpenQA.Selenium.WebDriverException: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=147.0.7727.138)
+   at OpenQA.Selenium.WebDriver.UnpackAndThrowOnError(Response errorResponse, String commandToExecute)
+   at OpenQA.Selenium.WebDriver.<ExecuteAsync>d__63.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at OpenQA.Selenium.WebDriver.Execute(String driverCommandToExecute, Dictionary`2 parameters)
+   at OpenQA.Selenium.CookieJar.get_AllCookies()
+   at SaovietTax.APIInvoice.<LoginWithSelenium>d__27.MoveNext() in D:\DA3\SourcePmTrungGiang\SaovietTax\SaovietTax\APIInvoice.cs:line 897

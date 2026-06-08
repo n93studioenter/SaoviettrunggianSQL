@@ -1,0 +1,13 @@
+2026/05/09-08:47:19.091 1694 Reusing MANIFEST D:\DA3\SourcePmTrungGiang\SaovietTax\SaovietTax\bin\Debug\SaovietTax.exe.WebView2\EBWebView\Default\IndexedDB\https_id-v2.tendoo.vn_0.indexeddb.leveldb/MANIFEST-000001
+2026/05/09-08:47:19.091 1694 Recovering log #7
+2026/05/09-08:47:19.091 1694 Reusing old log D:\DA3\SourcePmTrungGiang\SaovietTax\SaovietTax\bin\Debug\SaovietTax.exe.WebView2\EBWebView\Default\IndexedDB\https_id-v2.tendoo.vn_0.indexeddb.leveldb/000007.log 
+2026/05/09-08:47:19.100 212c Level-0 table #11: started
+2026/05/09-08:47:19.101 212c Level-0 table #11: 931 bytes OK
+2026/05/09-08:47:19.103 212c Delete type=0 #7
+2026/05/09-08:47:19.103 2d60 Manual compaction at level-0 from '\x00\x05\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at '\x00\x05\x00\x00\x05' @ 165 : 1
+2026/05/09-08:47:19.104 2d60 Compacting 1@0 + 1@1 files
+2026/05/09-08:47:19.105 2d60 Generated table #12@0: 46 keys, 1355 bytes
+2026/05/09-08:47:19.105 2d60 Compacted 1@0 + 1@1 files => 1355 bytes
+2026/05/09-08:47:19.106 2d60 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/05/09-08:47:19.106 2d60 Delete type=2 #11
+2026/05/09-08:47:19.107 2d60 Manual compaction at level-0 from '\x00\x05\x00\x00\x05' @ 165 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at (end)
