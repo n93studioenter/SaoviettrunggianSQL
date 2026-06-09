@@ -14,6 +14,7 @@ using System.Reflection;
 using System.IO;
 using static SaovietTax.frmKhachhang;
 using DevExpress.XtraGrid.Views.Grid;
+using System.Data.SqlClient;
 
 namespace SaovietTax
 {
@@ -37,39 +38,17 @@ namespace SaovietTax
         public frmMain frmMain;
         string dbPath = "";
         public int Mode { get; set; } // Biến để xác định chế độ (thêm mới hay sửa đổi) 
-        private DataTable ExecuteQuery(string query, params OleDbParameter[] parameters)
+        private DataTable ExecuteQuery(string query, params SqlParameter[] parameters)
         {
-            DataTable dataTable = new DataTable();
-            string appPath = Assembly.GetExecutingAssembly().Location;
-
-            // Lấy thư mục chứa ứng dụng
-            string directoryPath = Path.GetDirectoryName(appPath);
-
-            // Xóa phần \bin\Debug để lấy đường dẫn gốc
-            string rootDirectory = Path.GetFullPath(Path.Combine(directoryPath, @"..\.."));
-
-            // Tạo đường dẫn đến file dpPath.txt trong thư mục hoadon
-            string filePaths = Path.Combine(rootDirectory, "hoadon", "dpPath.txt");
-            try
-            {
-                string content = File.ReadAllText(filePaths);
-                dbPath = content;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Lỗi khi đọc file: " + ex.Message);
-            }
-            string connectionString = "";
-            string password = "1@35^7*9)1";
-            connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
                     Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công!");
 
-                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         // Thêm các tham số vào command
                         if (parameters != null)
@@ -77,7 +56,7 @@ namespace SaovietTax
                             command.Parameters.AddRange(parameters);
                         }
 
-                        using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(command))
+                        using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
                         {
                             dataAdapter.Fill(dataTable);
                         }
@@ -92,32 +71,37 @@ namespace SaovietTax
 
             return dataTable; // Trả về DataTable chứa dữ liệu
         }
-        private int ExecuteQueryResult(string query, params OleDbParameter[] parameters)
+        private int ExecuteQueryResult(string query, params SqlParameter[] parameters)
         {
-            string connectionString = "";
-            string password = "1@35^7*9)1";
-            connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
-            DataTable dataTable = new DataTable();
-
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công!");
+                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công! " + query);
 
-                using (OleDbCommand command = new OleDbCommand(query, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Thêm các tham số vào command
                     if (parameters != null)
-                    {
                         command.Parameters.AddRange(parameters);
-                    }
 
-                    int rowsAffected = command.ExecuteNonQuery(); // Thực thi câu lệnh
-                    return rowsAffected;
+                    // Kiểm tra nếu là INSERT thì lấy ID, nếu không thì chỉ Execute
+                    if (query.Trim().StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Gộp SELECT SCOPE_IDENTITY() vào câu lệnh INSERT
+                        string insertWithIdentity = query.TrimEnd() + "; SELECT SCOPE_IDENTITY();";
+                        command.CommandText = insertWithIdentity;
+
+                        object result = command.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                            return Convert.ToInt32(result);
+                        return 0;
+                    }
+                    else
+                    {
+                        // Với UPDATE/DELETE, chỉ Execute và trả về số dòng ảnh hưởng
+                        return command.ExecuteNonQuery();
+                    }
                 }
             }
-
-            return -1;
         }
         public class Item
         {
@@ -129,10 +113,11 @@ namespace SaovietTax
                 return Name; // Hiển thị tên trong ComboBox
             }
         }
+        string connectionString = "";
         private void frmKhachhang_Load(object sender, EventArgs e)
         {
-           // gridView1.OptionsFind.AlwaysVisible = true; // Luôn hiển thị ô tìm kiếm
-
+            // gridView1.OptionsFind.AlwaysVisible = true; // Luôn hiển thị ô tìm kiếm
+            connectionString = "Server=pc43\\SQLEXPRESS;Database=thanhhuongbendinh;User Id=sa;Password=123456;";
             string query = @"SELECT * FROM PhanLoaiKhachHang ORDER BY TenPhanLoai";
             var dt = ExecuteQuery(query, null);
             if (dt != null && dt.Rows.Count > 0)
@@ -236,19 +221,19 @@ namespace SaovietTax
         }
         private void LoadData(int Maso, string keysearch)
         {
-            string query = @"SELECT * FROM KhachHang WHERE MaPhanLoai = ?";
+            string query = @"SELECT * FROM KhachHang WHERE MaPhanLoai = @Maso";
 
             // Khởi tạo danh sách tham số
-            var parameterss = new List<OleDbParameter>
+            var parameterss = new List<SqlParameter>
     {
-        new OleDbParameter("?", Maso)
+        new SqlParameter("@Maso", Maso)
     };
 
             // Kiểm tra xem keysearch có rỗng không
             if (!string.IsNullOrEmpty(keysearch))
             {
-                query += " AND LCASE(Ten) LIKE ?";
-                parameterss.Add(new OleDbParameter("?", "%" + Helpers.ConvertUnicodeToVni(keysearch).ToLower() + "%")); // Chuyển keysearch thành chữ thường
+                query += " AND LCASE(Ten) LIKE @Keysearch";
+                parameterss.Add(new SqlParameter("@Keysearch", "%" + Helpers.ConvertUnicodeToVni(keysearch).ToLower() + "%")); // Chuyển keysearch thành chữ thường
             }
 
             var kq = ExecuteQuery(query, parameterss.ToArray());
@@ -306,31 +291,31 @@ namespace SaovietTax
             // Xác định xem đây là thêm mới hay cập nhật
             bool isInsert = txtMaSo.Text == "" || txtMaSo.Text == "0";
             string query;
-            OleDbParameter[] parameters;
+            SqlParameter[] parameters;
 
             if (isInsert)
             {
-                query = @"INSERT INTO KhachHang (MaPhanLoai, SoHieu, Ten, DiaChi, MST) VALUES (?, ?, ?, ?, ?)";
-                parameters = new OleDbParameter[]
+                query = @"INSERT INTO KhachHang (MaPhanLoai, SoHieu, Ten, DiaChi, MST) VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST)";
+                parameters = new SqlParameter[]
                 {
-            new OleDbParameter("?", selectedId),
-            new OleDbParameter("?", txtSohieu.Text),
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtGhichu.Text)),
-            new OleDbParameter("?", txtDonvi.Text)
+            new SqlParameter("@MaPhanLoai", selectedId),
+            new SqlParameter("@SoHieu", txtSohieu.Text),
+            new SqlParameter("@Ten", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
+            new SqlParameter("@DiaChi", Helpers.ConvertUnicodeToVni(txtGhichu.Text)),
+            new SqlParameter("@MST", txtDonvi.Text)
                 };
             }
             else
             {
-                query = @"UPDATE KhachHang SET MaPhanLoai=?, SoHieu=?, Ten=?, DiaChi=?, MST=? WHERE MaSo=?";
-                parameters = new OleDbParameter[]
+                query = @"UPDATE KhachHang SET MaPhanLoai=@MaPhanLoai, SoHieu=@SoHieu, Ten=@Ten, DiaChi=@DiaChi, MST=@MST WHERE MaSo=@MaSo";
+                parameters = new SqlParameter[]
                 {
-            new OleDbParameter("?", selectedId),
-            new OleDbParameter("?", txtSohieu.Text),
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
-            new OleDbParameter("?", txtGhichu.Text),
-            new OleDbParameter("?", txtDonvi.Text),
-            new OleDbParameter("?", txtMaSo.Text)
+            new SqlParameter("@MaPhanLoai", selectedId),
+            new SqlParameter("@SoHieu", txtSohieu.Text),
+            new SqlParameter("@Ten", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
+            new SqlParameter("@DiaChi", Helpers.ConvertUnicodeToVni(txtGhichu.Text)),
+            new SqlParameter("@MST", txtDonvi.Text),
+            new SqlParameter("@MaSo", txtMaSo.Text)
                 };
             }
 
@@ -438,6 +423,11 @@ namespace SaovietTax
             gridControl1.Focus(); // Đặt focus vào gridControl1 khi UserControl được chọn
             gridView1.FocusedRowHandle = 0; // Đặt hàng đầu tiên làm hàng được chọn 
             gridView1.SelectRow(0); // Chọn dòng đầu tiên
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

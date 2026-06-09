@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -129,11 +130,11 @@ namespace SaovietTax
         }
         public void Reload()
         {
-            string queryCheckVatTu = @"SELECT * FROM Vattu WHERE LCase(SoHieu) = LCase(?) AND LCase(DonVi) = LCase(?)";
-            var parameterss = new OleDbParameter[]
+            string queryCheckVatTu = @"SELECT * FROM Vattu WHERE LOWER(SoHieu) = LOWER(@SoHieu) AND LOWER(DonVi) = LOWER(@DonVi)";
+            var parameterss = new SqlParameter[]
             {
-                new OleDbParameter("?",dtoVatTu.SoHieu!=null?dtoVatTu.SoHieu.ToLower():""),
-                 new OleDbParameter("?",dtoVatTu.DonVi!=null?Helpers.ConvertUnicodeToVni(dtoVatTu.DonVi.ToLower()):"")
+                new SqlParameter("@SoHieu",dtoVatTu.SoHieu!=null?dtoVatTu.SoHieu.ToLower():""),
+                 new SqlParameter("@DonVi",dtoVatTu.DonVi!=null?Helpers.ConvertUnicodeToVni(dtoVatTu.DonVi.ToLower()):"")
                };
             var kq = ExecuteQuery(queryCheckVatTu, parameterss);
             if (kq.Rows.Count == 0)
@@ -251,39 +252,17 @@ namespace SaovietTax
             }
         }
         string dbPath = "";
-        private DataTable ExecuteQuery(string query, params OleDbParameter[] parameters)
+        private DataTable ExecuteQuery(string query, params SqlParameter[] parameters)
         {
-            DataTable dataTable = new DataTable();
-            string appPath = Assembly.GetExecutingAssembly().Location;
-
-            // Lấy thư mục chứa ứng dụng
-            string directoryPath = Path.GetDirectoryName(appPath);
-
-            // Xóa phần \bin\Debug để lấy đường dẫn gốc
-            string rootDirectory = Path.GetFullPath(Path.Combine(directoryPath, @"..\.."));
-
-            // Tạo đường dẫn đến file dpPath.txt trong thư mục hoadon
-            string filePaths = Path.Combine(rootDirectory, "hoadon", "dpPath.txt");
-            try
-            {
-                string content = File.ReadAllText(filePaths);
-                dbPath = content;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Lỗi khi đọc file: " + ex.Message);
-            }
-            string connectionString = "";
-            string password = "1@35^7*9)1";
-            connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
                     Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công!");
 
-                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         // Thêm các tham số vào command
                         if (parameters != null)
@@ -291,7 +270,7 @@ namespace SaovietTax
                             command.Parameters.AddRange(parameters);
                         }
 
-                        using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(command))
+                        using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
                         {
                             dataAdapter.Fill(dataTable);
                         }
@@ -306,34 +285,39 @@ namespace SaovietTax
 
             return dataTable; // Trả về DataTable chứa dữ liệu
         }
-        private int ExecuteQueryResult(string query, params OleDbParameter[] parameters)
+        string connectionString = "";
+        private int ExecuteQueryResult(string query, params SqlParameter[] parameters)
         {
-            string connectionString = "";
-            string password = "1@35^7*9)1";
-            connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
-            DataTable dataTable = new DataTable();
-
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công!");
+                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công! " + query);
 
-                using (OleDbCommand command = new OleDbCommand(query, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Thêm các tham số vào command
                     if (parameters != null)
-                    {
                         command.Parameters.AddRange(parameters);
-                    }
 
-                    int rowsAffected = command.ExecuteNonQuery(); // Thực thi câu lệnh
-                    return rowsAffected;
+                    // Kiểm tra nếu là INSERT thì lấy ID, nếu không thì chỉ Execute
+                    if (query.Trim().StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Gộp SELECT SCOPE_IDENTITY() vào câu lệnh INSERT
+                        string insertWithIdentity = query.TrimEnd() + "; SELECT SCOPE_IDENTITY();";
+                        command.CommandText = insertWithIdentity;
+
+                        object result = command.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                            return Convert.ToInt32(result);
+                        return 0;
+                    }
+                    else
+                    {
+                        // Với UPDATE/DELETE, chỉ Execute và trả về số dòng ảnh hưởng
+                        return command.ExecuteNonQuery();
+                    }
                 }
             }
-
-            return -1;
         }
-
         private void comboBoxEdit1_SelectedIndexChanged(object sender, EventArgs e)
         {
             //if (comboBoxEdit1.SelectedItem != null && !firstload && Typeform==1)
@@ -390,7 +374,7 @@ namespace SaovietTax
             // Xác định xem đây là thêm mới hay cập nhật
             bool isInsert = txtMaSo.Text == "0";
             string query;
-            OleDbParameter[] parameters;
+            SqlParameter[] parameters;
 
             if (isInsert)
             {
@@ -403,14 +387,14 @@ namespace SaovietTax
                 {
                     selectedId = selectedItem.Id; // Lấy giá trị Id  
                 }
-                query = @"INSERT INTO Vattu (MaPhanLoai, SoHieu, TenVattu, DonVi, GhiChu) VALUES (?, ?, ?, ?, ?)";
-                parameters = new OleDbParameter[]
+                query = @"INSERT INTO Vattu (MaPhanLoai, SoHieu, TenVattu, DonVi, GhiChu) VALUES (@MaPhanLoai, @SoHieu, @TenVattu, @DonVi, @GhiChu)";
+                parameters = new SqlParameter[]
                 {
-            new OleDbParameter("?", selectedId),
-            new OleDbParameter("?", txtSohieu.Text),
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtDonvi.Text)),
-            new OleDbParameter("?", string.IsNullOrEmpty(txtGhichu.Text)?"...":txtGhichu.Text)
+            new SqlParameter("@MaPhanLoai", selectedId),
+            new SqlParameter("@SoHieu", txtSohieu.Text),
+            new SqlParameter("@TenVattu", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
+            new SqlParameter("@DonVi", Helpers.ConvertUnicodeToVni(txtDonvi.Text)),
+            new SqlParameter("@GhiChu", string.IsNullOrEmpty(txtGhichu.Text)?"...":txtGhichu.Text)
                 };
                 frmMain.lstvt.Add(new VatTu
                 {
@@ -423,15 +407,15 @@ namespace SaovietTax
             }
             else
             {
-                query = @"UPDATE Vattu SET MaPhanLoai=?, SoHieu=?, TenVattu=?, DonVi=?, GhiChu=? WHERE MaSo=?";
-                parameters = new OleDbParameter[]
+                query = @"UPDATE Vattu SET MaPhanLoai=@MaPhanLoai, SoHieu=@SoHieu, TenVattu=@TenVattu, DonVi=@DonVi, GhiChu=@GhiChu WHERE MaSo=@MaSo";
+                parameters = new SqlParameter[]
                 {
-            new OleDbParameter("?", selectedId),
-            new OleDbParameter("?", txtSohieu.Text),
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtDonvi.Text)),
-            new OleDbParameter("?", txtGhichu.Text),
-            new OleDbParameter("?", txtMaSo.Text)
+            new SqlParameter("@MaPhanLoai", selectedId),
+            new SqlParameter("@SoHieu", txtSohieu.Text),
+            new SqlParameter("@TenVattu", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
+            new SqlParameter("@DonVi", Helpers.ConvertUnicodeToVni(txtDonvi.Text)),
+            new SqlParameter("@GhiChu", txtGhichu.Text),
+            new SqlParameter("@MaSo", txtMaSo.Text)
                 };
             }
 
@@ -481,13 +465,13 @@ namespace SaovietTax
 
                             gv.RefreshRow(rowHandle);
 
-                            string query2 = @"UPDATE tbimportdetail SET Ten=?,SoHieu=?,DVT=?  WHERE ID=?";
-                            var parameters2 = new OleDbParameter[]
+                            string query2 = @"UPDATE tbimportdetail SET Ten=@Ten, SoHieu=@SoHieu, DVT=@DVT WHERE ID=@ID";
+                            var parameters2 = new SqlParameter[]
                              {
-                                 new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
-                                 new OleDbParameter("?", txtSohieu.Text),
-                                 new OleDbParameter("?", Helpers.ConvertUnicodeToVni(txtDonvi.Text)),
-                                 new OleDbParameter("?", ID)
+                                 new SqlParameter("@Ten", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
+                                 new SqlParameter("@SoHieu", txtSohieu.Text),
+                                 new SqlParameter("@DVT", Helpers.ConvertUnicodeToVni(txtDonvi.Text)),
+                                 new SqlParameter("@ID", ID)
                              };
                             rowsAffected = ExecuteQueryResult(query2, parameters2);
                         }
@@ -564,10 +548,10 @@ namespace SaovietTax
             txtGhichu.Text = gridView1.GetRowCellValue(rowHandle, "GhiChu").ToString();
             txtMaSo.Text = gridView1.GetRowCellValue(rowHandle, "MaSo").ToString();
 
-            string query = @" SELECT *  FROM TonKho where MaVatTu= ? ";
-            var parameterss = new OleDbParameter[]
+            string query = @" SELECT *  FROM TonKho where MaVatTu= @MaVatTu ";
+            var parameterss = new SqlParameter[]
             {
-                new OleDbParameter("?",txtMaSo.Text)
+                new SqlParameter("@MaVatTu", txtMaSo.Text)
                };
             var kq = ExecuteQuery(query, parameterss);
             List<TonKho> lstTonkho = new List<TonKho>();
@@ -609,10 +593,10 @@ namespace SaovietTax
 
             if (result == DialogResult.Yes)
             {
-                var query = @"delete from Vattu where MaSo=?";
-                var parameters = new OleDbParameter[]
+                var query = @"delete from Vattu where MaSo=@MaSo";
+                var parameters = new SqlParameter[]
                {
-            new OleDbParameter("?", txtMaSo.Text)
+            new SqlParameter("@MaSo", txtMaSo.Text)
                };
                 int rowsAffected = ExecuteQueryResult(query, parameters);
                 var selectedItem = comboBoxEdit1.SelectedItem as Item;
@@ -637,7 +621,7 @@ namespace SaovietTax
         private void frmHangHoa_Load_1(object sender, EventArgs e)
         {
             //gridView1.OptionsFind.AlwaysVisible = true; // Kích hoạt thanh tìm kiếm
-
+            connectionString = "Server=pc43\\SQLEXPRESS;Database=thanhhuongbendinh;User Id=sa;Password=123456;";
             var query = @"SELECT * FROM PhanLoaiVattu ORDER BY TenPhanLoai";
             var dt = ExecuteQuery(query, null);
             if (dt != null && dt.Rows.Count > 0)
@@ -714,11 +698,11 @@ namespace SaovietTax
             //Load data vat tu
 
             //Kiểm tra xem là sp moi hay cũ
-            string queryCheckVatTu = @"SELECT * FROM Vattu WHERE LCase(SoHieu) = LCase(?) AND LCase(DonVi) = LCase(?)";
-            var parameterss = new OleDbParameter[]
+            string queryCheckVatTu = @"SELECT * FROM Vattu WHERE LOWER(SoHieu) = LOWER(@SoHieu) AND LOWER(DonVi) = LOWER(@DonVi)";
+            var parameterss = new SqlParameter[]
             {
-                new OleDbParameter("?",dtoVatTu.SoHieu!=null?dtoVatTu.SoHieu.ToLower():""),
-                 new OleDbParameter("?",dtoVatTu.DonVi!=null?Helpers.ConvertUnicodeToVni(dtoVatTu.DonVi.ToLower()):"")
+                new SqlParameter("@SoHieu", dtoVatTu.SoHieu!=null?dtoVatTu.SoHieu.ToLower():""),
+                 new SqlParameter("@DonVi", dtoVatTu.DonVi!=null?Helpers.ConvertUnicodeToVni(dtoVatTu.DonVi.ToLower()):"")
                };
             var kq = ExecuteQuery(queryCheckVatTu, parameterss);
             if (kq.Rows.Count == 0)
@@ -838,13 +822,13 @@ namespace SaovietTax
                 frmMain.hiddenValue = hiddenValue.ToString();
                 frmMain.hiddenValue2 = hiddenValue2.ToString();
                 frmMain.hiddenValue3 = hiddenValue3.ToString();
-                var query = @"UPDATE tbimportdetail SET  SoHieu=?,DVT=?,Ten=? where ID=? ";
-                var parameters = new OleDbParameter[]
+                var query = @"UPDATE tbimportdetail SET  SoHieu=@SoHieu,DVT=@DVT,Ten=@Ten where ID=@ID";
+                var parameters = new SqlParameter[]
                 {
-                                        new OleDbParameter("?", hiddenValue),
-                                        new OleDbParameter("?",  Helpers.ConvertUnicodeToVni(hiddenValue2.ToString())) ,
-                                        new OleDbParameter("?", Helpers.ConvertUnicodeToVni(hiddenValue3.ToString())),
-                                        new OleDbParameter("?", frmMain.tbimportDetailID)
+                                        new SqlParameter("@SoHieu", hiddenValue),
+                                        new SqlParameter("@DVT",  Helpers.ConvertUnicodeToVni(hiddenValue2.ToString())) ,
+                                        new SqlParameter("@Ten", Helpers.ConvertUnicodeToVni(hiddenValue3.ToString())),
+                                        new SqlParameter("@ID", frmMain.tbimportDetailID)
                 };
                 var rowsAffected = ExecuteQueryResult(query, parameters);
                 isChange = true;
@@ -912,11 +896,11 @@ namespace SaovietTax
 
             if (result == DialogResult.Yes)
             {
-                string query = @"UPDATE Vattu SET TenVattu2=?  WHERE SoHieu=?";
-                var parameters = new OleDbParameter[]
+                string query = @"UPDATE Vattu SET TenVattu2=@TenVattu2  WHERE SoHieu=@SoHieu";
+                var parameters = new SqlParameter[]
                  {
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(textEdit2.Text)),
-            new OleDbParameter("?", sohieuvt)
+            new SqlParameter("@TenVattu2", Helpers.ConvertUnicodeToVni(textEdit2.Text)),
+            new SqlParameter("@SoHieu", sohieuvt)
                  };
                 int rowsAffected = ExecuteQueryResult(query, parameters);
                 frmMain._lookupByTenPhu[textEdit2.Text] = sohieuvt;

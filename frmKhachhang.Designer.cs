@@ -117,6 +117,7 @@
             this.btnXoa.Size = new System.Drawing.Size(66, 29);
             this.btnXoa.TabIndex = 10;
             this.btnXoa.Text = "Xóa";
+            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
             // btnGhi
             // 

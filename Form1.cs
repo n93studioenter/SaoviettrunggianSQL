@@ -1742,6 +1742,7 @@ namespace SaovietTax
                                 vatdt = 0;
                             }
                             tongcon+= double.Parse(itemDetail["TTien"].ToString());
+                            var percent= itemDetail["Percent"].ToString();  
                             FileImportDetail fileImportDetail = new FileImportDetail(int.Parse(itemDetail["ID"].ToString()), Helpers.ConvertVniToUnicode(itemDetail["Ten"].ToString()), int.Parse(itemDetail["ParentId"].ToString()), itemDetail["SoHieu"].ToString(), double.Parse(itemDetail["SoLuong"].ToString()), double.Parse(itemDetail["DonGia"].ToString()), dvt, MaCT, tkNo, tkCo, double.Parse(itemDetail["TTien"].ToString()), itemDetail["Percent"].ToString(), tchat, vatdt);
                             fileImportDetail.ID = int.Parse(itemDetail["ID"].ToString());
                             fileImport.fileImportDetails.Add(fileImportDetail);
@@ -5802,7 +5803,7 @@ namespace SaovietTax
                     // 3. Khởi tạo DB + đọc License
                     ShowProgress("Kết nối database...");
                     InitDBSQL();
-                    //InitDB();
+                    InitDB();
                     SetVietnameseCulture();
                     ControlsSetup();
                     // 4. Migrate database (chạy background)
@@ -6422,7 +6423,7 @@ Chỉ trả lời: CÓ hoặc KHÔNG
                 chkUutiensoluong.Location= new Point(chkDVTMacdinh.Location.X - chkUutiensoluong.Width - 20, chkUutiensoluong.Location.Y);
                 txtTylechonHH.Location= new Point(chkUutiensoluong.Location.X - txtTylechonHH.Width - 20, txtTylechonHH.Location.Y);
                 labelControl24.Location= new Point(txtTylechonHH.Location.X - labelControl24.Width - 5, labelControl24.Location.Y);
-                radioButton1.Location= new Point(comboBoxEdit1.Location.X - radioButton1.Width - 20, radioButton1.Location.Y);
+                radioButton1.Location= new Point(0, radioButton1.Location.Y);
                 chktaituweb.Location= new Point(radioButton1.Location.X + radioButton1.Width+10, radioButton1.Location.Y);
                 btnSetting.Location= new Point(chktaituweb.Location.X + chktaituweb.Width + 5, chktaituweb.Location.Y);
                 // XtraMessageBox.Show("xin chao");
@@ -6769,7 +6770,7 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             tbNganhang = await Task.Run(() => ExecuteQuery(querynh));
             //Lay chung tu
             string queryct = "SELECT * FROM ChungTu"; // Giả sử bạn muốn lấy tất cả dữ liệu từ bảng KhachHang
-            existingTbChungtu = ExecuteQuery(queryct);
+            existingTbChungtu = ExecuteQuerySQL(queryct);
             _chungtuLookup = existingTbChungtu.AsEnumerable()
        .ToLookup(h => (
            SoHieu: h.Field<string>("SoHieu"),
@@ -7173,7 +7174,7 @@ Chỉ trả lời: CÓ hoặc KHÔNG
         private void CapnhatNguyenlieuthanhphams()
         {
             string queryct = "SELECT * FROM tbNguyenLieuThanhPham"; // Giả sử bạn muốn lấy tất cả dữ liệu từ bảng KhachHang
-            existtbNguyenLieuThanhPham = ExecuteQuery(queryct);
+            existtbNguyenLieuThanhPham = ExecuteQuerySQL(queryct);
         }
         private void Capnhatnguyenlieuthanhpham()
         {
@@ -7528,19 +7529,19 @@ Chỉ trả lời: CÓ hoặc KHÔNG
                         if (result == DialogResult.Yes)
                         {
                             // Thực hiện hành động xóa
-                            var queryDelete = @"DELETE FROM tbimport WHERE ID=?";
-                            var parametersDelete = new OleDbParameter[]
+                            var queryDelete = @"DELETE FROM tbimport WHERE ID=@ID";
+                            var parametersDelete = new SqlParameter[]
                             {
-                                    new OleDbParameter("?",getid.ToString())
+                                    new SqlParameter("@ID",getid.ToString())
                             };
-                            var results = ExecuteQueryResult(queryDelete, parametersDelete); // Xóa trong database
+                            var results = ExecuteQueryResultSQL(queryDelete, parametersDelete); // Xóa trong database
 
-                            queryDelete = @"DELETE FROM tbimportdetail WHERE ParentId=?";
-                            parametersDelete = new OleDbParameter[]
+                            queryDelete = @"DELETE FROM tbimportdetail WHERE ParentId=@ParentId";
+                            parametersDelete = new SqlParameter[]
                            {
-                                    new OleDbParameter("?",getid.ToString())
+                                    new SqlParameter("@ParentId",getid.ToString())
                            };
-                            results = ExecuteQueryResult(queryDelete, parametersDelete); // Xóa trong database 
+                            results = ExecuteQueryResultSQL(queryDelete, parametersDelete); // Xóa trong database 
                             var itemToRemove = (dt.Mst, dt.SHDon, dt.NLap,1);
                             bool removed = lookupTbImport.Remove(itemToRemove);
                             var itemToRemove2 = (dt.Mst, dt.SHDon, dt.NLap, 2);
@@ -7548,12 +7549,12 @@ Chỉ trả lời: CÓ hoặc KHÔNG
                         }
                         else
                         {
-                            var queryDelete = @"DELETE FROM tbimportdetail WHERE ParentId=?";
-                            var parametersDelete = new OleDbParameter[]
+                            var queryDelete = @"DELETE FROM tbimportdetail WHERE ParentId=@ParentId";
+                            var parametersDelete = new SqlParameter[]
                              {
-                                    new OleDbParameter("?",getid.ToString())
+                                    new SqlParameter("@ParentId",getid.ToString())
                              };
-                            var results = ExecuteQueryResult(queryDelete, parametersDelete); // Xóa trong database
+                            var results = ExecuteQueryResultSQL(queryDelete, parametersDelete); // Xóa trong database
                         }
 
                         bindingSource.DataSource = gridView == gridView1 ? lstImportVao : lstImportRa;
@@ -11751,7 +11752,7 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
                                     cmdDetail.Parameters.AddWithValue("@SoHieu", dt.SoHieu ?? "");
                                     cmdDetail.Parameters.AddWithValue("@SoLuong", dt.Soluong);
                                     cmdDetail.Parameters.AddWithValue("@DonGia", dt.Dongia);
-                                    cmdDetail.Parameters.AddWithValue("@DVT", dt.DVT ?? "");
+                                    cmdDetail.Parameters.AddWithValue("@DVT", string.IsNullOrEmpty(dt.DVT) ? "xxx" : dt.DVT); 
                                     cmdDetail.Parameters.AddWithValue("@Ten", dt.Ten ?? "");
                                     cmdDetail.Parameters.AddWithValue("@MaCT", DBNull.Value); 
                                     cmdDetail.Parameters.AddWithValue("@TKNo", dt.TKNo ?? "");
@@ -16357,7 +16358,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                     dtMatdinhnganhang = ExecuteQuery(queryCheckVatTu, parameterss);
                 }
                 string queryct = "SELECT * FROM ChungTu"; // Giả sử bạn muốn lấy tất cả dữ liệu từ bảng KhachHang
-                existingTbChungtu = ExecuteQuery(queryct);
+                existingTbChungtu = ExecuteQuerySQL(queryct);
                 // 8. Hóa đơn (DÙNG TUPLE)
                 existingTbHoadon = await Task.Run(() =>
                     ExecuteQuery("SELECT * FROM HoaDon", null)
@@ -16375,7 +16376,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
             if (xtraTabControl2.SelectedTabPage == xtraTabPage5)
             {
                 existingTbChungtu = await Task.Run(() =>
-               ExecuteQuery("SELECT * FROM ChungTu", null)
+               ExecuteQuerySQL("SELECT * FROM ChungTu", null)
            );
 
                 _chungtuLookup = existingTbChungtu.AsEnumerable()
@@ -18736,10 +18737,20 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                 var gridView = sender as GridView;
 
                 FileImportDetail rowData = gridView.GetRow(rowHandle) as FileImportDetail;
-                if(int.Parse(rowData.Percent) >= double.Parse(txtTylechonHH.Text) && int.Parse(rowData.Percent) < 100)
+                if (rowData != null)
                 {
-                    e.Appearance.ForeColor = Color.Blue; // Tô màu chữ đỏ
-                    cellColors2[(rowHandle, e.Column.FieldName)] = Color.Blue; // Lưu màu
+                    // Kiểm tra Percent không null
+                    double percent;
+                    bool isPercentValid = double.TryParse(rowData.Percent?.ToString(), out percent);
+
+                    double tyLeChon;
+                    bool isTyLeValid = double.TryParse(txtTylechonHH.Text, out tyLeChon);
+
+                    if (isPercentValid && isTyLeValid && percent >= tyLeChon && percent < 100)
+                    {
+                        e.Appearance.ForeColor = Color.Blue;
+                        cellColors2[(rowHandle, e.Column.FieldName)] = Color.Blue;
+                    }
                 }
             }
             if (e.Column.FieldName == "SoHieu")
@@ -20044,12 +20055,12 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
             if (xtraTabControl2.SelectedTabPage == xtraTabPage2)
             {
                 DataTable lstnganhang = new DataTable();
-                string queryCheckVatTu = @"SELECT * FROM tbNganhang where Status= 0 ";
-                var parameterss = new OleDbParameter[]
+                string queryCheckVatTu = @"SELECT * FROM tbNganhang where Status= @Status";
+                var parameterss = new SqlParameter[]
                 {
- new OleDbParameter("?",null)
+ new SqlParameter("@Status", DBNull.Value)
                    };
-                lstnganhang = ExecuteQuery(queryCheckVatTu, parameterss);
+                lstnganhang = ExecuteQuerySQL(queryCheckVatTu, parameterss);
                 foreach (var item in lstNganhan)
                 {
                     //Kiểm tra xem đã có chưa
@@ -20065,18 +20076,18 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                             int a = 10;
                         }
                         //Nếu bỏ check thì cập nhật bỏ check
-                        var query = @"update tbNganhang set  TKNo=?, TKCo=?,Checked=?,DienGiai=? where ID=?";
-                        var parameters = new OleDbParameter[]
+                        var query = @"update tbNganhang set  TKNo=@TKNo, TKCo=@TKCo,Checked=@Checked,DienGiai=@DienGiai where ID=@ID";
+                        var parameters = new SqlParameter[]
                            {
-                               new OleDbParameter("?", item.TKNo),
-                               new OleDbParameter("?", item.TKCo),
-                               new OleDbParameter("?", item.Checked?"1":"0"),
-                               new OleDbParameter("?", Helpers.ConvertUnicodeToVni(item.Diengiai)),
-                               new OleDbParameter("?", item.Stt),
+                               new SqlParameter("@TKNo", item.TKNo),
+                               new SqlParameter("@TKCo", item.TKCo),
+                               new SqlParameter("@Checked", item.Checked?"1":"0"),
+                               new SqlParameter("@DienGiai", Helpers.ConvertUnicodeToVni(item.Diengiai)),
+                               new SqlParameter("@ID", item.Stt),
                            };
                         try
                         {
-                            int rowsAffected = ExecuteQueryResult(query, parameters);
+                            int rowsAffected = ExecuteQueryResultSQL(query, parameters);
                         }
                         catch (Exception ex)
                         {
@@ -20094,26 +20105,26 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                         //        item.MaKH = getcus != null ? getcus.Field<string>("SoHieu") : "";
                         //    }
                         //}
-                        var query = @"INSERT INTO tbNganhang (SHDon, NgayGD, DienGiai, TongTien,TongTien2, TKNo,TKCo,Status,Checked,MaKH,TenKH,SoDu,[Key]) VALUES (?, ?, ?, ?, ?,?,?,?,?,?,?,?,?)";
-                        var parameters = new OleDbParameter[]
+                        var query = @"INSERT INTO tbNganhang (SHDon, NgayGD, DienGiai, TongTien,TongTien2, TKNo,TKCo,Status,Checked,MaKH,TenKH,SoDu,[Key]) VALUES (@SHDon, @NgayGD, @DienGiai, @TongTien, @TongTien2, @TKNo, @TKCo, @Status, @Checked, @MaKH, @TenKH, @SoDu, @Key)";
+                        var parameters = new SqlParameter[]
                            {
-                        new OleDbParameter("?", item.Maso),
-                        new OleDbParameter("?", item.NgayGD),
-                        new OleDbParameter("?", Helpers.ConvertUnicodeToVni(item.Diengiai)),
-                        new OleDbParameter("?", item.ThanhTien),
-                        new OleDbParameter("?", item.ThanhTien2),
-                        new OleDbParameter("?", item.TKNo),
-                        new OleDbParameter("?", item.TKCo),
-                        new OleDbParameter("?","0"),
-                         new OleDbParameter("?",item.Checked?"1":"0"),
-                         new OleDbParameter("?", !string.IsNullOrEmpty(item.MaKH)?item.MaKH:""),
-                         new OleDbParameter("?", !string.IsNullOrEmpty(item.TenKH)?item.TenKH:""),
-                         new OleDbParameter("?", item.Balance),
-                         new OleDbParameter("?", $"{item.ThanhTien}_{item.ThanhTien2}_{item.Balance}"),
+                        new SqlParameter("@SHDon", item.Maso),
+                        new SqlParameter("@NgayGD", item.NgayGD),
+                        new SqlParameter("@DienGiai", Helpers.ConvertUnicodeToVni(item.Diengiai)),
+                        new SqlParameter("@TongTien", item.ThanhTien),
+                        new SqlParameter("@TongTien2", item.ThanhTien2),
+                        new SqlParameter("@TKNo", item.TKNo),
+                        new SqlParameter("@TKCo", item.TKCo),
+                        new SqlParameter("@Status","0"),
+                        new SqlParameter("@Checked",item.Checked?"1":"0"),
+                        new SqlParameter("@MaKH", !string.IsNullOrEmpty(item.MaKH)?item.MaKH:""),
+                        new SqlParameter("@TenKH", !string.IsNullOrEmpty(item.TenKH)?item.TenKH:""),
+                        new SqlParameter("@SoDu", item.Balance),
+                        new SqlParameter("@Key", $"{item.ThanhTien}_{item.ThanhTien2}_{item.Balance}"),
                            };
                         try
                         {
-                            int rowsAffected = ExecuteQueryResult(query, parameters);
+                            int rowsAffected = ExecuteQueryResultSQL(query, parameters);
                         }
                         catch (Exception ex)
                         {
@@ -20426,7 +20437,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                 return;
 
             // ========== LOAD DATA LOCAL ==========
-            existingTbChungtu = ExecuteQuery("SELECT * FROM ChungTu inner join HoaDon on ChungTu.MaSo = HoaDon.MaSo");
+            existingTbChungtu = ExecuteQuerySQL("SELECT * FROM ChungTu inner join HoaDon on ChungTu.MaSo = HoaDon.MaSo");
             modeClick = 2;
             Create2026Structure(savedPath);
 
@@ -25348,10 +25359,15 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                     return;
                 var filteredRows = tbImportDt.AsEnumerable()
            .Where(m => m.Field<string>("ParentId") == cellValue.ToString());
-                if (filteredRows.Any(m => double.Parse(m["Percent"].ToString()) < 100))
-                { 
+                if (filteredRows.Any(m =>
+                {
+                    double percent;
+                    string percentStr = m["Percent"]?.ToString();
+                    return double.TryParse(percentStr, out percent) && percent < 100;
+                }))
+                {
                     e.Appearance.ForeColor = Color.Red;
-                } 
+                }
             }
         }
         private void gridView3_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
@@ -29758,11 +29774,11 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 "INNER JOIN PhanLoaiVattu ON Vattu.MaPhanLoai = PhanLoaiVattu.MaSo) " +
                 "WHERE PhanLoaiVattu.SoHieu =  '"+comboBoxEdit6.Text+"'  " +
                 "ORDER BY Vattu.TenVattu ASC";
-            var parameters = new OleDbParameter[]
+            var parameters = new SqlParameter[]
                      {
-            new OleDbParameter("?", "3"),
+            new SqlParameter("?", "3"),
                      };
-            var kq = ExecuteQuery(query, null);
+            var kq = ExecuteQuerySQL(query, null);
            var nkq = kq.AsEnumerable()
      .GroupBy(m => m.Field<int>("MaVatTu"))
              .Select(g => new GeTonKho
@@ -29804,8 +29820,11 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 //Lấy tháng trước đó
                 int monthDauky = ngaylapNhapTP.DateTime.Month - 1;
                 string propertyName = $"Luong_{monthDauky}"; // Tạo tên thuộc tính động
-                PropertyInfo propertyInfo = typeof(GeTonKho).GetProperty(propertyName); 
-                
+                PropertyInfo propertyInfo = typeof(GeTonKho).GetProperty(propertyName);
+                if (dr.MaVatTu == 42)
+                {
+                    int a = 10;
+                }
                 var getSLDauky = propertyInfo!=null?(double)propertyInfo.GetValue(dr):0;
                 var loctheongay = existingTbChungtu.AsEnumerable()
     .Where(m =>
@@ -30318,15 +30337,15 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             //Validate
             //Kiểm tra xem 
             btnClearNhapKho.PerformClick();
-            string queryCheckVatTu = @"SELECT * FROM tbNhapkhotp WHERE SoHieu=?  or  SoHieu2=? ";
-            OleDbParameter[] parameterss = null;
-            parameterss = new OleDbParameter[]
+            string queryCheckVatTu = @"SELECT * FROM tbNhapkhotp WHERE SoHieu=@SoHieu  or  SoHieu2=@SoHieu2 ";
+            SqlParameter[] parameterss = null;
+            parameterss = new SqlParameter[]
                          {
-                  new OleDbParameter("?",txtNKSohieu.Text), 
-                  new OleDbParameter("?",txtNKNLSohieu.Text)
+                  new SqlParameter("@SoHieu",txtNKSohieu.Text), 
+                  new SqlParameter("@SoHieu2",txtNKNLSohieu.Text)
                          };
 
-            var kq = ExecuteQuery(queryCheckVatTu, parameterss);
+            var kq = ExecuteQuerySQL(queryCheckVatTu, parameterss);
             if (kq.Rows.Count > 0)
             {
                 XtraMessageBox.Show($"Số hiệu  đã tồn tại trong hệ thống ");
@@ -30389,36 +30408,36 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 {
                     foreach (var item in it.Nguyenlieus)
                     {
-                        var qr = @"INSERT INTO tbNguyenLieuThanhPham (TPSoHieu, IDNguyenLieu, SoHieuNguyenLieu, TiLe) VALUES (?, ?, ?, ?)";
-                        var parameter = new OleDbParameter[]
+                        var qr = @"INSERT INTO tbNguyenLieuThanhPham (TPSoHieu, IDNguyenLieu, SoHieuNguyenLieu, TiLe) VALUES (@TPSoHieu, @IDNguyenLieu, @SoHieuNguyenLieu, @TiLe)";
+                        var parameter = new SqlParameter[]
                         {
-                            new OleDbParameter("?", it.TenThanhPham.Split('|')[1]),
-                            new OleDbParameter("?", "0"),
-                            new OleDbParameter("?", item.SoHieu),
-                            new OleDbParameter("?", item.TiLe),
+                            new SqlParameter("@TPSoHieu", it.TenThanhPham.Split('|')[1]),
+                            new SqlParameter("@IDNguyenLieu", "0"),
+                            new SqlParameter("@SoHieuNguyenLieu", item.SoHieu),
+                            new SqlParameter("@TiLe", item.TiLe),
                         };
 
-                        var rowsAffecteds = ExecuteQueryResult(qr, parameter);
+                        var rowsAffecteds = ExecuteQueryResultSQL(qr, parameter);
                     }
                 }
                
             }
 
-                var query = @"INSERT INTO tbNhapkhotp (NgayLap,NgayTao,SoHieu,Ghichu,SoHieu2,Ghichu2,Status) VALUES (?, ?,?,?,?,?,?)";
-            var parameters = new OleDbParameter[]
+                var query = @"INSERT INTO tbNhapkhotp (NgayLap,NgayTao,SoHieu,Ghichu,SoHieu2,Ghichu2,Status) VALUES (@NgayLap, @NgayTao, @SoHieu, @Ghichu, @SoHieu2, @Ghichu2, @Status)";
+            var parameters = new SqlParameter[]
              {
-            new OleDbParameter("?",ngaylapNhapTP.DateTime.Date),
-             new OleDbParameter("?",DateTime.Now.Date),
-             new OleDbParameter("?",txtNKSohieu.Text),
-             new OleDbParameter("?",Helpers.ConvertUnicodeToVni(txtNKNoidung.Text)),
-                new OleDbParameter("?",txtNKNLSohieu.Text),
-             new OleDbParameter("?",Helpers.ConvertUnicodeToVni(txtNKNLNoidung.Text)),
-             new OleDbParameter("?","0"),
+            new SqlParameter("@NgayLap",ngaylapNhapTP.DateTime.Date),
+             new SqlParameter("@NgayTao",DateTime.Now.Date),
+             new SqlParameter("@SoHieu",txtNKSohieu.Text),
+             new SqlParameter("@Ghichu",Helpers.ConvertUnicodeToVni(txtNKNoidung.Text)),
+                new SqlParameter("@SoHieu2",txtNKNLSohieu.Text),
+             new SqlParameter("@Ghichu2",Helpers.ConvertUnicodeToVni(txtNKNLNoidung.Text)),
+             new SqlParameter("@Status","0"),
              };
-            var rowsAffected = ExecuteQueryResult(query, parameters);
+            var rowsAffected = ExecuteQueryResultSQL(query, parameters);
 
             query = "SELECT TOP 1 * FROM tbNhapkhotp  ORDER BY ID DESC ";
-              kq = ExecuteQuery(query, null);
+              kq = ExecuteQuerySQL(query, null);
             int parentid = kq.Rows[0].Field<int>("ID");
             foreach (var item in lstNhapkhotp)
             { 
@@ -30426,15 +30445,15 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                     continue;
                 if (item.SoLuongTon < 0)
                     item.SoLuongTon = item.SoLuongTon * -1;
-                query = @"INSERT INTO tbNhapkhotpChitiet (SoHieu,SOLuong,DonGia,ParentID) VALUES (?,?,?,?)";
-                parameters = new OleDbParameter[]
+                query = @"INSERT INTO tbNhapkhotpChitiet (SoHieu,SOLuong,DonGia,ParentID) VALUES (@SoHieu,@SOLuong,@DonGia,@ParentID)";
+                parameters = new SqlParameter[]
                 {
-            new OleDbParameter("?",item.TenThanhPham.Split('|')[1].ToString()),
-             new OleDbParameter("?",item.SoLuongTon.ToString()),
-             new OleDbParameter("?",item.DonGia.ToString()),
-             new OleDbParameter("?",parentid.ToString()),
+            new SqlParameter("@SoHieu",item.TenThanhPham.Split('|')[1].ToString()),
+             new SqlParameter("@SOLuong",item.SoLuongTon.ToString()),
+             new SqlParameter("@DonGia",item.DonGia.ToString()),
+             new SqlParameter("@ParentID",parentid.ToString()),
                 };
-                rowsAffected = ExecuteQueryResult(query, parameters);
+                rowsAffected = ExecuteQueryResultSQL(query, parameters);
             }
             InsertNhapkhonguyenlieu();
             this.Close();
@@ -30641,7 +30660,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             foreach (var item in lstNhapkhotp.Where(m => m.Checked))
             {
                 var query = "SELECT TOP 1 * FROM tbNhapkhotp  ORDER BY ID DESC ";
-                var kq = ExecuteQuery(query, null);
+                var kq = ExecuteQuerySQL(query, null);
                 var parentid = kq.Rows[0].Field<int>("ID");
 
                 var nguyenlieus = new[]
@@ -30657,17 +30676,17 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 {
                     if (!string.IsNullOrEmpty(nguyenlieu.nl))
                     {
-                        query = @"INSERT INTO tbNhapkhonguyenlieu (ParentId, TTien, SL, SoHieu, SoHieuTP) VALUES (?, ?, ?, ?, ?)";
-                        var parameters = new OleDbParameter[]
+                        query = @"INSERT INTO tbNhapkhonguyenlieu (ParentId, TTien, SL, SoHieu, SoHieuTP) VALUES (@ParentId, @TTien, @SL, @SoHieu, @SoHieuTP)";
+                        var parameters = new SqlParameter[]
                          {
-                                new OleDbParameter("?", parentid.ToString()),
-                                new OleDbParameter("?", nguyenlieu.dg.ToString()),
-                                new OleDbParameter("?", nguyenlieu.sl.ToString()),
-                                new OleDbParameter("?", nguyenlieu.nl),
-                                new OleDbParameter("?", item.TenThanhPham.Split('|')[1]),
+                                new SqlParameter("@ParentId", parentid.ToString()),
+                                new SqlParameter("@TTien", nguyenlieu.dg.ToString()),
+                                new SqlParameter("@SL", nguyenlieu.sl.ToString()),
+                                new SqlParameter("@SoHieu", nguyenlieu.nl),
+                                new SqlParameter("@SoHieuTP", item.TenThanhPham.Split('|')[1]),
                          };
 
-                        var rowsAffected = ExecuteQueryResult(query, parameters);
+                        var rowsAffected = ExecuteQueryResultSQL(query, parameters);
                     }
                 }
             }
