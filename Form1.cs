@@ -62,6 +62,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.VariantTypes;
 using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Wordprocessing;
+using FluentFTP;
 using FuzzySharp;
 using HtmlAgilityPack;
 using iText.Kernel.Pdf;
@@ -5183,7 +5184,7 @@ namespace SaovietTax
             if (string.IsNullOrEmpty(connectionStringSQL))
             {
                 // Thay đổi thông tin cho đúng với SQL Server của bạn
-                connectionStringSQL = "Server=pc43\\SQLEXPRESS;Database=thanhhuongbendinh;User Id=sa;Password=123456;";
+                connectionStringSQL = "Server=14.161.175.85,1433;Database=thanhhuongbendinh;User Id=thanhhuongbd;Password=123;";
 
                 // Hoặc dùng SQL Authentication:
                 // connectionString = "Server=localhost;Database=TenDatabaseCuaBan;User Id=sa;Password=123;";
@@ -6382,8 +6383,23 @@ Chỉ trả lời: CÓ hoặc KHÔNG
 
             return "";
         }
-        private async void frmMain_Load(object sender, EventArgs e)
+
+        private string host = "14.161.175.85";
+        private int port = 21;
+        private string userftp = "thbd";
+        private string passftp = "123";
+        private FtpClient GetClient()
         {
+            var client = new FtpClient(host, userftp, passftp, port);
+            client.Config.EncryptionMode = FtpEncryptionMode.None; // Đổi thành Explicit nếu bật TLS
+            client.Config.DataConnectionType = FtpDataConnectionType.PASV; // Quan trọng
+            client.Config.ValidateAnyCertificate = true;
+            client.Config.ConnectTimeout = 10000;
+            return client;
+        }
+        
+        private async void frmMain_Load(object sender, EventArgs e)
+        { 
             int checkcompare = CompareProductNew("BVS Diana Sensi Cool Fresh siêu mỏng cánhx20", "BVS Diana SENSI Cool Fresh SMCánh20 - 2302");
             // var list = AcbPdfReader.Read(@"C:\Users\Admin\Desktop\18687768_SAOKE_TK_202511.pdf");
 

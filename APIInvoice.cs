@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Dynamic;
@@ -170,7 +171,7 @@ WHERE IdNhap IS NOT NULL
                                     var rsp = await client.GetAsync(api);
                                     var rs = await rsp.Content.ReadAsStringAsync();
                                     string StatusPH = "";
-                                    if (rsp.IsSuccessStatusCode)
+                                    if (rsp.IsSuccessStatusCode==false)
                                     {
                                         StatusPH = "0";
                                     }
@@ -178,12 +179,11 @@ WHERE IdNhap IS NOT NULL
                                     {
                                         StatusPH = "1";
                                     }
-                                    var updateQr = @"UPDATE HoaDon  SET StatusPH = ?  WHERE MaSo =?";
-                                    var updateParameters = new OleDbParameter[]
+                                    var updateQr = @"UPDATE HoaDon  SET StatusPH = @StatusPH  WHERE MaSo = @MaSo";
+                                    var updateParameters = new SqlParameter[]
                                     {
-        new OleDbParameter("?", StatusPH), // Cập nhật giá trị StatusPH     
-        new OleDbParameter("?", r["MaSo"]),
-
+        new SqlParameter("@StatusPH", StatusPH), // Cập nhật giá trị StatusPH     
+        new SqlParameter("@MaSo", r["MaSo"]),
                                     };
                                     var updateRowsAffected = ExecuteQueryResult(updateQr, updateParameters);
                                 }
@@ -822,12 +822,10 @@ WHERE IdNhap IS NOT NULL
             //    string url = $"https://mst.vn/api/company/{"3502495312"}";
             //    var res = await client.GetStringAsync(url); 
             //}
-
-
+             
 
             //await LoginWithSelenium();   // Gọi hàm login mới
             string dbPath = "";
-            string password = "1@35^7*9)1";
             string appPath = Assembly.GetExecutingAssembly().Location;
 
             // Lấy thư mục chứa ứng dụng
@@ -849,7 +847,7 @@ WHERE IdNhap IS NOT NULL
             {
                 Console.WriteLine("Lỗi khi đọc file: " + ex.Message);
             }
-            connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
+            connectionString = "Server=14.161.175.85,1433;Database=thanhhuongbendinh;User Id=thanhhuongbd;Password=123;";
             //Đọc file txt
             string filePath = Path.Combine(rootDirectory, "Hoadon", "invoice.txt");
             _content = File.ReadAllText(filePath);
@@ -1276,18 +1274,17 @@ WHERE IdNhap IS NOT NULL
             var apiResult = CallApiWithAllCookies(url).GetAwaiter().GetResult();
         }
         string password, connectionString;
-        public System.Data.DataTable ExecuteQuery(string query, params OleDbParameter[] parameters)
+        public System.Data.DataTable ExecuteQuery(string query, params SqlParameter[] parameters)
         {
             System.Data.DataTable dataTable = new System.Data.DataTable();
 
-
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
 
-                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         // Thêm các tham số vào command
                         if (parameters != null)
@@ -1295,7 +1292,7 @@ WHERE IdNhap IS NOT NULL
                             command.Parameters.AddRange(parameters);
                         }
 
-                        using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(command))
+                        using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
                         {
                             dataAdapter.Fill(dataTable);
                         }
@@ -1305,10 +1302,9 @@ WHERE IdNhap IS NOT NULL
                 {
                     MessageBox.Show(ex.Message);
                 }
-
             }
 
-            return dataTable; // Trả về DataTable chứa dữ liệu
+            return dataTable;
         }
         private async void simpleButton3_Click(object sender, EventArgs e)
         {
@@ -1346,13 +1342,13 @@ WHERE IdNhap IS NOT NULL
     SELECT ChungTu.*,HOADON.*
     FROM ChungTu 
     INNER JOIN HOADON ON HOADON.MaSo = ChungTu.MaSo 
-    WHERE ChungTu.SoHieu = ? AND KyHieu = ? AND NgayCT=? ";
+    WHERE ChungTu.SoHieu = @SoHieu AND KyHieu = @KyHieu AND NgayCT=@NgayCT ";
 
-            var parameterss = new OleDbParameter[]
+            var parameterss = new SqlParameter[]
             {
-    new OleDbParameter("?", getsplit[0]),
-    new OleDbParameter("?", getsplit[1]),
-    new OleDbParameter("?", getsplit[2])
+    new SqlParameter("@SoHieu", getsplit[0]),
+    new SqlParameter("@KyHieu", getsplit[1]),
+    new SqlParameter("@NgayCT", getsplit[2])
             };
 
             var kq2 = ExecuteQuery(qrTimct, parameterss);
@@ -1363,26 +1359,26 @@ WHERE IdNhap IS NOT NULL
     INNER JOIN HOADON ON CStr(HOADON.MaSo) = tbGetphieu.MaCT
     WHERE HOADON.MaSo = @MaSo";
 
-            parameterss = new OleDbParameter[]
+            parameterss = new SqlParameter[]
           {
-    new OleDbParameter(" ? ", kq2.Rows[0]["HOADON.MaSo"].ToString()),
+    new SqlParameter("@MaSo", kq2.Rows[0]["HOADON.MaSo"].ToString()),
           };
 
             var kqgphieu = ExecuteQuery(sqlgp, parameterss);
              
 
             //Lấy danh sách chứng từ từ MaCT
-            var sql = "SELECT * FROM KhachHang WHERE MaSo = ?";
-            parameterss = new OleDbParameter[]
+            var sql = "SELECT * FROM KhachHang WHERE MaSo = @MaSo";
+            parameterss = new SqlParameter[]
           {
-    new OleDbParameter("?",  kq2.Rows[0]["MaKhachHang"]),
+    new SqlParameter("@MaSo", kq2.Rows[0]["MaKhachHang"]),
           };
             var dtKhachhang = ExecuteQuery(sql, parameterss);
 
-            sql = "SELECT * FROM ChungTu WHERE MaCT = ?";
-            var param = new OleDbParameter[]
+            sql = "SELECT * FROM ChungTu WHERE MaCT = @MaCT";
+            var param = new SqlParameter[]
             {
-                new OleDbParameter("?", kq2.Rows[0]["MaCT"])
+                new SqlParameter("@MaCT", kq2.Rows[0]["MaCT"])
             };
             //Lấy data khách hàng Từ MaKhachHang 
             var kq3 = ExecuteQuery(sql, param);
@@ -1402,10 +1398,10 @@ WHERE IdNhap IS NOT NULL
                     {
                         continue; // Bỏ qua nếu MaVattu trống
                     }
-                    string sqlHangHoa = "SELECT * FROM Vattu WHERE MaSo = ?";
-                    var paramHangHoa = new OleDbParameter[]
+                    string sqlHangHoa = "SELECT * FROM Vattu WHERE MaSo = @MaSo";
+                    var paramHangHoa = new SqlParameter[]
                     {
-                    new OleDbParameter("?", row["MaVattu"])
+                    new SqlParameter("@MaSo", row["MaVattu"])
                     };
                     var kqHangHoa = ExecuteQuery(sqlHangHoa, paramHangHoa);
                     double sops = row["SoPS"].ToString() == "" ? 0 : Convert.ToDouble(row["SoPS"]);
@@ -1463,10 +1459,10 @@ WHERE IdNhap IS NOT NULL
                 dynamic dataJson = new ExpandoObject();
 
                 //Kiểm tra xem update hay tạo mới
-                var sqlcheck = @"select * from HoaDon  WHERE MaSo =?";
-                var paramcheck = new OleDbParameter[]
+                var sqlcheck = @"select * from HoaDon  WHERE MaSo = @MaSo";
+                var paramcheck = new SqlParameter[]
                 { 
-        new OleDbParameter("?", kq2.Rows[0]["HOADON.MaSo"].ToString()),
+        new SqlParameter("@MaSo", kq2.Rows[0]["HOADON.MaSo"].ToString()),
 
                 };
                 var checkupdate = ExecuteQuery(sqlcheck, paramcheck);
@@ -1476,10 +1472,10 @@ WHERE IdNhap IS NOT NULL
                     dataJson.transactionUuid = null;
                 }
                 //Tìm template theo mã đơn hàng
-                var sqlTemplate = @"select * from tbInvoiceTemplate  WHERE ID =?";
-                var paramtemplate = new OleDbParameter[]
+                var sqlTemplate = @"select * from tbInvoiceTemplate  WHERE ID = @ID";
+                var paramtemplate = new SqlParameter[]
                 {
-        new OleDbParameter("?",getsplit[3].ToString()),
+        new SqlParameter("@ID", getsplit[3].ToString()),
 
                 };
                 var tbtemplate = ExecuteQuery(sqlTemplate, paramtemplate);
@@ -1560,12 +1556,12 @@ WHERE IdNhap IS NOT NULL
                     Application.DoEvents();
                     var jObj = JObject.Parse(result);
                     long invoiceId = jObj["data"]["id"].Value<long>();
-                    var updateQr = @"UPDATE HoaDon  SET IdNhap = ?,IdTemplate =? WHERE MaSo =?";
-                    var updateParameters = new OleDbParameter[]
+                    var updateQr = @"UPDATE HoaDon  SET IdNhap = @IdNhap, IdTemplate = @IdTemplate WHERE MaSo = @MaSo";
+                    var updateParameters = new SqlParameter[]
                     {
-        new OleDbParameter("?", invoiceId.ToString()), // Cập nhật giá trị TiLe
-        new OleDbParameter("?", getsplit[3].ToString()),
-        new OleDbParameter("?", kq2.Rows[0]["HOADON.MaSo"].ToString()),
+        new SqlParameter("@IdNhap", invoiceId.ToString()), // Cập nhật giá trị TiLe
+        new SqlParameter("@IdTemplate", getsplit[3].ToString()),
+        new SqlParameter("@MaSo", kq2.Rows[0]["HOADON.MaSo"].ToString()),
 
                     };
                     var updateRowsAffected = ExecuteQueryResult(updateQr, updateParameters);
@@ -1591,10 +1587,10 @@ WHERE IdNhap IS NOT NULL
                         UseShellExecute = true
                     });
 
-                    var upd = @"UPDATE tbResponse  SET Status = ?";
-                    var paas = new OleDbParameter[]
+                    var upd = @"UPDATE tbResponse  SET Status = @Status";
+                    var paas = new SqlParameter[]
                     {
-        new OleDbParameter("?", "1")
+        new SqlParameter("@Status", "1")
                     };
                     var rrs = ExecuteQueryResult(upd, paas);
                     Application.Exit();
@@ -1676,29 +1672,29 @@ WHERE IdNhap IS NOT NULL
                         }
 
                         string sqlCheck = "SELECT * FROM tbInvoiceTemplate WHERE Id = @Id";
-                        var paramHangHoa = new OleDbParameter[]
+                        var paramHangHoa = new SqlParameter[]
                   {
-                    new OleDbParameter("?", item.Id.ToString())
+                    new SqlParameter("@ID", item.Id.ToString())
                   };
                         var kqHangHoa = ExecuteQuery(sqlCheck, paramHangHoa);
                         if (kqHangHoa.Rows.Count==0)
                         {
-                            string sqlInsert = "INSERT INTO tbInvoiceTemplate (ID, Code, Name,KHHD) VALUES (?, ?, ?,?)";
-                            var updateParameters = new OleDbParameter[]
+                            string sqlInsert = "INSERT INTO tbInvoiceTemplate (ID, Code, Name,KHHD) VALUES (@ID, @Code, @Name, @KHHD)";
+                            var updateParameters = new SqlParameter[]
                    {
-        new OleDbParameter("?", item.Id.ToString()), // Cập nhật giá trị TiLe
-        new OleDbParameter("?", item.TemplateCode),
-        new OleDbParameter("?", item.InvoiceName),
-         new OleDbParameter("?", getKHHd)
+        new SqlParameter("@ID", item.Id.ToString()), // Cập nhật giá trị TiLe
+        new SqlParameter("@Code", item.TemplateCode),
+        new SqlParameter("@Name", item.InvoiceName),
+         new SqlParameter("@KHHD", getKHHd)
 
                    };
                             var updateRowsAffected = ExecuteQueryResult(sqlInsert, updateParameters);
 
 
-                            var updateQr = @"UPDATE tbResponse  SET Status = ?";
-                            var paas = new OleDbParameter[]
+                            var updateQr = @"UPDATE tbResponse  SET Status = @Status";
+                            var paas = new SqlParameter[]
                             {
-        new OleDbParameter("?", "1") 
+        new SqlParameter("@Status", "1") 
                             };
                             var rrs = ExecuteQueryResult(updateQr, paas);
                         }
@@ -1733,14 +1729,14 @@ WHERE IdNhap IS NOT NULL
 
         }
 
-        public int ExecuteQueryResult(string query, params OleDbParameter[] parameters)
+        public int ExecuteQueryResult(string query, params SqlParameter[] parameters)
         {
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công!");
+                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công! " + query);
 
-                using (OleDbCommand command = new OleDbCommand(query, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     // Thêm tham số
                     if (parameters != null)
@@ -1750,11 +1746,13 @@ WHERE IdNhap IS NOT NULL
                     command.ExecuteNonQuery();
                 }
 
-                // Lấy ID vừa thêm bằng @@IDENTITY
-                using (OleDbCommand idCommand = new OleDbCommand("SELECT @@IDENTITY", connection))
+                // Lấy ID vừa thêm bằng SCOPE_IDENTITY() (cho SQL Server)
+                using (SqlCommand idCommand = new SqlCommand("SELECT SCOPE_IDENTITY()", connection))
                 {
                     object result = idCommand.ExecuteScalar();
-                    return Convert.ToInt32(result);
+                    if (result != null && result != DBNull.Value)
+                        return Convert.ToInt32(result);
+                    return 0;
                 }
             }
         }

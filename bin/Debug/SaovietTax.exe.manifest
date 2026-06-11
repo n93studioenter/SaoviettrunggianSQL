@@ -2046,6 +2046,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="FluentFTP.dll" size="504320">
+      <assemblyIdentity name="FluentFTP" version="54.2.0.0" publicKeyToken="F4AF092B1D8DF44F" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>HAloerme1D9qhouKin+N2/tZngjFgrXfSDh5ihFlaGE=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="FuzzySharp.dll" size="39936">
       <assemblyIdentity name="FuzzySharp" version="1.0.4.0" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -2838,14 +2850,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SaovietTax.exe" size="8313248">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SaovietTax.exe" size="8314368">
       <assemblyIdentity name="SaovietTax" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ef8odG18gJ1BDlE2OJ09N19d8BCAsLUavrMoluLBPps=</dsig:DigestValue>
+        <dsig:DigestValue>bkuoEXo5NDb5Icpl0ljNWbX88u+EyUQlBoCzIrgW94g=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
