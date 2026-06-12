@@ -89,6 +89,7 @@ using Serilog.Parsing;
 using Svg;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -6414,7 +6415,7 @@ Chỉ trả lời: CÓ hoặc KHÔNG
 
 
             hoverTimer = new Timer();
-            hoverTimer.Interval = 500; // 0.5s
+            hoverTimer.Interval = 100; // 0.5s
             hoverTimer.Tick += HoverTimer_Tick;
             searchExpert = true;
             // Code gây lỗi 
@@ -11691,12 +11692,10 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
             }
         }
         private async Task SaveAllInvoicesBulk(List<TbImport> invoices, int type)
-        {
-            XtraMessageBox.Show("Đã vào hàm SaveAllInvoicesBulk");
+        { 
 
             using (SqlConnection conn = new SqlConnection(connectionStringSQL))
-            {
-                XtraMessageBox.Show("Đã tạo SqlConnection");
+            { 
 
                 await conn.OpenAsync();
                 using (SqlTransaction trans = conn.BeginTransaction())
@@ -21670,9 +21669,114 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             return total == 0
                 ? 0
                 : (double)common / total;
-        } 
+        }
+        private static readonly ConcurrentDictionary<string, double> _similarityCache
+= new ConcurrentDictionary<string, double>();
 
-        private void XulusohieuvattuSuggest(string name,string dvt,double dongia)
+        private void XulusohieuvattuSuggest(string name, string dvt, double dongia)
+        {
+            lstvtgoiy = new List<Vattugoiy>();
+
+            VietnameseProductMatcher matcher = new VietnameseProductMatcher();
+
+            string key = Helpers.NormalizeVietnameseString(
+                            matcher.NormalizeVietnameseProduct(name?.Trim() ?? ""))
+                            .Trim()
+                            .ToLower();
+
+            string keyNoBracket = RemoveParentheses(key);
+
+            bool keyHasBracket = HasParentheses(key);
+
+            string firstWord = key.Split(' ')[0];
+
+            foreach (var item in _optimizedVatTu)
+            {
+                string tenGoc = item.Value.TenChuan;
+
+                if (string.IsNullOrWhiteSpace(tenGoc))
+                    continue;
+
+                string tenHang;
+                string currentKey;
+
+                bool tenHasBracket = HasParentheses(tenGoc);
+
+                if (tenHasBracket)
+                {
+                    tenHang = RemoveParentheses(tenGoc).ToLower();
+                    currentKey = keyNoBracket;
+                }
+                else
+                {
+                    tenHang = tenGoc.ToLower();
+                    currentKey = keyHasBracket ? keyNoBracket : key;
+                }
+
+                // ===== LỌC NHANH =====
+
+                if (Math.Abs(tenHang.Length - currentKey.Length) > 25)
+                    continue;
+
+                if (tenHang.Length > 0 &&
+                    currentKey.Length > 0 &&
+                    tenHang[0] != currentKey[0])
+                    continue;
+
+                // ===== SIMILARITY CACHE =====
+
+                string cacheKey = tenHang + "|" + currentKey;
+
+                double final = _similarityCache.GetOrAdd(cacheKey,
+                    _ => CalculateSimilarity(tenHang, currentKey));
+
+                double productSimilarity =
+                    CompareProduct(tenHang, currentKey);
+
+                if (Timtheogia &&
+                    (final >= 30 ||
+                     tenHang.Split(' ')[0] == firstWord))
+                {
+                    final = item.Value.Dongia == dongia
+                        ? 100
+                        : 0;
+                }
+
+                if (final < 100 &&
+                    !string.IsNullOrEmpty(item.Value.TenPhuChuan))
+                {
+                    string tenPhu = item.Value.TenPhuChuan.ToLower();
+
+                    string cacheAlt = tenPhu + "|" + currentKey;
+
+                    double alt = _similarityCache.GetOrAdd(cacheAlt,
+                        _ => CalculateSimilarity(tenPhu, currentKey));
+
+                    if (alt > final)
+                        final = alt;
+                }
+
+                if (final < 10 && productSimilarity != 1)
+                    continue;
+
+                lstvtgoiy.Add(new Vattugoiy
+                {
+                    SoHieu = item.Key,
+                    Ten = tenGoc.Length > 50
+                        ? tenGoc.Substring(0, 50)
+                        : tenGoc,
+                    Percent = Math.Round(final),
+                    DonVi = item.Value.DonVi,
+                    Dongia = Math.Round(item.Value.Dongia)
+                });
+            }
+
+            lstvtgoiy = lstvtgoiy
+                .OrderByDescending(x => x.Percent)
+                .Take(50)
+                .ToList();
+        }
+        private void XulusohieuvattuSuggestold(string name,string dvt,double dongia)
         {
             lstvtgoiy = new List<Vattugoiy>();
             string originalTen = name.Trim() ?? "";
