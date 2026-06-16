@@ -7,14 +7,14 @@
     <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="SaovietTax.exe.manifest" size="401092">
+    <dependentAssembly dependencyType="install" codebase="SaovietTax.exe.manifest" size="419517">
       <assemblyIdentity name="SaovietTax.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>RHOPO9Lp/K84jWHvAA/Af/KJw0NjbDRvOSUABtWq+Ks=</dsig:DigestValue>
+        <dsig:DigestValue>fpAnSQs5+ilRpMJuTvct/eJznYAN7Te6dFgSAgVUDTA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

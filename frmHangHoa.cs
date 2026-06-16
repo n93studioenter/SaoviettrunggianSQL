@@ -12,6 +12,7 @@ using SaovietTax.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
@@ -477,6 +478,48 @@ namespace SaovietTax
                         }
                     }
                 }
+                if (Typeform == 1)
+                {
+                    var gv = frmMain.Typechon == 1 ? frmMain.gv2 : frmMain.gv4;
+                    int rowHandle = gv.FocusedRowHandle;
+
+                    if (rowHandle >= 0 && !gv.IsGroupRow(rowHandle))
+                    {
+
+                        var rowObj = gv.GetRow(rowHandle);
+
+                        if (rowObj != null)
+                        {
+                            var type = rowObj.GetType();
+                            string ten = (string)type.GetProperty("Ten").GetValue(rowObj);
+                            string sohieu = (string)type.GetProperty("SoHieu").GetValue(rowObj);
+                            int ID = (int)type.GetProperty("ID").GetValue(rowObj);
+                            string DVT = (string)type.GetProperty("DVT").GetValue(rowObj);
+                            TbImportDetail TbImportDetail = rowObj as TbImportDetail;
+
+                            type.GetProperty("SoHieu")
+                                ?.SetValue(rowObj, txtSohieu.Text);
+
+                            type.GetProperty("DVT")
+                                ?.SetValue(rowObj, txtDonvi.Text);
+
+                            type.GetProperty("Ten")
+                                ?.SetValue(rowObj, txtTenvattu.Text);
+
+                            gv.RefreshRow(rowHandle);
+
+                            string query2 = @"UPDATE tbimportdetail SET Ten=@Ten, SoHieu=@SoHieu, DVT=@DVT WHERE ID=@ID";
+                            var parameters2 = new SqlParameter[]
+                             {
+                                 new SqlParameter("@Ten", Helpers.ConvertUnicodeToVni(txtTenvattu.Text)),
+                                 new SqlParameter("@SoHieu", txtSohieu.Text),
+                                 new SqlParameter("@DVT", Helpers.ConvertUnicodeToVni(txtDonvi.Text)),
+                                 new SqlParameter("@ID", ID)
+                             };
+                            rowsAffected = ExecuteQueryResult(query2, parameters2);
+                        }
+                    }
+                }
                 else
                 {
                     frmMain.hiddenValue = txtSohieu.Text;
@@ -484,7 +527,7 @@ namespace SaovietTax
                     frmMain.hiddenValue3 = txtTenvattu.Text;
                     isChange = true;
                 }
-                    this.Close();
+                this.Close();
 
                 LoadData(selectedItem.Id, txtSearch.Text);
                  RefreshData();
@@ -621,7 +664,8 @@ namespace SaovietTax
         private void frmHangHoa_Load_1(object sender, EventArgs e)
         {
             //gridView1.OptionsFind.AlwaysVisible = true; // Kích hoạt thanh tìm kiếm
-            connectionString = "Server=pc43\\SQLEXPRESS;Database=thanhhuongbendinh;User Id=sa;Password=123456;";
+            // connectionString = "Server=pc43\\SQLEXPRESS;Database=thanhhuongbendinh;User Id=sa;Password=123456;";
+            connectionString= ConfigurationManager.ConnectionStrings["SqlConn"].ConnectionString;
             var query = @"SELECT * FROM PhanLoaiVattu ORDER BY TenPhanLoai";
             var dt = ExecuteQuery(query, null);
             if (dt != null && dt.Rows.Count > 0)

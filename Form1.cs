@@ -154,11 +154,13 @@ using GridView = DevExpress.XtraGrid.Views.Grid.GridView;
 using Keys = OpenQA.Selenium.Keys;
 using Label = System.Windows.Forms.Label;
 using Match = System.Text.RegularExpressions.Match;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using Panel = System.Windows.Forms.Panel;
 using Path = System.IO.Path;
 using PdfReader = PdfSharp.Pdf.IO.PdfReader;
 using Point = System.Drawing.Point; 
 using Rectangle = System.Drawing.Rectangle;
+using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
 using Size = DocumentFormat.OpenXml.Drawing.Charts.Size;
 using TextEdit = DevExpress.XtraEditors.TextEdit;
 using Timer = System.Windows.Forms.Timer;
@@ -5185,8 +5187,9 @@ namespace SaovietTax
             if (string.IsNullOrEmpty(connectionStringSQL))
             {
                 // Thay đổi thông tin cho đúng với SQL Server của bạn
-                connectionStringSQL = "Server=14.161.175.85,1433;Database=thanhhuongbendinh;User Id=thanhhuongbd;Password=123;";
-
+               // connectionStringSQL = "Server=14.161.175.85,1433;Database=thanhhuongbendinh;User Id=thanhhuongbd;Password=123;";
+                connectionStringSQL =
+    ConfigurationManager.ConnectionStrings["SqlConn"].ConnectionString;
                 // Hoặc dùng SQL Authentication:
                 // connectionString = "Server=localhost;Database=TenDatabaseCuaBan;User Id=sa;Password=123;";
             }
@@ -5810,9 +5813,8 @@ namespace SaovietTax
                     ControlsSetup();
                     // 4. Migrate database (chạy background)
                     ShowProgress("Kiểm tra cấu trúc dữ liệu...");
-                     MigrateDatabase();
+                    MigrateDatabase();
 
-                    
                     // 5. Load config người dùng
                     ShowProgress("Nạp cấu hìnhs...");
                     InitDatanew();
@@ -6398,7 +6400,7 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             client.Config.ConnectTimeout = 10000;
             return client;
         }
-        
+       
         private async void frmMain_Load(object sender, EventArgs e)
         { 
             int checkcompare = CompareProductNew("BVS Diana Sensi Cool Fresh siêu mỏng cánhx20", "BVS Diana SENSI Cool Fresh SMCánh20 - 2302");
@@ -17661,6 +17663,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                                     frmHangHoa.Location = new Point(x, y);
 
                                     frmHangHoa.ShowDialog(this);
+                                    gridView2.RefreshData();
                                 }
                             }
 
@@ -17990,6 +17993,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                                     frmHangHoa.Location = new Point(x, y);
 
                                     frmHangHoa.ShowDialog(this);
+                                    gridView4.RefreshData();
                                 }
                             }
 

@@ -59,6 +59,10 @@
               "target": "Package",
               "version": "[15.1.0, )"
             },
+            "BarcodeLib": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            },
             "BrotliSharpLib": {
               "target": "Package",
               "version": "[0.3.3, )"
@@ -134,6 +138,10 @@
             "Pkcs11Interop": {
               "target": "Package",
               "version": "[5.0.1, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.8.0, )"
             },
             "Selenium.Support": {
               "target": "Package",
