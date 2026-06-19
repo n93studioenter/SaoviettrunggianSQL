@@ -81,7 +81,7 @@ namespace SaovietTax
             // Set formula "thoigian" (có kiểm tra)
             SetFormulaIfExists(rpt, "thoigian", thoiGianValue);
             SetFormulaIfExists(rpt, "ThoiGian", thoiGianValue);
-
+            SetFormulaIfExists(rpt, "Ngay", DateTime.Now.ToShortDateString());
             // Load thông tin công ty
             DataTable tbLicnese = new DataTable();
             var query = @"SELECT * FROM License";
@@ -93,11 +93,11 @@ namespace SaovietTax
                 string mstCty = tbLicnese.Rows[0]["MaSoThue"].ToString();
 
                 // Set formula "TenCty" (chỉ set nếu có)
-                SetFormulaIfExists(rpt, "TenCty", tenCty);
+                SetFormulaString(rpt, "TenCty", tenCty);
 
                 // Set formula "MSThue" (chỉ set nếu có)
-                SetFormulaIfExists(rpt, "MSThue", mstCty);
-                SetFormulaIfExists(rpt, "TenCn", $"MST: {mstCty}");
+                SetFormulaString(rpt, "MSThue", mstCty);
+                SetFormulaString(rpt, "TenCn", $"MST: {mstCty}");
             }
 
             //
@@ -125,13 +125,78 @@ namespace SaovietTax
             {
                 var qrTheKho = @"SELECT * FROM Socai";
                 var getqrTheKho = ExecuteQuery(qrTheKho, null);
-                SetFormulaIfExists(rpt, "SoHieuTK", getqrTheKho.Rows[0]["SoHieuTK"].ToString());
+                var test = getqrTheKho.Rows[0]["SoHieuTK"].ToString();
+                SetFormulaString(rpt, "SoHieuTK", getqrTheKho.Rows[0]["SoHieuTK"].ToString());
                 SetFormulaIfExists(rpt, "NoDk", getqrTheKho.Rows[0]["NoDk"].ToString());
                 SetFormulaIfExists(rpt, "Kieu", getqrTheKho.Rows[0]["Kieu"].ToString());
                 SetFormulaIfExists(rpt, "TenTk", getqrTheKho.Rows[0]["TenTk"].ToString());
                 SetFormulaIfExists(rpt, "NoLK", getqrTheKho.Rows[0]["NoLK"].ToString());
                 SetFormulaIfExists(rpt, "CoLK", getqrTheKho.Rows[0]["CoLK"].ToString());
             }
+            if (rootPath[0].Contains("CTTKCN"))
+            {
+
+                var qrTheKho = @"SELECT * FROM Congno";
+                var getqrTheKho = ExecuteQuery(qrTheKho, null);
+                var test = getqrTheKho.Rows[0]["SoHieuTK"].ToString();
+                SetFormulaString(rpt, "SoHieuTK", getqrTheKho.Rows[0]["SoHieuTK"].ToString());
+                SetFormulaIfExists(rpt, "MaCN", getqrTheKho.Rows[0]["MaCN"].ToString());
+                SetFormulaIfExists(rpt, "NoLK", getqrTheKho.Rows[0]["NoLK"].ToString());
+                SetFormulaIfExists(rpt, "CoLK", getqrTheKho.Rows[0]["CoLK"].ToString());
+                SetFormulaIfExists(rpt, "TenTk", getqrTheKho.Rows[0]["TenTk"].ToString());
+                SetFormulaIfExists(rpt, "NoDK", getqrTheKho.Rows[0]["NoDK"].ToString());
+                SetFormulaIfExists(rpt, "Kieu", getqrTheKho.Rows[0]["Kieu"].ToString());
+            }
+            if (rootPath[0].Contains("TOKHAI"))
+            {
+
+                var qrTheKho = @"SELECT * FROM vw_ToKhaiVAT";
+                var getqrTheKho = ExecuteQuery(qrTheKho, null);
+                var ddd = getqrTheKho.Rows[0]["Diachi"].ToString();
+                // Gán dữ liệu - Giữ nguyên kiểu getqrTheKho
+                SetFormulaString(rpt, "DiaChi", getqrTheKho.Rows[0]["DiaChi"].ToString());
+                SetFormulaString(rpt, "MSThue", getqrTheKho.Rows[0]["MSThue"].ToString());
+                SetFormulaString(rpt, "SoHieuTK", getqrTheKho.Rows[0]["SoHieuTK"].ToString());
+                SetFormulaString(rpt, "Quan", getqrTheKho.Rows[0]["Quan"].ToString());
+
+                // Gán số - Không Convert, để nguyên
+                SetFormulaIfExists(rpt, "Thang", getqrTheKho.Rows[0]["Thang"].ToString());
+                SetFormulaIfExists(rpt, "ThangCuoi", getqrTheKho.Rows[0]["ThangCuoi"].ToString());
+                SetFormulaIfExists(rpt, "DTKCT", getqrTheKho.Rows[0]["DTKCT"].ToString());
+                SetFormulaIfExists(rpt, "Vat0", getqrTheKho.Rows[0]["Vat0"].ToString());
+                SetFormulaIfExists(rpt, "Vat10DT", getqrTheKho.Rows[0]["Vat10DT"].ToString());
+                SetFormulaIfExists(rpt, "Vat10", getqrTheKho.Rows[0]["Vat10"].ToString());
+                SetFormulaIfExists(rpt, "TongVaoV", getqrTheKho.Rows[0]["TongVaoV"].ToString());
+                SetFormulaIfExists(rpt, "KyTruoc", getqrTheKho.Rows[0]["KyTruoc"].ToString());
+                SetFormulaIfExists(rpt, "TongVao", getqrTheKho.Rows[0]["TongVao"].ToString());
+                SetFormulaIfExists(rpt, "TongVATx", getqrTheKho.Rows[0]["TongVATx"].ToString());
+                SetFormulaIfExists(rpt, "TongVATV", getqrTheKho.Rows[0]["TongVATV"].ToString());
+                SetFormulaIfExists(rpt, "TongDoanhThu", getqrTheKho.Rows[0]["TongDoanhThu"].ToString());
+                SetFormulaIfExists(rpt, "TongVAT", getqrTheKho.Rows[0]["TongVAT"].ToString());
+            }
+            if (rootPath[0].Contains("SOQUY"))
+            {
+                var qrTheKho = @"SELECT * FROM SoQuy";
+                var getqrTheKho = ExecuteQuery(qrTheKho, null);
+                SetFormulaString(rpt, "SoHieuTK", getqrTheKho.Rows[0]["SoHieuTK"].ToString());
+                SetFormulaIfExists(rpt, "NoDK", getqrTheKho.Rows[0]["NoDK"].ToString());
+                SetFormulaIfExists(rpt, "CoDK", getqrTheKho.Rows[0]["CoDK"].ToString());
+                SetFormulaIfExists(rpt, "Kieu", getqrTheKho.Rows[0]["Kieu"].ToString());
+                SetFormulaString(rpt, "TenTK", getqrTheKho.Rows[0]["TenTK"].ToString());
+                SetFormulaIfExists(rpt, "NoLK", getqrTheKho.Rows[0]["NoLK"].ToString());
+                SetFormulaIfExists(rpt, "CoLK", getqrTheKho.Rows[0]["CoLK"].ToString());
+                SetFormulaIfExists(rpt, "SoDuCK", getqrTheKho.Rows[0]["SoDuCK"].ToString());
+            }
+        }
+        private void SetFormulaString(ReportDocument rpt, string formulaName, string value)
+        {
+            try
+            {
+                FormulaFieldDefinition formula = rpt.DataDefinition.FormulaFields[formulaName];
+
+                formula.Text = "'" + value + "'";
+            }
+            catch { }
         }
 
         // Hàm kiểm tra formula có tồn tại không trước khi set
