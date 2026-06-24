@@ -3965,7 +3965,7 @@ namespace SaovietTax
                 dtTungay.Properties.Mask.EditMask = "dd/MM/yyyy";
 
                 string quer = "SELECT * FROM License";
-                tbLicense = ExecuteQuery(quer, null);
+                tbLicense = ExecuteQuerySQL(quer, null);
                 int namtc = int.Parse(tbLicense.Rows[0]["NamTC"].ToString());
                 int thangtc = 0;
                 if (namtc < DateTime.Now.Year)
@@ -5117,7 +5117,7 @@ namespace SaovietTax
         {
             string query = "SELECT * FROM License";
 
-            DataTable tb = ExecuteQuery(query, null);
+            DataTable tb = ExecuteQuerySQL(query, null);
             if (tb == null || tb.Rows.Count == 0)
                 return;
 
@@ -6510,7 +6510,7 @@ Chỉ trả lời: CÓ hoặc KHÔNG
                 Xulythumuc();
                 //
                 string quer = "SELECT * FROM License";
-                tbLicense = ExecuteQuery(quer, null);
+                tbLicense = ExecuteQuerySQL(quer, null);
                 this.Text = $"Phần mềm kế toán Sao Việt - Năm tài chính {tbLicense.Rows[0]["NamTC"].ToString()}";
                 //CopyReport();
 
@@ -6830,7 +6830,7 @@ Chỉ trả lời: CÓ hoặc KHÔNG
 
             tbRegister = ExecuteQuery(querykh, new OleDbParameter("?", ""));
             string quer = "SELECT * FROM License";
-            tbLicense = ExecuteQuery(quer, null);
+            tbLicense = ExecuteQuerySQL(quer, null);
 
             var querydinhdanh = @"SELECT * FROM HeThongTK";
             existingTbHeThongTK = await Task.Run(() => ExecuteQuery(querydinhdanh, null));
@@ -12058,7 +12058,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
         private bool Kiemtranamtc()
         {
             string quer = "SELECT * FROM License";
-            tbLicense = ExecuteQuery(quer, null);
+            tbLicense = ExecuteQuerySQL(quer, null);
             string namtc = tbLicense.Rows[0]["NamTC"].ToString();
             if (namtc != dtTungay.DateTime.Year.ToString())
             {
@@ -12720,7 +12720,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
         private void Thuchientaihoadontuweb()
         {
             string quer = "SELECT * FROM License";
-            tbLicense = ExecuteQuery(quer, null);
+            tbLicense = ExecuteQuerySQL(quer, null);
             mstCongtyhd = tbLicense.Rows[0]["MaSoThue"].ToString();
             //frmTaiCoQuanThue frmTaiCoQuanThue = new frmTaiCoQuanThue();
             //username = txtuser.Text;

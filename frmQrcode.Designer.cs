@@ -33,8 +33,8 @@
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.pictureBoxQR = new System.Windows.Forms.PictureBox();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQR)).BeginInit();
@@ -49,20 +49,20 @@
             this.panelControl1.Controls.Add(this.pictureBoxQR);
             this.panelControl1.Location = new System.Drawing.Point(12, 12);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(285, 272);
+            this.panelControl1.Size = new System.Drawing.Size(285, 190);
             this.panelControl1.TabIndex = 4;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.panel1.Location = new System.Drawing.Point(11, 219);
+            this.panel1.Location = new System.Drawing.Point(12, 115);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(268, 1);
             this.panel1.TabIndex = 4;
             // 
             // labelControl3
             // 
-            this.labelControl3.Location = new System.Drawing.Point(11, 251);
+            this.labelControl3.Location = new System.Drawing.Point(12, 157);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(75, 16);
             this.labelControl3.TabIndex = 3;
@@ -70,7 +70,7 @@
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(11, 226);
+            this.labelControl2.Location = new System.Drawing.Point(12, 122);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(75, 16);
             this.labelControl2.TabIndex = 2;
@@ -82,36 +82,38 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl1.Appearance.Options.UseFont = true;
-            this.labelControl1.Location = new System.Drawing.Point(11, 192);
+            this.labelControl1.Location = new System.Drawing.Point(11, 88);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(115, 21);
             this.labelControl1.TabIndex = 1;
             this.labelControl1.Text = "labelControl1";
             // 
-            // simpleButton1
-            // 
-            this.simpleButton1.Location = new System.Drawing.Point(185, 290);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(112, 28);
-            this.simpleButton1.TabIndex = 3;
-            this.simpleButton1.Text = "Print";
-            // 
             // pictureBoxQR
             // 
             this.pictureBoxQR.Location = new System.Drawing.Point(11, 12);
             this.pictureBoxQR.Name = "pictureBoxQR";
-            this.pictureBoxQR.Size = new System.Drawing.Size(269, 174);
+            this.pictureBoxQR.Size = new System.Drawing.Size(268, 70);
             this.pictureBoxQR.TabIndex = 0;
             this.pictureBoxQR.TabStop = false;
+            // 
+            // simpleButton1
+            // 
+            this.simpleButton1.Location = new System.Drawing.Point(185, 208);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(112, 28);
+            this.simpleButton1.TabIndex = 3;
+            this.simpleButton1.Text = "Print";
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
             // 
             // frmQrcode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(310, 327);
+            this.ClientSize = new System.Drawing.Size(318, 248);
             this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.simpleButton1);
             this.Name = "frmQrcode";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmQrcode";
             this.Load += new System.EventHandler(this.frmQrcode_Load);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();

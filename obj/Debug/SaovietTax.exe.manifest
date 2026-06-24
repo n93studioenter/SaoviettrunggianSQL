@@ -3066,14 +3066,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SaovietTax.exe" size="8327680">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SaovietTax.exe" size="8330240">
       <assemblyIdentity name="SaovietTax" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>H6qBGbs5aUPwhZQ2IO8DgaHHOPZjC1q0p0pmd/z2wJM=</dsig:DigestValue>
+        <dsig:DigestValue>V/PzVrxmAurrjVpRhTxXJOXF1CkJ8cnFqKGa45UqfEk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -7811,7 +7811,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>wiT3ys3ZG5Q0ru93bVp96vQz3Nj5zeVYg+FVkwwkPKc=</dsig:DigestValue>
+      <dsig:DigestValue>rdXoZM3Uhp8pkwDdILN5/kJZ2L0ILJRHmW2CG0iK6q8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="LdaNative.dll" size="164136">
@@ -7892,7 +7892,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>LQz+l5iYGpNz5wW99z2UhLlpz6iwI6tpzjXyY1ZZp6M=</dsig:DigestValue>
+      <dsig:DigestValue>Qfu93J9zPamd9tZnE2JFyPMClDP/AmASg7Vl4k6f+YM=</dsig:DigestValue>
     </hash>
   </file>
   <file name="selenium-manager\linux\selenium-manager" size="5422816">
