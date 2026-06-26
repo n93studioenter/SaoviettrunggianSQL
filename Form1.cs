@@ -1918,7 +1918,7 @@ namespace SaovietTax
             //}
 
             // 3. Duyệt 1 lần duy nhất qua 300 item
-            using (var conn = new OleDbConnection(connectionString))
+            using (var conn = new SqlConnection(connectionStringSQL))
             {
                 conn.Open();
                 using (var tran = conn.BeginTransaction())
@@ -8624,41 +8624,40 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
             }
            
         }
-        private void UpdateMatdinhOptimized(FileImport item, OleDbConnection conn, OleDbTransaction tran)
+        private void UpdateMatdinhOptimized(FileImport item, SqlConnection conn, SqlTransaction tran)
         {
             // 1. Cập nhật master (tbimport)
-                string queryMaster = @"
-            UPDATE tbimport
-            SET TKNo = ?, TKCo = ?, Noidung = ?, Macdinhstatus = ?
-            WHERE ID = ?";
+            string queryMaster = @"
+    UPDATE tbimport 
+    SET TKNo = @TKNo, TKCo = @TKCo, Noidung = @Noidung, Macdinhstatus = @Macdinhstatus 
+    WHERE ID = @ID";
 
-            using (var cmd = new OleDbCommand(queryMaster, conn, tran))
+            using (var cmd = new SqlCommand(queryMaster, conn, tran))
             {
-                cmd.Parameters.AddWithValue("TKNo", item.TKNo);
-                cmd.Parameters.AddWithValue("TKCo", item.TKCo);
-                cmd.Parameters.AddWithValue("Noidung", Helpers.ConvertUnicodeToVni(item.Noidung));
-                cmd.Parameters.AddWithValue("Macdinhstatus", "1");
-                cmd.Parameters.AddWithValue("ID", item.ID);
+                cmd.Parameters.AddWithValue("@TKNo", item.TKNo);
+                cmd.Parameters.AddWithValue("@TKCo", item.TKCo);
+                cmd.Parameters.AddWithValue("@Noidung", Helpers.ConvertUnicodeToVni(item.Noidung));
+                cmd.Parameters.AddWithValue("@Macdinhstatus", "1");
+                cmd.Parameters.AddWithValue("@ID", item.ID);
                 cmd.ExecuteNonQuery();
             }
 
-            // 2. Cập nhật tất cả chi tiết trong 1 query (batch update)
+            // 2. Cập nhật chi tiết - Cách 1: Update từng dòng (giữ nguyên logic cũ)
             foreach (var it in item.fileImportDetails)
             {
-                // Chỉ update nếu chi tiết đã có TKCo (theo logic cũ)
                 if (string.IsNullOrEmpty(it.TKCo)) continue;
+
                 string queryDetail = @"
-                UPDATE tbimportdetail d
-                SET d.TKNo = ?, d.TKCo = ?
-                WHERE d.ID = ?";
+        UPDATE tbimportdetail 
+        SET TKNo = @TKNo, TKCo = @TKCo 
+        WHERE ID = @ID";
 
-                using (var cmd = new OleDbCommand(queryDetail, conn, tran))
+                using (var cmd = new SqlCommand(queryDetail, conn, tran))
                 {
-                    cmd.Parameters.AddWithValue("TKNo", it.TKNo);  // tất cả chi tiết dùng cùng TKNo
-                    cmd.Parameters.AddWithValue("TKCo", it.TKCo);  // cùng TKCo
-                    cmd.Parameters.AddWithValue("ParentID", it.ID);
-
-                    cmd.ExecuteNonQuery(); // Cập nhật tất cả chi tiết cùng lúc
+                    cmd.Parameters.AddWithValue("@TKNo", it.TKNo);
+                    cmd.Parameters.AddWithValue("@TKCo", it.TKCo);
+                    cmd.Parameters.AddWithValue("@ID", it.ID);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
@@ -8667,7 +8666,7 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
            
             Application.DoEvents();
             dinhDanhChung = dinhDanhChung.AsEnumerable().Where(m => m.Field<string>("Loai") == Loai.ToString()).CopyToDataTable();
-            using (var connection = new OleDbConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 using (var transaction = connection.BeginTransaction())
@@ -9313,21 +9312,22 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
                             {
                                 var cellValue = grv.GetRowCellValue(rowHandle, columnName)?.ToString();
                                 string query = @"
-                        INSERT INTO tbDinhdanhtaikhoan (KeyValue,TKNo,TKCo,TKThue,Type,Loai,IsChecked)
-                        VALUES (?,?,?,?,?,?,?)";
-                                OleDbParameter[] parameters = new OleDbParameter[]
-                    {
-                        new OleDbParameter("?",selectedText.ToString().Trim()),
-                           new OleDbParameter("?",grv.GetRowCellValue(rowHandle, "TKNo")?.ToString()),
-                                 new OleDbParameter("?",grv.GetRowCellValue(rowHandle, "TKCo")?.ToString()),
-                             new OleDbParameter("?",chkDauvao.Checked?"1331":"33311"),
-                              new OleDbParameter("?",grv.GetRowCellValue(rowHandle, "Noidung")?.ToString()),
-                                new OleDbParameter("?",chkDauvao.Checked?"1":"2"),
-                                 new OleDbParameter("?",dt.Checked?"1":"-1")
-                    };
+    INSERT INTO tbDinhdanhtaikhoan (KeyValue, TKNo, TKCo, TKThue, Type, Loai, IsChecked)
+    VALUES (@KeyValue, @TKNo, @TKCo, @TKThue, @Type, @Loai, @IsChecked)";
+
+                                var parameterss2 = new SqlParameter[]
+                                {
+    new SqlParameter("@KeyValue", selectedText.ToString().Trim()),
+    new SqlParameter("@TKNo", grv.GetRowCellValue(rowHandle, "TKNo")?.ToString() ?? (object)DBNull.Value),
+    new SqlParameter("@TKCo", grv.GetRowCellValue(rowHandle, "TKCo")?.ToString() ?? (object)DBNull.Value),
+    new SqlParameter("@TKThue", chkDauvao.Checked ? "1331" : "33311"),
+    new SqlParameter("@Type", grv.GetRowCellValue(rowHandle, "Noidung")?.ToString() ?? (object)DBNull.Value),
+    new SqlParameter("@Loai", chkDauvao.Checked ? "1" : "2"),
+    new SqlParameter("@IsChecked", dt.Checked ? "1" : "-1")
+                                };
 
                                 // Thực thi truy vấn và lấy kết quả
-                                int a = ExecuteQueryResult(query, parameters);
+                                int a = ExecuteQueryResultSQL(query, parameterss2);
                             }
 
                             return true;

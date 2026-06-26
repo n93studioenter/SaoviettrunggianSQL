@@ -1,6 +1,7 @@
 ﻿using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using DevExpress.XtraEditors;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using Table = CrystalDecisions.CrystalReports.Engine.Table;
 
 namespace SaovietTax
 {
@@ -30,11 +32,11 @@ namespace SaovietTax
         {
             if (thangDau == thangCuoi)
             {
-                return "Tháng " + thangDau + "/" + nam;
+                return "Th¸ng " + thangDau + "/" + nam;
             }
             else
             {
-                return "Từ Tháng " + thangDau + " đến Tháng " + thangCuoi + " năm " + nam;
+                return "Tõ Th¸ng " + thangDau + " ®Õn Th¸ng " + thangCuoi + " n¨m " + nam;
             }
         }
 
@@ -75,6 +77,7 @@ namespace SaovietTax
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
+            crystalReportViewer1.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None;
         }
 
         private void LoadReport(string rptPath, string server, string db, string user, string pass)
@@ -182,7 +185,14 @@ namespace SaovietTax
 
                 SetFormulaIfExists(rpt, "thoigian", thoiGianValue);
                 SetFormulaIfExists(rpt, "ThoiGian", thoiGianValue);
-                SetFormulaIfExists(rpt, "Ngay", DateTime.Now.ToShortDateString());
+
+
+                DateTime ngayCuoiThang = new DateTime(DateTime.Now.Year, todate, 1)
+                            .AddMonths(1)
+                            .AddDays(-1);
+
+                string ketQua = $"Ngµy {ngayCuoiThang.Day} th¸ng {ngayCuoiThang.Month} n¨m {ngayCuoiThang.Year}";
+                SetFormulaIfExists(rpt, "Ngay", ketQua);
 
                 // License
                 DataTable tbLicense = ExecuteQuery("SELECT * FROM License", null);

@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -41,28 +42,35 @@ namespace SaovietTax
         string dbPath = "";
         public DataTable result { get; set; }
         public frmMain frmMain { get; set; }
-        private DataTable ExecuteQuery(string query, params OleDbParameter[] parameters)
+        private DataTable ExecuteQuery(string query, params SqlParameter[] parameters)
         {
-            DataTable dataTable = new DataTable();
-
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công!");
-
-                using (OleDbCommand command = new OleDbCommand(query, connection))
+                try
                 {
-                    // Thêm các tham số vào command
-                    if (parameters != null)
-                    {
-                        command.Parameters.AddRange(parameters);
-                    }
+                    connection.Open();
+                    Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công!");
 
-                    using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(command))
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        dataAdapter.Fill(dataTable);
+                        // Thêm các tham số vào command
+                        if (parameters != null)
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
+
+                        using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
+                        {
+                            dataAdapter.Fill(dataTable);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
             }
 
             return dataTable; // Trả về DataTable chứa dữ liệu
@@ -73,13 +81,17 @@ namespace SaovietTax
         private bool Kiemtrataikhoancon(string tk)
         {
             string query = @"
-                        select * from  HeThongTK where SoHieu =?";
-            var resultkm = ExecuteQuery(query, new OleDbParameter("?", tk));
+    SELECT * FROM HeThongTK WHERE SoHieu = @SoHieu";
+
+            var resultkm = ExecuteQuery(query, new SqlParameter("@SoHieu", tk));
+
             if (resultkm.Rows.Count > 0)
             {
                 string getTK_ID2 = resultkm.Rows[0]["MaSo"].ToString();
-                query = @"select * from  HeThongTK where TKCha0 =?";
-                resultkm = ExecuteQuery(query, new OleDbParameter("?", getTK_ID2.ToString()));
+
+                query = @"SELECT * FROM HeThongTK WHERE TKCha0 = @TKCha0";
+                resultkm = ExecuteQuery(query, new SqlParameter("@TKCha0", getTK_ID2));
+
                 if (resultkm.Rows.Count > 0)
                     return true;
             }
@@ -103,7 +115,7 @@ namespace SaovietTax
             LoadMacdinhVattu();
             string querykh = @" SELECT *  FROM PhanLoaiVattu"; // Sử dụng ? thay cho @mst trong OleDb
 
-            PLHH = ExecuteQuery(querykh, new OleDbParameter("?", ""));  
+            PLHH = ExecuteQuery(querykh,null);  
             foreach(DataRow item in PLHH.Rows)
             {
                 PhanLoaiVattu PhanLoaiVattu=new PhanLoaiVattu();
@@ -242,7 +254,7 @@ namespace SaovietTax
         {
             string querykh = @" SELECT *  FROM tbRegister"; // Sử dụng ? thay cho @mst trong OleDb
 
-            result = ExecuteQuery(querykh, new OleDbParameter("?", ""));
+            result = ExecuteQuery(querykh, null);
             string col1 = result.Rows[0]["Col1"].ToString();
             string col2 = result.Rows[0]["Col2"].ToString();
             if(col1=="1")
@@ -261,7 +273,7 @@ namespace SaovietTax
                 return;
             string querykh = @" SELECT *  FROM tbDinhdanhtaikhoan"; // Sử dụng ? thay cho @mst trong OleDb
 
-            result = ExecuteQuery(querykh, new OleDbParameter("?", ""));
+            result = ExecuteQuery(querykh, null);
 
 
             //Cập nhật loại
@@ -269,11 +281,11 @@ namespace SaovietTax
             {
                 if(row.Field<string>("KeyValue").Contains("Ưu tiên vào"))
                 {
-                    string sql = "UPDATE tbDinhdanhtaikhoan SET Loai = ?  WHERE ID = ?";
-                    OleDbParameter[] parameters = new OleDbParameter[]
+                    string sql = "UPDATE tbDinhdanhtaikhoan SET Loai = @Loai  WHERE ID = @ID";
+                    SqlParameter[] parameters = new SqlParameter[]
                     { 
-                       new OleDbParameter("?","1"),
-                             new OleDbParameter("?",row.Field<int>("ID").ToString()), 
+                       new SqlParameter("Loai","1"),
+                             new SqlParameter("ID",row.Field<int>("ID").ToString()), 
                     };
                     int resl = ExecuteQueryResult(sql, parameters);
                 }
@@ -281,11 +293,11 @@ namespace SaovietTax
                 {
                     if (row.Field<string>("KeyValue").Contains("Ưu tiên ra"))
                     {
-                        string sql = "UPDATE tbDinhdanhtaikhoan SET Loai = ?  WHERE ID = ?";
-                        OleDbParameter[] parameters = new OleDbParameter[]
+                        string sql = "UPDATE tbDinhdanhtaikhoan SET Loai = @Loai  WHERE ID = @ID";
+                        SqlParameter[] parameters = new SqlParameter[]
                         {
-                       new OleDbParameter("?","2"),
-                             new OleDbParameter("?",row.Field<int>("ID").ToString()),
+                       new SqlParameter("@Loai","2"),
+                             new SqlParameter("@ID",row.Field<int>("ID").ToString()),
                         };
                         int resl = ExecuteQueryResult(sql, parameters);
                     }
@@ -295,21 +307,21 @@ namespace SaovietTax
                         {
                             if(row.Field<string>("TKNo").Contains("642") || row.Field<string>("TKNo").Contains("15"))
                             {
-                                string sql = "UPDATE tbDinhdanhtaikhoan SET Loai = ?  WHERE ID = ?";
-                                OleDbParameter[] parameters = new OleDbParameter[]
+                                string sql = "UPDATE tbDinhdanhtaikhoan SET Loai = @Loai  WHERE ID = @ID";
+                                SqlParameter[] parameters = new SqlParameter[]
                                 {
-                       new OleDbParameter("?","1"),
-                             new OleDbParameter("?",row.Field<int>("ID").ToString()),
+                       new SqlParameter("@Loai","1"),
+                             new SqlParameter("@ID",row.Field<int>("ID").ToString()),
                                 };
                                 int resl = ExecuteQueryResult(sql, parameters);
                             }
                             else
                             {
-                                string sql = "UPDATE tbDinhdanhtaikhoan SET Loai = ?  WHERE ID = ?";
-                                OleDbParameter[] parameters = new OleDbParameter[]
+                                string sql = "UPDATE tbDinhdanhtaikhoan SET Loai = @Loai  WHERE ID = @ID";
+                                SqlParameter[] parameters = new SqlParameter[]
                                 {
-                       new OleDbParameter("?","2"),
-                             new OleDbParameter("?",row.Field<int>("ID").ToString()),
+                       new SqlParameter("@Loai","2"),
+                             new SqlParameter("@ID",row.Field<int>("ID").ToString()),
                                 };
                                 int resl = ExecuteQueryResult(sql, parameters);
                             }
@@ -323,7 +335,7 @@ namespace SaovietTax
 
             //Lọc lại
              querykh = @" SELECT *  FROM tbDinhdanhtaikhoan"; // Sử dụng ? thay cho @mst trong OleDb
-             result = ExecuteQuery(querykh, new OleDbParameter("?", ""));
+             result = ExecuteQuery(querykh,null);
 
             DataTable data = null;
 
@@ -406,16 +418,17 @@ namespace SaovietTax
             string TKNo = gridView.GetRowCellValue(rowHandle, gridView.Columns["TKNo"]).ToString();
             string TKCo = gridView.GetRowCellValue(rowHandle, gridView.Columns["TKCo"]).ToString();
             string TKThue = gridView.GetRowCellValue(rowHandle, gridView.Columns["TKThue"]).ToString();
-            string sql = "UPDATE tbDinhdanhtaikhoan SET Type = ?, KeyValue = ?, TKNo = ?, TKCo = ?, TKThue = ? WHERE ID = ?";
-            OleDbParameter[] parameters = new OleDbParameter[]
-{
-        new OleDbParameter("?",Type),
-           new OleDbParameter("?",KeyValue),
-                 new OleDbParameter("?",TKNo),
-             new OleDbParameter("?",TKCo),
-              new OleDbParameter("?",TKThue),
-                new OleDbParameter("?",ID)
-};
+            string sql = "UPDATE tbDinhdanhtaikhoan SET Type = @Type, KeyValue = @KeyValue, TKNo = @TKNo, TKCo = @TKCo, TKThue = @TKThue WHERE ID = @ID";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+    new SqlParameter("@Type", Type),
+    new SqlParameter("@KeyValue", KeyValue),
+    new SqlParameter("@TKNo", TKNo),
+    new SqlParameter("@TKCo", TKCo),
+    new SqlParameter("@TKThue", TKThue),
+    new SqlParameter("@ID", ID)
+            };
             int resl = ExecuteQueryResult(sql, parameters);
         }
         private void GridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
@@ -453,9 +466,9 @@ namespace SaovietTax
                 if (XtraMessageBox.Show("Bạn có chắc chắn muốn xóa hàng này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     string sql = "DELETE FROM tbDinhdanhtaikhoan WHERE ID = @AccountID";
-                    OleDbParameter[] parameters = new OleDbParameter[]
+                    SqlParameter[] parameters = new SqlParameter[]
                 {
-        new OleDbParameter("?", nameValue),
+        new SqlParameter("@AccountID", nameValue),
                 };
                     int resl = ExecuteQueryResult(sql, parameters);
                     LoadDataDinhDanh();
@@ -479,9 +492,9 @@ namespace SaovietTax
                 if (XtraMessageBox.Show("Bạn có chắc chắn muốn xóa hàng này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     string sql = "DELETE FROM tbDinhdanhtaikhoan WHERE ID = @AccountID";
-                    OleDbParameter[] parameters = new OleDbParameter[]
+                    SqlParameter[] parameters = new SqlParameter[]
                 {
-        new OleDbParameter("?", nameValue),
+        new SqlParameter("@AccountID", nameValue),
                 };
                     int resl = ExecuteQueryResult(sql, parameters);
                     LoadDataDinhDanh();
@@ -515,13 +528,13 @@ namespace SaovietTax
             } 
             // Đọc toàn bộ nội dung tệp
             string password = "1@35^7*9)1";
-            connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
+            connectionString = ConfigurationManager.ConnectionStrings["SqlConn"].ConnectionString;
             //connectionString = $@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
             // connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath};Jet OLEDB:Database";
             //connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\S.T.E 25\S.T.E 25\DATA\importData.accdb;Persist Security Info=False";
             try
             {
-                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
                 }
@@ -538,8 +551,8 @@ namespace SaovietTax
             //Kiểm tra tài khoản con
             if (txtTukhoa.Text.Contains("Ưu tiên vào"))
             {
-                string querydinhdanh = @"SELECT * FROM HeThongTK WHERE SoHieu LIKE ?";
-                var resultkm = ExecuteQuery(querydinhdanh, new OleDbParameter("?", txtTKNo.Text + "%"));
+                string querydinhdanh = @"SELECT * FROM HeThongTK WHERE SoHieu LIKE @SoHieu";
+                var resultkm = ExecuteQuery(querydinhdanh, new SqlParameter("@SoHieu", txtTKNo.Text + "%"));
                 if (resultkm.Rows.Count > 1)
                 {
                     XtraMessageBox.Show("Tài khoản " + txtTKNo.Text + " có tài khoản con, vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -553,8 +566,8 @@ namespace SaovietTax
             }
             if (txtTukhoa.Text.Contains("Ưu tiên ra"))
             {
-                string querydinhdanh = @"SELECT * FROM HeThongTK WHERE SoHieu LIKE ?";
-                var resultkm = ExecuteQuery(querydinhdanh, new OleDbParameter("?", txtTKCo.Text + "%"));
+                string querydinhdanh = @"SELECT * FROM HeThongTK WHERE SoHieu LIKE @SoHieu";
+                var resultkm = ExecuteQuery(querydinhdanh, new SqlParameter("@SoHieu", txtTKCo.Text + "%"));
                 if (resultkm.Rows.Count > 1)
                 {
                     XtraMessageBox.Show("Tài khoản " + txtTKCo.Text + " có tài khoản con, vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -566,18 +579,19 @@ namespace SaovietTax
                     return;
                 }
             }
-          
+
             string query = @"
-        INSERT INTO tbDinhdanhtaikhoan (KeyValue,TKNo,TKCo,TKThue,Type)
-        VALUES (?,?,?,?,?)";
-            OleDbParameter[] parameters = new OleDbParameter[]
-{
-        new OleDbParameter("?",txtTukhoa.Text),
-           new OleDbParameter("?",txtTKNo.Text),
-                 new OleDbParameter("?",txtTKCo.Text),
-             new OleDbParameter("?",txtTKThue.Text),
-              new OleDbParameter("?",txtDiengiai.Text)
-};
+    INSERT INTO tbDinhdanhtaikhoan (KeyValue, TKNo, TKCo, TKThue, Type)
+    VALUES (@KeyValue, @TKNo, @TKCo, @TKThue, @Type)";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+    new SqlParameter("@KeyValue", txtTukhoa.Text),
+    new SqlParameter("@TKNo", txtTKNo.Text),
+    new SqlParameter("@TKCo", txtTKCo.Text),
+    new SqlParameter("@TKThue", txtTKThue.Text),
+    new SqlParameter("@Type", txtDiengiai.Text)
+            };
 
             // Thực thi truy vấn và lấy kết quả
             int a = ExecuteQueryResult(query, parameters);
@@ -591,20 +605,20 @@ namespace SaovietTax
 
         private void checkEdit1_CheckedChanged(object sender, EventArgs e)
         {
-            string sql = "UPDATE tbRegister set col1= ?";
-            OleDbParameter[] parameters = new OleDbParameter[]
+            string sql = "UPDATE tbRegister set col1= @col1";
+            SqlParameter[] parameters = new SqlParameter[]
         {
-        new OleDbParameter("?", checkEdit1.Checked==true?"1":""),
+        new SqlParameter("@col1", checkEdit1.Checked==true?"1":""),
         };
             int resl = ExecuteQueryResult(sql, parameters);
         }
 
         private void checkEdit2_CheckedChanged(object sender, EventArgs e)
         {
-            string sql = "UPDATE tbRegister set col2= ?";
-            OleDbParameter[] parameters = new OleDbParameter[]
+            string sql = "UPDATE tbRegister set col2= @col2";
+            SqlParameter[] parameters = new SqlParameter[]
         {
-        new OleDbParameter("?", checkEdit2.Checked==true?"1":""),
+        new SqlParameter("@col2", checkEdit2.Checked==true?"1":""),
         };
             int resl = ExecuteQueryResult(sql, parameters);
         }
@@ -614,13 +628,14 @@ namespace SaovietTax
             int rowHandle = e.RowHandle;
             var gridView = sender as GridView;
             PhanLoaiVattu rowData = gridView.GetRow(rowHandle) as PhanLoaiVattu;
-            string sql = "UPDATE PhanLoaiVattu SET GhiChu = ?, TKCo = ?, TKNo=? WHERE MaSo = ?";
-            OleDbParameter[] parameters = new OleDbParameter[]
-            {           
-                 new OleDbParameter("?",rowData.GhiChu!=null?rowData.GhiChu:""),
-                 new OleDbParameter("?",rowData.TKCo!=null?rowData.TKCo:""),
-                 new OleDbParameter("?",rowData.TKNo!=null?rowData.TKNo:""),
-                 new OleDbParameter("?",rowData.MaSo.ToString())
+            string sql = "UPDATE PhanLoaiVattu SET GhiChu = @GhiChu, TKCo = @TKCo, TKNo = @TKNo WHERE MaSo = @MaSo";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+    new SqlParameter("@GhiChu", rowData.GhiChu ?? (object)DBNull.Value),
+    new SqlParameter("@TKCo", rowData.TKCo ?? (object)DBNull.Value),
+    new SqlParameter("@TKNo", rowData.TKNo ?? (object)DBNull.Value),
+    new SqlParameter("@MaSo", rowData.MaSo.ToString())
             };
             int resl = ExecuteQueryResult(sql, parameters);
 
@@ -639,17 +654,18 @@ namespace SaovietTax
         public void addNewrow(int Type)
         {
             string query = @"
-        INSERT INTO tbDinhdanhtaikhoan (KeyValue,TKNo,TKCo,TKThue,Type,Loai)
-        VALUES (?,?,?,?,?,?)";
-            OleDbParameter[] parameters = new OleDbParameter[]
-{
-        new OleDbParameter("?",""),
-           new OleDbParameter("?",""),
-                 new OleDbParameter("?",""),
-             new OleDbParameter("?",""),
-              new OleDbParameter("?",""),
-                new OleDbParameter("?",Type.ToString())
-};
+    INSERT INTO tbDinhdanhtaikhoan (KeyValue, TKNo, TKCo, TKThue, Type, Loai)
+    VALUES (@KeyValue, @TKNo, @TKCo, @TKThue, @Type, @Loai)";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+    new SqlParameter("@KeyValue", txtTukhoa.Text ?? (object)DBNull.Value),
+    new SqlParameter("@TKNo", txtTKNo.Text ?? (object)DBNull.Value),
+    new SqlParameter("@TKCo", txtTKCo.Text ?? (object)DBNull.Value),
+    new SqlParameter("@TKThue", txtTKThue.Text ?? (object)DBNull.Value),
+    new SqlParameter("@Type", txtDiengiai.Text ?? (object)DBNull.Value),
+    new SqlParameter("@Loai", Type.ToString())
+            };
 
             // Thực thi truy vấn và lấy kết quả
             int a = ExecuteQueryResult(query, parameters);
@@ -741,29 +757,37 @@ namespace SaovietTax
 
         }
 
-        private int ExecuteQueryResult(string query, params OleDbParameter[] parameters)
+        private int ExecuteQueryResult(string query, params SqlParameter[] parameters)
         {
-            DataTable dataTable = new DataTable();
-
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công!");
+                Console.WriteLine("Kết nối đến cơ sở dữ liệu thành công! " + query);
 
-                using (OleDbCommand command = new OleDbCommand(query, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Thêm các tham số vào command
                     if (parameters != null)
-                    {
                         command.Parameters.AddRange(parameters);
-                    }
 
-                    int rowsAffected = command.ExecuteNonQuery(); // Thực thi câu lệnh
-                    return rowsAffected;
+                    // Kiểm tra nếu là INSERT thì lấy ID, nếu không thì chỉ Execute
+                    if (query.Trim().StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Gộp SELECT SCOPE_IDENTITY() vào câu lệnh INSERT
+                        string insertWithIdentity = query.TrimEnd() + "; SELECT SCOPE_IDENTITY();";
+                        command.CommandText = insertWithIdentity;
+
+                        object result = command.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                            return Convert.ToInt32(result);
+                        return 0;
+                    }
+                    else
+                    {
+                        // Với UPDATE/DELETE, chỉ Execute và trả về số dòng ảnh hưởng
+                        return command.ExecuteNonQuery();
+                    }
                 }
             }
-
-            return -1;
         }
     }
 }
