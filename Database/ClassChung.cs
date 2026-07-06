@@ -26,7 +26,7 @@ namespace SaovietTax.Database
         public string Vat2 { get; set; }
         public string Vat3 { get; set; }
         public string SohieuTP { get; set; }
-        public string TPhi { get; set; }
+        public double TPhi { get; set; }
         public double TgTCThue { get; set; }
         public double TgTCThue1 { get; set; }   
         public double TgTCThue2 { get; set; }
@@ -137,7 +137,7 @@ namespace SaovietTax.Database
         public string Tokken { get; set; }
         public DateTime TimeTokken { get; set; }
     }
-    public class PhanLoaiKhachHang
+    public class PhanLoaiKhachHangs
     {
         public int MaSo { get; set; }
         public string SoHieu { get; set; }
@@ -311,7 +311,7 @@ namespace SaovietTax.Database
         public double PSNLK2023 { get; set; }
         public double PSCLK2023 { get; set; }
     }
-    public class PhanLoai154
+    public class PhanLoai154s
     {
         public int MaSo { get; set; }
         public string SoHieu { get; set; }

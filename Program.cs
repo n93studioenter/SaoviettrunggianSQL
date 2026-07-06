@@ -133,6 +133,9 @@ namespace SaovietTax {
                         case "8": Application.Run(new TendoInvoice()); break;
                         case "9": Application.Run(new frmQrcode()); break;
                         case "10": Application.Run(new FrmReports()); break;
+                        case "11": Application.Run(new AutoSumTonkho()); break;
+                        case "12": Application.Run(new AutoSumHTTK()); break;
+                        case "13": Application.Run(new AutoSumGiavon()); break;
                     }
                 }
             }

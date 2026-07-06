@@ -85,6 +85,7 @@ using PdfSharp.Pdf.IO;
 using SaovietTax.BankReader;
 using SaovietTax.Database;
 using SaovietTax.DTO;
+using SaovietTax.Models;
 using Serilog.Parsing;
 using Svg;
 using System;
@@ -351,6 +352,9 @@ namespace SaovietTax
             public double TongTien { get; set; }
             public double TPhi { get; set; }
             public double TgTCThue { get; set; }
+            public double TgTCThue1 { get; set; }
+            public double TgTCThue2 { get; set; }
+            public double TgTCThue3 { get; set; }
             public double TgTThue { get; set; }
             public int Vat { get; set; }
             public int Vat2 { get; set; }
@@ -366,7 +370,7 @@ namespace SaovietTax
             public string SoHieuTP { get; set; }
             public string Macdinhstatus { get; set; }
             public List<FileImportDetail> fileImportDetails;
-            public FileImport(bool chk,string path, string shdon, string khhdon, DateTime nlap, DateTime ntao, string ten, string noidung, string tkno, string tkco, int tkthue, string mst, double tongTien, int vat, int type, string tenTP, bool isacess, double tPhi, double tgTCThue, double tgTThue, bool _isHaschild, int _InvoiceType, double tvat, int vat2, double tvat2, int vat3, double tvat3, string macdinhstatus,bool khautruthue)
+            public FileImport(bool chk,string path, string shdon, string khhdon, DateTime nlap, DateTime ntao, string ten, string noidung, string tkno, string tkco, int tkthue, string mst, double tongTien, int vat, int type, string tenTP, bool isacess, double tPhi, double tgTCThue, double tgTCThue1, double tgTCThue2, double tgTCThue3, double tgTThue, bool _isHaschild, int _InvoiceType, double tvat, int vat2, double tvat2, int vat3, double tvat3, string macdinhstatus,bool khautruthue)
             {
                 ID = Id;
                 SHDon = shdon;
@@ -390,6 +394,9 @@ namespace SaovietTax
                 isAcess = isacess;
                 TPhi = tPhi;
                 TgTCThue = tgTCThue;
+                TgTCThue1 = tgTCThue1;
+                TgTCThue2 = tgTCThue2;
+                TgTCThue3 = tgTCThue3;
                 TgTThue = tgTThue;
                 isHaschild = _isHaschild;
                 InvoiceType = _InvoiceType;
@@ -828,6 +835,10 @@ namespace SaovietTax
                                 bool hasChild = true; // Giá trị mặc định
                                 double tpHi = double.Parse(item["TPHi"].ToString());
                                 double tgTCThue = double.Parse(item["TgTCThue"].ToString());
+                                double tgTCThue1 = item["TgTCThue1"] != null && item["TgTCThue1"] != DBNull.Value && double.TryParse(item["TgTCThue1"].ToString(), out double result) ? result : 0;
+                                double tgTCThue2 = item["TgTCThue2"] != null && item["TgTCThue2"] != DBNull.Value && double.TryParse(item["TgTCThue2"].ToString(), out double result2) ? result2 : 0;
+                                double tgTCThue3 = item["TgTCThue3"] != null && item["TgTCThue3"] != DBNull.Value && double.TryParse(item["TgTCThue3"].ToString(), out double result3) ? result3 : 0;
+
                                 double tgTThue = double.Parse(item["TgTThue"].ToString());
                                 int invoiceType = int.Parse(item["InvoiceType"].ToString());
                                 string Macdinhstatus = item["Macdinhstatus"].ToString();
@@ -839,7 +850,7 @@ namespace SaovietTax
 
                                 //}
                                 // Khởi tạo đối tượng FileImport
-                                fileImport = new FileImport(chk, path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus, khautruthue);
+                                fileImport = new FileImport(chk, path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTCThue1, tgTCThue2, tgTCThue3, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus, khautruthue);
                                 //Xử lý nếu có công trình
                                 if (!string.IsNullOrEmpty(fileImport.SoHieuTP))
                                 {
@@ -1435,6 +1446,10 @@ namespace SaovietTax
                                 bool hasChild = true; // Giá trị mặc định
                                 double tpHi = double.Parse(item["TPHi"].ToString());
                                 double tgTCThue = double.Parse(item["TgTCThue"].ToString());
+                                double tgTCThue1 = item["TgTCThue1"] != null && item["TgTCThue1"] != DBNull.Value && double.TryParse(item["TgTCThue1"].ToString(), out double result1) ? result1 : 0;
+                                double tgTCThue2 = item["TgTCThue2"] != null && item["TgTCThue2"] != DBNull.Value && double.TryParse(item["TgTCThue2"].ToString(), out double result2) ? result2 : 0;
+                                double tgTCThue3 = item["TgTCThue3"] != null && item["TgTCThue3"] != DBNull.Value && double.TryParse(item["TgTCThue3"].ToString(), out double result3) ? result3 : 0;
+
                                 double tgTThue = double.Parse(item["TgTThue"].ToString());
                                 int invoiceType = int.Parse(item["InvoiceType"].ToString());
                                 string Macdinhstatus = item["Macdinhstatus"].ToString();
@@ -1447,7 +1462,7 @@ namespace SaovietTax
 
                                 //}
                                 // Khởi tạo đối tượng FileImport
-                                fileImport = new FileImport(chk, path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus,khautruthue);
+                                fileImport = new FileImport(chk, path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTCThue1, tgTCThue2, tgTCThue3, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus,khautruthue);
                                 XulytaifileHTML(item, fileImport);
                             }
                             catch (Exception ex)
@@ -1670,6 +1685,10 @@ namespace SaovietTax
                         bool hasChild = true; // Giá trị mặc định
                         double tpHi = double.Parse(item["TPHi"].ToString());
                         double tgTCThue = double.Parse(item["TgTCThue"].ToString());
+                        double tgTCThue1 = item["TgTCThue1"] != null && item["TgTCThue1"] != DBNull.Value && double.TryParse(item["TgTCThue1"].ToString(), out double result1) ? result1 : 0;
+                        double tgTCThue2 = item["TgTCThue2"] != null && item["TgTCThue2"] != DBNull.Value && double.TryParse(item["TgTCThue2"].ToString(), out double result2) ? result2 : 0;
+                        double tgTCThue3 = item["TgTCThue3"] != null && item["TgTCThue3"] != DBNull.Value && double.TryParse(item["TgTCThue3"].ToString(), out double result3) ? result3 : 0;
+
                         double tgTThue = double.Parse(item["TgTThue"].ToString());
                         int invoiceType = int.Parse(item["InvoiceType"].ToString());
                         string Macdinhstatus = item["Macdinhstatus"].ToString();
@@ -1685,7 +1704,7 @@ namespace SaovietTax
                             haschild = false;
 
                         }
-                        fileImport = new FileImport(chk, path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus, khautruthue);
+                        fileImport = new FileImport(chk, path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTCThue1, tgTCThue2, tgTCThue3, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus, khautruthue);
                         fileImport.ID = int.Parse(item["ID"].ToString());
 
                         progressPanel2.Caption = "Đang xử lý hóa đơn thứ " + i + "/ " + kq.Rows.Count.ToString();
@@ -2290,6 +2309,10 @@ namespace SaovietTax
                             bool hasChild = true; // Giá trị mặc định
                             double tpHi = double.Parse(item["TPHi"].ToString());
                             double tgTCThue = double.Parse(item["TgTCThue"].ToString());
+                            double tgTCThue1 = item["TgTCThue1"] != null && item["TgTCThue1"] != DBNull.Value && double.TryParse(item["TgTCThue1"].ToString(), out double result1) ? result1 : 0;
+                            double tgTCThue2 = item["TgTCThue2"] != null && item["TgTCThue2"] != DBNull.Value && double.TryParse(item["TgTCThue2"].ToString(), out double result2) ? result2 : 0;
+                            double tgTCThue3 = item["TgTCThue3"] != null && item["TgTCThue3"] != DBNull.Value && double.TryParse(item["TgTCThue3"].ToString(), out double result3) ? result3 : 0;
+
                             double tgTThue = double.Parse(item["TgTThue"].ToString());
                             int invoiceType = int.Parse(item["InvoiceType"].ToString());
                             string Macdinhstatus = item["Macdinhstatus"].ToString();
@@ -2301,7 +2324,7 @@ namespace SaovietTax
 
                             //}
                             // Khởi tạo đối tượng FileImport
-                            fileImport = new FileImport(chk,path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus, khautruthue);
+                            fileImport = new FileImport(chk,path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTCThue1, tgTCThue2, tgTCThue3, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus, khautruthue);
                             //Xử lý nếu có công trình
                             if (!string.IsNullOrEmpty(fileImport.SoHieuTP))
                             {
@@ -2684,13 +2707,17 @@ namespace SaovietTax
                             bool hasChild = true; // Giá trị mặc định
                             double tpHi = double.Parse(item["TPHi"].ToString());
                             double tgTCThue = double.Parse(item["TgTCThue"].ToString());
+                            double tgTCThue1 = item["TgTCThue1"] != null && item["TgTCThue1"] != DBNull.Value && double.TryParse(item["TgTCThue1"].ToString(), out double result1) ? result1 : 0;
+                            double tgTCThue2 = item["TgTCThue2"] != null && item["TgTCThue2"] != DBNull.Value && double.TryParse(item["TgTCThue2"].ToString(), out double result2) ? result2 : 0;
+                            double tgTCThue3 = item["TgTCThue3"] != null && item["TgTCThue3"] != DBNull.Value && double.TryParse(item["TgTCThue3"].ToString(), out double result3) ? result3 : 0;
+
                             double tgTThue = double.Parse(item["TgTThue"].ToString());
                             int invoiceType = int.Parse(item["InvoiceType"].ToString());
                             string Macdinhstatus = item["Macdinhstatus"].ToString();
                             bool khautruthue = item["Khautruthue"].ToString() == "1" ? true : false;
                             bool chk = item["Status"].ToString() == "0" ? true : false;
                             // Khởi tạo đối tượng FileImport
-                            fileImport = new FileImport(chk,path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus, khautruthue);
+                            fileImport = new FileImport(chk,path, shDon, khhDon, nLap, nTao, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, type, soHieuTP, hasChild, tpHi, tgTCThue, tgTCThue1, tgTCThue2, tgTCThue3, tgTThue, haschild, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus, khautruthue);
                             XulytaifileHTML(item, fileImport);
                         }
                         catch (Exception ex)
@@ -5603,7 +5630,7 @@ namespace SaovietTax
             DataTable tb;
             try
             {
-                tb = ExecuteQuery(query, null);
+                tb = ExecuteQuerySQL(query, null);
             }
             catch (Exception ex)
             {
@@ -5626,9 +5653,7 @@ namespace SaovietTax
                 ? ""
                 : row["Username"].ToString();
 
-            txtpass.Text = row["Password"] == DBNull.Value
-                ? ""
-                : row["Password"].ToString();
+            txtpass.Text = row["Password"] == DBNull.Value ? "": row["Password"].ToString();
         }
         private void InitDatanewSQL()
         {
@@ -5825,7 +5850,7 @@ namespace SaovietTax
 
                     ShowProgress("Nạp dữ liệu hệ thống...");
                     tbKhachhang = ExecuteQuerySQL("SELECT * FROM KhachHang", null);
-                    lstKhachhangs = tbKhachhang.ToList<KhachHang>();
+                    lstKhachhangs = tbKhachhang.ToList<Database.KhachHang>();
                      LoadMasterDataAsync();   // ⬅️ CHUẨN
                     string queryct = "SELECT * FROM ChungTu inner join HoaDon on ChungTu.MaSo = HoaDon.MaSo"; // Giả sử bạn muốn lấy tất cả dữ liệu từ bảng KhachHang
                     existingTbChungtu = ExecuteQuerySQL(queryct, null);
@@ -6558,7 +6583,174 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             XoaNLTP(3);
             XoaNLTP(4);
             XoaNLTP(5);
-             
+           
+        }
+       
+       
+
+        private object GetPropertyValue(object obj, string propName)
+        {
+            var prop = obj.GetType().GetProperty(propName);
+            return prop?.GetValue(obj);
+        }
+        private void TinhTonKho()
+        {
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    // 👉 KHÔNG CẦN RESET! Vì sẽ cập nhật lại tất cả
+
+                    // 1. Lấy danh sách vật tư CÓ PHÁT SINH
+                    var danhSachVatTu = db.Vattus
+                        .Where(v => db.ChungTus.Any(c => c.MaVattu == v.MaSo))
+                        .ToList();
+
+                    // 2. Lấy danh sách TonKho hiện có
+                    var tonKhoDict = db.TonKhoes.ToDictionary(t => t.MaVatTu, t => t);
+
+                    int total = danhSachVatTu.Count;
+                    int count = 0;
+
+                    foreach (var vattu in danhSachVatTu)
+                    {
+                        if (tonKhoDict.ContainsKey(vattu.MaSo))
+                        {
+                            // ✅ ĐÃ CÓ: Lấy tồn đầu kỳ từ bản ghi cũ
+                            var tonKhoCu = tonKhoDict[vattu.MaSo];
+                            double tonDauKy = tonKhoCu.Luong_0 ?? 0;
+                            double tienDauKy = tonKhoCu.Tien_0 ?? 0;
+
+                            // Tính toán mới
+                            var tonKhoMoi = TinhTonKhoChoVatTu(vattu, tonDauKy, tienDauKy);
+
+                            // Cập nhật (GHI ĐÈ) các cột tháng 1-12
+                            CapNhatTonKho(tonKhoCu, tonKhoMoi);
+                        }
+                        else
+                        {
+                            // ✅ CHƯA CÓ: Tạo mới
+                            var tonKho = TinhTonKhoChoVatTu(vattu, 0, 0);
+                            db.TonKhoes.Add(tonKho);
+                        }
+
+                        count++;
+                        if (count % 100 == 0)
+                            Console.WriteLine($"Đã xử lý {count}/{total} vật tư");
+                    }
+
+                    // 3. Lưu 1 lần duy nhất
+                    db.SaveChanges();
+                    transaction.Commit();
+
+                    XtraMessageBox.Show($"✅ Cập nhật tồn kho thành công! ({total} vật tư)");
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"❌ Lỗi: {ex.Message}");
+                    throw;
+                }
+            }
+        }
+        private void CapNhatTonKho(TonKho tonKhoCu, TonKho tonKhoMoi)
+        {
+            // Chỉ cập nhật các cột tháng 1-12 (KHÔNG cập nhật Luong_0, Tien_0)
+            var properties = typeof(TonKho).GetProperties()
+                .Where(p => (p.Name.StartsWith("Luong_") || p.Name.StartsWith("Tien_"))
+                            && !p.Name.StartsWith("Ma")
+                            && p.Name != "Luong_0"
+                            && p.Name != "Tien_0")
+                .ToList();
+
+            foreach (var prop in properties)
+            {
+                var value = prop.GetValue(tonKhoMoi);
+                prop.SetValue(tonKhoCu, value);
+            }
+        }
+        private readonly int _maKho=2;
+
+        private TonKho TinhTonKhoChoVatTu(Vattu vattu, double tonDauKy, double tienDauKy)
+
+        {
+            var tonKho = new SaovietTax.Models.TonKho
+            {
+                MaVatTu = vattu.MaSo,
+                MaSoKho = _maKho,
+                MaTaiKhoan = 39, 
+                Luong_0 = tonDauKy,   // 👈 Lấy từ tham số (giữ nguyên tồn đầu kỳ)
+                Tien_0 = tienDauKy    // 👈 Lấy từ tham số (giữ nguyên tiền tồn đầu kỳ)
+            };
+
+            // Lấy chứng từ của vật tư
+            var chungTus = db.ChungTus
+                .Where(c => c.MaVattu == vattu.MaSo)
+                .ToList();
+
+            // Khởi tạo tồn lũy kế = tồn đầu kỳ
+            double luongTichLuy = tonDauKy;
+            double tienTichLuy = tienDauKy;
+
+            for (int thang = 1; thang <= 12; thang++)
+            {
+                var chungTus2 = chungTus
+                    .Where(c => c.ThangCT == thang );
+                // === 1. TÍNH NHẬP XUẤT TRONG THÁNG ===
+                var nhapXuat = chungTus2.GroupBy(c => 1)
+                    .Select(g => new
+                    {
+                        // Nhập: Lấy số lượng và tiền từ chứng từ nhập
+                        NhapLuong = g.Where(c => c.MaLoai == 1).Sum(c => c.SoPS2No ?? 0),
+                        NhapTien = g.Where(c => c.MaLoai == 1).Sum(c => c.SoPS ?? 0),
+
+                        // Xuất: Chỉ lấy số lượng, KHÔNG lấy tiền từ chứng từ
+                        XuatLuong = g.Where(c => c.MaLoai == 2 && c.SoHieu.Contains("GV")).Sum(c => c.SoPS2Co ?? 0)
+                        // ❌ KHÔNG lấy XuatTien từ SoPS (vì đó là giá bán)
+                    })
+                    .FirstOrDefault();
+
+                double nhapLuong = nhapXuat?.NhapLuong ?? 0;
+                double xuatLuong = nhapXuat?.XuatLuong ?? 0;
+                double nhapTien = nhapXuat?.NhapTien ?? 0;
+
+                // === 2. TÍNH GIÁ XUẤT (Bình quân gia quyền) ===
+                double tongLuong = luongTichLuy + nhapLuong;
+                double tongTien = tienTichLuy + nhapTien;
+
+                // ✅ SỬA: KHÔNG làm tròn giá bình quân
+                double giaBinhQuan = tongLuong > 0 ? tongTien / tongLuong : 0;
+
+                // Tiền xuất = Giá bình quân × Số lượng xuất
+                double xuatTien = xuatLuong * giaBinhQuan;
+
+                // ✅ SỬA: Làm tròn tiền xuất theo kiểu VB6 (AwayFromZero)
+                double xuatTienLamTron = Math.Round(xuatTien, 0, MidpointRounding.AwayFromZero);
+
+                // === 3. LƯU NHẬP XUẤT THÁNG ===
+                GanGiaTri(tonKho, $"Luong_Nhap_{thang}", nhapLuong);
+                GanGiaTri(tonKho, $"Tien_Nhap_{thang}", nhapTien);
+                GanGiaTri(tonKho, $"Luong_Xuat_{thang}", xuatLuong);
+                GanGiaTri(tonKho, $"Tien_Xuat_{thang}", xuatTienLamTron);  // ✅ SỬA: Lưu giá trị đã làm tròn
+
+                // === 4. CẬP NHẬT TỒN LŨY KẾ ===
+                luongTichLuy = luongTichLuy + nhapLuong - xuatLuong;
+                tienTichLuy = tienTichLuy + nhapTien - xuatTien;
+
+                // === 5. LƯU TỒN CUỐI THÁNG ===
+                GanGiaTri(tonKho, $"Luong_{thang}", Math.Round(luongTichLuy, 0));
+                GanGiaTri(tonKho, $"Tien_{thang}", Math.Round(tienTichLuy, 0, MidpointRounding.AwayFromZero));
+            }
+
+            return tonKho;
+        }
+        private void GanGiaTri(TonKho tonKho, string tenProperty, double giaTri)
+        {
+            var prop = typeof(TonKho).GetProperty(tenProperty);
+            if (prop != null)
+            {
+                prop.SetValue(tonKho, giaTri);
+            }
         }
         private void XoaNLTP(int index)
         {
@@ -6948,9 +7140,9 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             var query = "SELECT MaSo,MaPhanLoai,SoHieu,Ten ,DiaChi,MST   FROM KhachHang";
             tbKhachhang = ExecuteQuery(query);
             // GỌI EXTENSION METHOD ĐÚNG
-            lstKhachhangs = tbKhachhang.ToList<KhachHang>();
+            lstKhachhangs = tbKhachhang.ToList<Database.KhachHang>();
         }
-        List<KhachHang> lstKhachhangs = new List<KhachHang>();
+        List<Database.KhachHang> lstKhachhangs = new List<Database.KhachHang>();
         private void LoadHoadonCT()
         {
             string query = @"
@@ -7995,7 +8187,7 @@ WHERE kh.SoHieu = ?";
                         aa = CapitalizeFirstLetter(aa);
                         mst = ConvertToTenDigitNumber(aa).ToString();
                     }
-                    peopleTemp.Add(new FileImport(true,file, SHDon, KHHDon, NLap, NLap, ten, diengiai, TkNo.ToString(), TkCo.ToString(), TkThue, mst, Thanhtien, Vat, 1, "", isAcess, TPhi, TgTCThue, TgTThue, true, 1, 0, 0, 0, 0, 0, "",false));
+                    peopleTemp.Add(new FileImport(true,file, SHDon, KHHDon, NLap, NLap, ten, diengiai, TkNo.ToString(), TkCo.ToString(), TkThue, mst, Thanhtien, Vat, 1, "", isAcess, TPhi, TgTCThue,0,0,0, TgTThue, true, 1, 0, 0, 0, 0, 0, "",false));
                 }
 
                 lblThongbao.Text = "Thêm danh sách sản phẩm con";
@@ -9798,7 +9990,7 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
                 else
                     newxmlFile = xmlFile.Replace("HDRa", "HDRaChonLoc").ToString();
 
-                FileImport newFileImport = new FileImport(true,newxmlFile, sHDon, kHHDon, nLap, nLap, ten ?? "Khách vãng lai", diengiai, tkNo.ToString(), tkCo.ToString(), tkThue, mst == "00" ? sohieuKH : mst, thanhtien, vat, type, "", isAcess, tPhi, tgTCThue, tgTThue, true, 1, 0, 0, 0, 0, 0, "",true);
+                FileImport newFileImport = new FileImport(true,newxmlFile, sHDon, kHHDon, nLap, nLap, ten ?? "Khách vãng lai", diengiai, tkNo.ToString(), tkCo.ToString(), tkThue, mst == "00" ? sohieuKH : mst, thanhtien, vat, type, "", isAcess, tPhi, tgTCThue,0,0,0, tgTThue, true, 1, 0, 0, 0, 0, 0, "",true);
                 peopleTemp.Add(newFileImport);
 
                 // Thêm chi tiết hóa đơn
@@ -11732,7 +11924,7 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
                                 cmdParent.Parameters.AddWithValue("@Ngaytao", DateTime.Now);
                                 cmdParent.Parameters.AddWithValue("@TongTien", item.TongTien);
                                 cmdParent.Parameters.AddWithValue("@Vat", item.Vat);
-                                cmdParent.Parameters.AddWithValue("@TPhi", item.TPhi ?? "0");
+                                cmdParent.Parameters.AddWithValue("@TPhi", item.TPhi );
                                 cmdParent.Parameters.AddWithValue("@TgTCThue", Math.Round(item.TgTCThue));
                                 cmdParent.Parameters.AddWithValue("@TgTThue", Math.Round(item.TgTThue));
                                 cmdParent.Parameters.AddWithValue("@Type", type);
@@ -12206,7 +12398,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                 new OleDbParameter("?", item.TongTien),
                 new OleDbParameter("?",item.Vat),
                 new OleDbParameter("?",""),
-                new OleDbParameter("?",!string.IsNullOrEmpty(item.TPhi)?item.TPhi:"0"),
+                new OleDbParameter("?",item.TPhi),
                 new OleDbParameter("?",Math.Round(item.TgTCThue)),
                 new OleDbParameter("?",Math.Round(item.TgTThue)),
                 //  new OleDbParameter("?",item.thttltsuat[0].thtien.ToString()),
@@ -12297,7 +12489,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                         cmdParent.Parameters.AddWithValue("?", DateTime.Now.ToShortDateString());
                         cmdParent.Parameters.AddWithValue("?", item.TongTien);
                         cmdParent.Parameters.AddWithValue("?", item.Vat);
-                        cmdParent.Parameters.AddWithValue("?", item.TPhi ?? "0");
+                        cmdParent.Parameters.AddWithValue("?", item.TPhi );
                         cmdParent.Parameters.AddWithValue("?", Math.Round(item.TgTCThue));
                         cmdParent.Parameters.AddWithValue("?", Math.Round(item.TgTThue));
                         cmdParent.Parameters.AddWithValue("?", type);
@@ -12387,7 +12579,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                 new OleDbParameter("?", item.TongTien),
                 new OleDbParameter("?",item.Vat),
                 new OleDbParameter("?",""),
-                new OleDbParameter("?",!string.IsNullOrEmpty(item.TPhi)?item.TPhi:"0"),
+                new OleDbParameter("?",item.TPhi),
                 new OleDbParameter("?",Math.Round(item.TgTCThue)),
                 new OleDbParameter("?",Math.Round(item.TgTThue)),
                 //  new OleDbParameter("?",item.thttltsuat[0].thtien.ToString()),
@@ -12704,6 +12896,9 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
                 isacess: true,
                 tPhi: 0,
                 tgTCThue: amountBeforeTax,
+                tgTCThue1:0,
+                tgTCThue2: 0,
+                tgTCThue3: 0,
                 tgTThue: amountAfterTax,
                 true,
                 1, 0, 0, 0, 0, 0, "",false
@@ -16334,30 +16529,29 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
         private void txtuser_TextChanged_1(object sender, EventArgs e)
         {
 
-            string query = "UPDATE tbRegister SET username = ?";
+            string query = "UPDATE tbRegister SET username = @username";
             // Khai báo mảng tham số với đủ 10 tham số
-            OleDbParameter[] parameters = new OleDbParameter[]
+            SqlParameter[] parameters = new SqlParameter[]
             {
-        new OleDbParameter("?", txtuser.Text)
+        new SqlParameter("@username", txtuser.Text)
             };
 
             // Thực thi truy vấn và lấy kết quả
-            int a = ExecuteQueryResult(query, parameters);
+            int a = ExecuteQueryResultSQL(query, parameters);
         }
 
         private void txtpass_TextChanged_1(object sender, EventArgs e)
         {
-            
-
-            string query = "UPDATE tbRegister SET [Password] = ?";
+             
+            string query = "UPDATE tbRegister SET [Password] = @password";
             // Khai báo mảng tham số với đủ 10 tham số
-            OleDbParameter[] parameters = new OleDbParameter[]
+            SqlParameter[] parameters = new SqlParameter[]
             {
-        new OleDbParameter("?", txtpass.Text)
+        new SqlParameter("@password", txtpass.Text)
             };
 
             // Thực thi truy vấn và lấy kết quả
-            int a = ExecuteQueryResult(query, parameters);
+            int a = ExecuteQueryResultSQL(query, parameters);
         }
         private Dictionary<string, DTO.VatTu> _lookupBySoHieu;
 
@@ -17151,8 +17345,8 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
          
         private int Kiemtrahttkcon(string tk)
         {
-            string querydinhdanh = @"SELECT * FROM HeThongTK WHERE SoHieu LIKE ?";
-            var resultkm = ExecuteQuery(querydinhdanh, new OleDbParameter("?", tk + "%"));
+            string querydinhdanh = @"SELECT * FROM HeThongTK WHERE SoHieu LIKE @Sohieu";
+            var resultkm = ExecuteQuerySQL(querydinhdanh, new SqlParameter("@Sohieu", tk + "%"));
             return resultkm.Rows.Count;
         }
         private void gridView1_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
@@ -17247,7 +17441,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
             //if (ischecked)
             //    return;
             var getfip = lst.Where(m => m.ID == id).FirstOrDefault();
-            string query = @"UPDATE tbimport SET NoiDung=?, TKNo=?, TKCo=?, TKThue=?,SohieuTP=?, Mst=? where ID=? ";
+            string query = @"UPDATE tbimport SET NoiDung=@noidung, TKNo=@tkno, TKCo=@tkco, TKThue=@tkthue,SohieuTP=@sohieutp, Mst=@mst where ID=@id ";
             if (getfip.TKNo.Contains("|"))
             {
                 var getsplit = getfip.TKNo.Split('|');
@@ -17258,17 +17452,17 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
             {
                 getfip.SoHieuTP = "";
             }
-                var parameters = new OleDbParameter[]
+                var parameters = new SqlParameter[]
                  {
-            new OleDbParameter("?", Helpers.ConvertUnicodeToVni(getfip.Noidung)),
-            new OleDbParameter("?", getfip.TKNo),
-            new OleDbParameter("?",  getfip.TKCo) ,
-              new OleDbParameter("?", getfip.TkThue),
-                new OleDbParameter("?", getfip.SoHieuTP),
-                  new OleDbParameter("?", getfip.Mst),
-               new OleDbParameter("?", getfip.ID)
+            new SqlParameter("@noidung", Helpers.ConvertUnicodeToVni(getfip.Noidung)),
+            new SqlParameter("@tkno", getfip.TKNo),
+            new SqlParameter("@tkco",  getfip.TKCo) ,
+              new SqlParameter("@tkthue", getfip.TkThue),
+                new SqlParameter("@sohieutp", getfip.SoHieuTP),
+                  new SqlParameter("@mst", getfip.Mst),
+               new SqlParameter("@id", getfip.ID)
                  };
-            int rowsAffected = ExecuteQueryResult(query, parameters);
+            int rowsAffected = ExecuteQueryResultSQL(query, parameters);
             //
             //Lấy dòng con ra trước 
 
@@ -17276,18 +17470,18 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
             {
                 foreach (var item in getfip.fileImportDetails)
                 {
-                    query = @"UPDATE tbimportdetail SET TKNo=?, TKCo=? WHERE ID=? AND TKCo <> ?";
-                    parameters = new OleDbParameter[]
+                    query = @"UPDATE tbimportdetail SET TKNo=@TKNo, TKCo=@TKCo WHERE ID=@ParentId AND TKCo <> @TKNo2";
+                    parameters = new SqlParameter[]
            {
-    new OleDbParameter("TKNo", getfip.TKNo),   // Đặt tên tham số rõ ràng
-    new OleDbParameter("TKCo", getfip.TKCo),   // Đặt tên tham số rõ ràng
-    new OleDbParameter("ParentId", item.ID),  // Đặt tên tham số rõ ràng
-     new OleDbParameter("TKNo", "711")   // Đặt tên tham số rõ ràng
+    new SqlParameter("TKNo", getfip.TKNo),   // Đặt tên tham số rõ ràng
+    new SqlParameter("TKCo", getfip.TKCo),   // Đặt tên tham số rõ ràng
+    new SqlParameter("ParentId", item.ID),  // Đặt tên tham số rõ ràng
+     new SqlParameter("TKNo2", "711")   // Đặt tên tham số rõ ràng
            };
                     item.TKNo = getfip.TKNo;
                     try
                     {
-                        rowsAffected = ExecuteQueryResult(query, parameters);
+                        rowsAffected = ExecuteQueryResultSQL(query, parameters);
                     }
                     catch (Exception ex)
                     {
@@ -17299,18 +17493,18 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
             {
                 foreach (var item in getfip.fileImportDetails)
                 {
-                    query = @"UPDATE tbimportdetail SET TKNo=?, TKCo=? WHERE ID=? AND TKCo <> ?";
-                    parameters = new OleDbParameter[]
+                    query = @"UPDATE tbimportdetail SET TKNo=@TKNo, TKCo=@TKCo WHERE ID=@ParentId AND TKCo <> @TKNo2";
+                    parameters = new SqlParameter[]
            {
-    new OleDbParameter("TKNo", item.TKNo),   // Đặt tên tham số rõ ràng
-    new OleDbParameter("TKCo", item.TKCo),   // Đặt tên tham số rõ ràng
-    new OleDbParameter("ParentId", item.ID),  // Đặt tên tham số rõ ràng
-     new OleDbParameter("TKNo", "711")   // Đặt tên tham số rõ ràng
+    new SqlParameter("TKNo", item.TKNo),   // Đặt tên tham số rõ ràng
+    new SqlParameter("TKCo", item.TKCo),   // Đặt tên tham số rõ ràng
+    new SqlParameter("ParentId", item.ID),  // Đặt tên tham số rõ ràng
+     new SqlParameter("TKNo2", "711")   // Đặt tên tham số rõ ràng
            };
 
                     try
                     {
-                        rowsAffected = ExecuteQueryResult(query, parameters);
+                        rowsAffected = ExecuteQueryResultSQL(query, parameters);
                     }
                     catch (Exception ex)
                     {
@@ -23459,7 +23653,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                     string TPhi = ttToan.SelectSingleNode("//TPhi")?.InnerText;
                     if (!string.IsNullOrEmpty(TPhi))
                     {
-                        tbImport.TPhi = double.Parse(TPhi).ToString() ;
+                        tbImport.TPhi = double.Parse(TPhi.ToString()) ;
                     }
                         // 4. Phân loại Mua/Bán và Kiểm tra MST công ty
                         if (type == 1) // Hóa đơn đầu vào
@@ -23622,6 +23816,8 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                         var hhdNodes = root.SelectNodes("//HHDVu");
                         cacheMatHangTrongHoaDon = new Dictionary<string, TbImportDetail>(StringComparer.OrdinalIgnoreCase);
                          double finalTotal = 0;
+
+                    tbImport.TgTCThue1 = Math.Round(tbImport.TgTCThue1);
                         foreach (XmlNode node in hhdNodes)
                         {
                             string ten = "";
@@ -23654,7 +23850,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                 // Sử dụng SafeParse để không bao giờ bị văng lỗi
                                 Soluong = SafeParse(node.SelectSingleNode("SLuong")?.InnerText),
                                 Dongia = SafeParse(node.SelectSingleNode("DGia")?.InnerText),
-                                TTien = SafeParse(node.SelectSingleNode("ThTien")?.InnerText),
+                                TTien = Math.Round(SafeParse(node.SelectSingleNode("ThTien")?.InnerText)),
                                 SoPSGoc= SafeParse(node.SelectSingleNode("ThTien")?.InnerText),
                                 Vat = SafeParse(node.SelectSingleNode("TSuat")?.InnerText?.Replace("%", ""))
                             };
@@ -26291,7 +26487,8 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                 var backgroundColor = cell.Style.Fill.BackgroundColor;
 
                                 //Kiểm tra row hợp lệ và lấy ngày giao dịch
-                                string getNgayGD = row.Cell(ngayGDIndex).GetString();
+                                string getNgayGD = row.Cell(ngayGDIndex).GetString(); 
+                                getNgayGD = Regex.Replace(getNgayGD, @"(\d{2})\s+(\d{2})\s", "$1$2 ");
                                 if (getNgayGD == "09/02/2026")
                                 {
                                     int a = 100;
@@ -28716,7 +28913,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                     int invoiceType = 0;
 
                     // Khởi tạo đối tượng FileImport
-                    fileImport = new FileImport(true,path, shDon, khhDon, nLap, nLap, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, 3, soHieuTP, hasChild, tpHi, tgTCThue, tgTThue, true, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus,khautruthue);
+                    fileImport = new FileImport(true,path, shDon, khhDon, nLap, nLap, ten, noidung, tkNo, tkCo, tkThue, mst, tongTien, vat, 3, soHieuTP, hasChild, tpHi, tgTCThue,0,0,0, tgTThue, true, invoiceType, Tvat, vat2, Tvat2, vat3, Tvat3, Macdinhstatus,khautruthue);
                     fileImport.ID = int.Parse(item["ID"].ToString());
                     queryCheckVatTu = @"SELECT * FROM tbimportdetail WHERE   ParentId= ?";
                     parameterss = new OleDbParameter[]
@@ -29650,9 +29847,1739 @@ private static readonly Dictionary<string, string[]> BrandAliases =
 
 
             isClick = true;
-           
+            InsertVB6();
+        }
+        DatablankEntities db = new DatablankEntities();
+        private bool XukyValorant()
+        {
+            if (chkDauvao.Checked)
+            {
+                foreach (var item in lstImportVao.Where(m => m.Checked))
+                {
+                    double TT = item.TgTCThue;
+                    double TTDetail = item.fileImportDetails.Sum(m => m.TTien);
+                    if (TT != TTDetail)
+                    {
+                        XtraMessageBox.Show($"Hoá đơn {item.SHDon} chưa cân bằng, vui lòng kiểm tra lại trước khi import vào phần mềm ");
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+
+            }
+
+            return true;
+        }
+        private void InsertVB6()
+        {
+            if (!XukyValorant())
+                return;
+            var lstkh = db.KhachHangs;
+
+            int maxct = db.ChungTus.Max(m => m.MaCT) ?? 0;
+            int makho = db.KhoHangs.Max(m => m.MaSo);
+
+            var httk = db.HeThongTKs
+             .Select(t => new { t.SoHieu, t.MaSo })
+             .ToList();
+            var vattu = db.Vattus;
+            var tonkholist = db.TonKhoes;
+            var lstim = db.tbimports;
+            if (chkDaura.Checked)
+            { 
+                foreach (var item in lstImportRa.Where(m=>m.Checked))
+                {
+                    if (item.Checked)
+                    {
+                        SaovietTax.Models.KhachHang getKH = lstkh.Where(m => m.MST == item.Mst).FirstOrDefault();
+                         
+                        using (var transaction = db.Database.BeginTransaction())
+                        {
+                            try
+                            {
+                                maxct = maxct + 1;
+                                int tkno = httk.Where(m => m.SoHieu == item.TKNo).FirstOrDefault().MaSo;
+                                int tkco = httk.Where(m => m.SoHieu == item.TKCo).FirstOrDefault().MaSo;
+                                int tknogv = httk.Where(m => m.SoHieu == "632").FirstOrDefault().MaSo;
+                                int tkcogv = httk.Where(m => m.SoHieu == "156").FirstOrDefault().MaSo;
+
+                                int tknothue = httk.Where(m => m.SoHieu == item.TKNo).FirstOrDefault().MaSo;
+                                int tkcothue = httk.Where(m => m.SoHieu == item.TkThue.ToString()).FirstOrDefault().MaSo;
+                                double sl = 0;
+                                int mavattu = 0;
+                                SaovietTax.Models.ChungTu ct;
+                                foreach (var dt in item.fileImportDetails)
+                                {
+                                    //Dòng hàng
+                                    ct = new SaovietTax.Models.ChungTu();
+                                    ct.MaCT = maxct;
+                                    ct.MaLoai = 8;
+                                    ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                    ct.SoHieu = item.SHDon;
+                                    ct.NgayCT = item.NLap;
+                                    ct.NgayGS = item.NLap;
+                                    ct.NgayTL = item.NLap;
+                                    ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                    ct.handung = item.NLap;
+                                    ct.NgayImport = DateTime.Now;
+                                    ct.MaKho = makho;
+                                    ct.MaNguon = 8;
+                                    ct.MaTKNo = tkno;
+                                    ct.MaTKCo = tkco;
+                                    ct.SoPS = Math.Round(dt.TTien);
+                                    ct.SoPS2No = 0;
+                                    ct.SoPS2Co = dt.Soluong;
+                                    sl = dt.Soluong;
+                                    ct.MaTKTCNo = tkno;
+                                    ct.MaTKTCCo = tkco;
+                                    ct.MaVattu = vattu.Where(m => m.SoHieu == dt.SoHieu).FirstOrDefault().MaSo;
+                                    mavattu = ct.MaVattu.Value;
+                                    ct.CT_ID = 0;
+                                    ct.MaDT = 1;
+                                    ct.MaKH = 0;
+                                    ct.CTGS = 1;
+                                    ct.MaKHC = 0;
+                                    ct.MaTP = 0;
+                                    ct.DVT = 0;
+                                    ct.User_ID = 1;
+                                    ct.MaNV = 0;
+                                    ct.HanTT = 0;
+                                    ct.SH1 = "...";
+                                    ct.T1 = 0;
+                                    ct.TLCK = 0;
+                                    ct.CK = 0;
+                                    ct.MaDT1 = 0;
+                                    ct.MaDT2 = 0;
+                                    ct.MaDT3 = 0;
+                                    ct.phantramchietkhau = "0";
+                                    ct.sotienchietkhau = "0";
+                                    ct.GhiChu = "...";
+                                    ct.LoaiHoaDon = "01GTKT";
+                                    ct.MauSoHD = "0";
+                                    ct.solo = "";
+                                    ct.DienGiaiE = "...";
+                                    db.ChungTus.Add(ct);
+                                    db.SaveChanges();
+                                    //Dòng GV
+                                    var ctgv = new SaovietTax.Models.ChungTu();
+                                    //500000822
+                                    ctgv.CT_ID = double.Parse("500000" + ct.MaSo.ToString());
+                                    ctgv.MaCT = maxct + 1;
+                                    ctgv.MaLoai = 2;
+                                    ctgv.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                    ctgv.SoHieu = item.SHDon + "GV";
+                                    ctgv.NgayCT = item.NLap;
+                                    ctgv.NgayGS = item.NLap;
+                                    ctgv.handung = item.NLap;
+                                    ctgv.NgayImport = DateTime.Now;
+                                    ctgv.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                    ctgv.MaKho = makho;
+                                    ctgv.MaNguon = 8;
+                                    ctgv.MaTKNo = tknogv;
+                                    ctgv.MaTKCo = tkcogv;
+                                    ctgv.SoPS2No = 0;
+                                    ctgv.SoPS2Co = sl;
+                                    ctgv.MaTKTCNo = tknogv;
+                                    ctgv.MaTKTCCo = tkcogv;
+                                    ctgv.MaVattu = mavattu;
+                                    ctgv.MaDT = 1;
+                                    ctgv.MaKH = 0;
+                                    ctgv.CTGS = 1;
+                                    ctgv.MaKHC = 0;
+                                    ctgv.MaTP = 0;
+                                    ctgv.DVT = 0;
+                                    ctgv.User_ID = 1;
+                                    ctgv.MaNV = 0;
+                                    ctgv.HanTT = 0;
+                                    ctgv.SH1 = "...";
+                                    ctgv.T1 = 0;
+                                    ctgv.TLCK = 0;
+                                    ctgv.CK = 0;
+                                    ctgv.MaDT1 = 0;
+                                    ctgv.MaDT2 = 0;
+                                    ctgv.MaDT3 = 0;
+                                    ctgv.phantramchietkhau = "0";
+                                    ctgv.sotienchietkhau = "0";
+                                    ctgv.SoPS = 0;
+                                    ctgv.MauSoHD = "0";
+                                    ctgv.LoaiHoaDon = "01GTKT";
+                                    ctgv.GhiChu = "...";
+                                    ctgv.solo = "";
+                                    ct.DienGiaiE = "...";
+                                    db.ChungTus.Add(ctgv);
+
+                                    //Tạo tồn kho
+                                    //Kiểm tra tồn kho có vật tư chưa
+                                    if (!tonkholist.Any(m => m.MaVatTu == mavattu))
+                                    {
+                                        SaovietTax.Models.TonKho tonkho = new SaovietTax.Models.TonKho();
+                                        tonkho.MaSoKho = makho;
+                                        tonkho.MaTaiKhoan = 39;
+                                        tonkho.MaVatTu = mavattu; 
+                                        for (int i = item.NLap.Month; i <= 12; i++)
+                                        {
+                                            string propertyName = $"Luong_Xuat_{i}";
+                                            var property = typeof(SaovietTax.Models.TonKho).GetProperty(propertyName);
+                                            if (property != null)
+                                            {
+                                                property.SetValue(tonkho, dt.Soluong);
+                                            }
+
+                                            string propertyName2 = $"Luong_{i}";
+                                            var property2 = typeof(SaovietTax.Models.TonKho).GetProperty(propertyName2);
+                                            if (property2 != null)
+                                            {
+                                                property2.SetValue(tonkho, -dt.Soluong);
+                                            }
+                                        }
+                                        db.TonKhoes.Add(tonkho);
+                                    }
+                                }
+
+
+                                //Dòng thuế
+                                ct = new SaovietTax.Models.ChungTu();
+                                ct.MauSoHD = "0";
+                                ct.LoaiHoaDon = "01GTKT";
+                                ct.MaCT = maxct;
+                                ct.MaLoai = 8;
+                                ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                ct.SoHieu = item.SHDon;
+                                ct.NgayCT = item.NLap;
+                                ct.NgayGS = item.NLap;
+                                ct.handung = item.NLap;
+                                ct.NgayImport = DateTime.Now;
+                                ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                ct.MaKho = makho;
+                                ct.MaNguon = 8;
+                                ct.MaTKNo = tknothue;
+                                ct.MaTKCo = tkcothue;
+                                ct.SoPS2No = 0;
+                                ct.SoPS2Co = 0;
+                                ct.MaTKTCNo = tknothue;
+                                ct.MaTKTCCo = tkcothue;
+                                ct.MaVattu = 0;
+                                ct.CT_ID = 0;
+                                ct.MaDT = 1;
+                                ct.MaKH = 0;
+                                ct.CTGS = 1;
+                                ct.MaKHC = 0;
+                                ct.MaTP = 0;
+                                ct.DVT = 0;
+                                ct.User_ID = 1;
+                                ct.MaNV = 0;
+                                ct.HanTT = 0;
+                                ct.SH1 = "...";
+                                ct.T1 = 0;
+                                ct.TLCK = 0;
+                                ct.CK = 0;
+                                ct.MaDT1 = 0;
+                                ct.MaDT2 = 0;
+                                ct.MaDT3 = 0;
+                                ct.phantramchietkhau = "0";
+                                ct.sotienchietkhau = "0";
+                                ct.SoPS = item.TVat;
+                                ct.GhiChu = "...";
+                                ct.solo = "";
+                                ct.DienGiaiE = "...";
+                                db.ChungTus.Add(ct);
+                                if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+                                {
+                                    ct = new SaovietTax.Models.ChungTu();
+                                    ct.MauSoHD = "0";
+                                    ct.LoaiHoaDon = "01GTKT";
+                                    ct.MaCT = maxct;
+                                    ct.MaLoai = 8;
+                                    ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                    ct.SoHieu = item.SHDon;
+                                    ct.NgayCT = item.NLap;
+                                    ct.NgayGS = item.NLap;
+                                    ct.handung = item.NLap;
+                                    ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                    ct.MaKho = makho;
+                                    ct.MaNguon = 8;
+                                    ct.MaTKNo = tknothue;
+                                    ct.MaTKCo = tkcothue;
+                                    ct.SoPS2No = 0;
+                                    ct.SoPS2Co = 0;
+                                    ct.MaTKTCNo = tknothue;
+                                    ct.MaTKTCCo = tkcothue;
+                                    ct.MaVattu = 0;
+                                    ct.CT_ID = 0;
+                                    ct.MaDT = 1;
+                                    ct.MaKH = 0;
+                                    ct.CTGS = 1;
+                                    ct.MaKHC = 0;
+                                    ct.MaTP = 0;
+                                    ct.DVT = 0;
+                                    ct.User_ID = 1;
+                                    ct.MaNV = 0;
+                                    ct.HanTT = 0;
+                                    ct.SH1 = "...";
+                                    ct.T1 = 0;
+                                    ct.TLCK = 0;
+                                    ct.CK = 0;
+                                    ct.MaDT1 = 0;
+                                    ct.MaDT2 = 0;
+                                    ct.MaDT3 = 0;
+                                    ct.phantramchietkhau = "0";
+                                    ct.sotienchietkhau = "0";
+                                    ct.SoPS = item.TVat2;
+                                    ct.DienGiaiE = "...";
+                                    ct.GhiChu = "...";
+                                    db.ChungTus.Add(ct);
+                                }
+
+                                //Chungtulienquan
+                                SaovietTax.Models.ChungTuLQ chungTuLQ = new SaovietTax.Models.ChungTuLQ();
+                                chungTuLQ.MaCT = maxct;
+                                chungTuLQ.Loai = 0;
+                                chungTuLQ.HoTen = "...";
+                                chungTuLQ.DiaChi = "...";
+                                chungTuLQ.SoCTGoc = "...";
+                                chungTuLQ.MaKH = 642;
+                                db.ChungTuLQs.Add(chungTuLQ);
+                                chungTuLQ = new SaovietTax.Models.ChungTuLQ();
+                                chungTuLQ.MaCT = maxct;
+                                chungTuLQ.Loai = 2;
+                                chungTuLQ.HoTen = "khaùch leû khoâng laáy hoùa ñôn";
+                                chungTuLQ.DiaChi = "khaùch leû khoâng laáy hoùa ñôn";
+                                chungTuLQ.SoCTGoc = "01/01/00";
+                                chungTuLQ.MaKH = 0;
+                                db.ChungTuLQs.Add(chungTuLQ);
+
+                                maxct = maxct + 1;
+                                //Insert hoa don 
+
+                                db.SaveChanges();
+                                int maxms = db.ChungTus.Max(m => m.MaSo);
+                                SaovietTax.Models.HoaDon hd = new SaovietTax.Models.HoaDon();
+                                hd.MaSo = maxms-1;
+                                hd.Loai = 1;
+                                // hd.MaKhachHang = lstkh.Where(m => m.MST == item.Mst || m.Ten==item.Ten).FirstOrDefault().MaSo;
+                                hd.MaKhachHang = getKH!=null? getKH.MaSo:0;
+                                hd.KyHieu = item.KHHDon;
+                                hd.SoHD = item.SHDon;
+                                hd.NgayPH = item.NLap;
+                                hd.MatHang = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                hd.SoLuong = 0;
+                                if (item.TgTCThue1 == null || item.TgTCThue1 == 0)
+                                {
+                                    hd.ThanhTien = item.TgTCThue;
+
+                                }
+                                else
+                                {
+                                    hd.ThanhTien = item.TgTCThue1;
+                                }
+                                hd.TyLe = (short)item.Vat;
+                                hd.HD = 1;
+                                hd.KCT = 0;
+                                hd.HTTT = "...";
+                                hd.MauSo = "0";
+                                hd.NK = 0;
+                                hd.TS = 0;
+                                hd.DC = 0;
+                                hd.TyGia = 0;
+                                hd.HDBL = 0;
+                                db.HoaDons.Add(hd);
+                                db.SaveChanges();
+                                if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+                                {
+                                    hd = new SaovietTax.Models.HoaDon();
+                                    hd.MaSo = maxms;
+                                    hd.Loai = 1;
+                                    // hd.MaKhachHang = lstkh.Where(m => m.MST == item.Mst || m.Ten==item.Ten).FirstOrDefault().MaSo;
+                                    hd.MaKhachHang = 642;
+                                    hd.KyHieu = item.KHHDon;
+                                    hd.SoHD = item.SHDon;
+                                    hd.NgayPH = item.NLap;
+                                    hd.MatHang = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                    hd.SoLuong = 0;
+                                    hd.ThanhTien = item.TgTCThue2;
+                                    hd.TyLe = (short)item.Vat2;
+                                    hd.HD = 1;
+                                    hd.KCT = 0;
+                                    hd.HTTT = "...";
+                                    hd.MauSo = "0";
+                                    hd.NK = 0;
+                                    hd.TS = 0;
+                                    hd.DC = 0;
+                                    hd.TyGia = 0;
+                                    hd.HDBL = 0;
+                                    db.HoaDons.Add(hd);
+                                    try
+                                    {
+                                        db.SaveChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        XtraMessageBox.Show(ex.Message);
+                                    }
+                                }
+
+                                SaovietTax.Models.tbimport tbi = lstim.Where(m => m.ID == item.ID).FirstOrDefault();
+                                if (tbi != null)
+                                {
+                                    tbi.Status = 1;
+                                    db.SaveChanges();
+                                }
+                                transaction.Commit();
+
+                            }
+                            catch (Exception ex)
+                            { 
+                                transaction.Rollback();
+                                XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
+                            }
+                        } 
+
+                    }
+                }
+            }
+            if (chkDauvao.Checked)
+            {
+                foreach (var item in lstImportVao.Where(m=>m.Checked))
+                {
+                    try
+                    {
+                        //Lấy thông tin khách hàng
+                        SaovietTax.Models.KhachHang getKH = lstkh.Where(m => m.MST == item.Mst).FirstOrDefault();
+                        //Trường hợp tổng hợp
+                        if (item.TKNo.Contains("64"))
+                        {
+                            using (var transaction = db.Database.BeginTransaction())
+                            {
+                                try
+                                {
+                                    maxct = maxct + 1;
+                                    int tkno = httk.Where(m => m.SoHieu == item.TKNo).FirstOrDefault().MaSo;
+                                    int tkco = httk.Where(m => m.SoHieu == item.TKCo).FirstOrDefault().MaSo;
+
+                                    int tknothue = httk.Where(m => m.SoHieu == item.TKCo).FirstOrDefault().MaSo;
+                                    int tkcothue = httk.Where(m => m.SoHieu == item.TkThue.ToString()).FirstOrDefault().MaSo;
+                                    double sl = 0;
+                                    int mavattu = 0;
+                                    SaovietTax.Models.ChungTu ct;
+                                    foreach (var dt in item.fileImportDetails)
+                                    {
+                                        //Dòng hàng
+                                        ct = new SaovietTax.Models.ChungTu();
+                                        ct.MaCT = maxct;
+                                        ct.MaLoai = 0;
+                                        ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                        ct.SoHieu = item.SHDon;
+                                        ct.NgayCT = item.NLap;
+                                        ct.NgayGS = item.NLap;
+                                        ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                        ct.NgayImport = DateTime.Now;
+                                        ct.MaKho = 0;
+                                        ct.MaNguon = 0;
+                                        ct.MaTKNo = tkno;
+                                        ct.MaTKCo = tkco;
+                                        ct.SoPS = dt.TTien;
+                                        ct.SoPS2No = 0;
+                                        ct.SoPS2Co = 0;
+                                        sl = dt.Soluong;
+                                        ct.MaTKTCNo = tkno;
+                                        ct.MaTKTCCo = tkco;
+                                        ct.MaVattu = 0;
+                                        mavattu = ct.MaVattu.Value;
+                                        ct.CT_ID = 0;
+                                        ct.MaDT = 1;
+                                        ct.MaKH = 0;
+                                        ct.CTGS = 1;
+                                        ct.MaKHC = getKH.MaSo;
+                                        ct.MaTP = 0;
+                                        ct.DVT = 0;
+                                        ct.User_ID = 1;
+                                        ct.MaNV = 0;
+                                        ct.HanTT = 0;
+                                        ct.SH1 = "...";
+                                        ct.T1 = 0;
+                                        ct.TLCK = 0;
+                                        ct.CK = 0;
+                                        ct.MaDT1 = 0;
+                                        ct.MaDT2 = 0;
+                                        ct.MaDT3 = 0;
+                                        ct.phantramchietkhau = "0";
+                                        ct.sotienchietkhau = "0";
+                                        ct.GhiChu = "...";
+                                        ct.LoaiHoaDon = "01GTKT";
+                                        ct.MauSoHD = "0";
+                                        ct.DienGiaiE = "...";
+                                        db.ChungTus.Add(ct);
+                                    }
+
+                                    //Dòng thuế
+                                    ct = new SaovietTax.Models.ChungTu();
+                                    ct.MauSoHD = "0";
+                                    ct.LoaiHoaDon = "01GTKT";
+                                    ct.MaCT = maxct;
+                                    ct.MaLoai = 0;
+                                    ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                    ct.SoHieu = item.SHDon;
+                                    ct.NgayCT = item.NLap;
+                                    ct.NgayGS = item.NLap;
+                                    ct.handung = item.NLap;
+                                    ct.NgayImport = DateTime.Now;
+                                    ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                    ct.MaKho = 0;
+                                    ct.MaNguon = 0;
+                                    ct.MaTKNo = tkcothue;
+                                    ct.MaTKCo = tknothue;
+                                    ct.SoPS2No = 0;
+                                    ct.SoPS2Co = 0;
+                                    ct.MaTKTCNo = tkcothue;
+                                    ct.MaTKTCCo = tknothue;
+                                    ct.MaVattu = 0;
+                                    ct.CT_ID = 0;
+                                    ct.MaDT = 1;
+                                    ct.MaKH = 0;
+                                    ct.CTGS = 1;
+                                    ct.MaKHC = getKH.MaSo;
+                                    ct.MaTP = 0;
+                                    ct.DVT = 0;
+                                    ct.User_ID = 1;
+                                    ct.MaNV = 0;
+                                    ct.HanTT = 0;
+                                    ct.SH1 = "...";
+                                    ct.T1 = 0;
+                                    ct.TLCK = 0;
+                                    ct.CK = 0;
+                                    ct.MaDT1 = 0;
+                                    ct.MaDT2 = 0;
+                                    ct.MaDT3 = 0;
+                                    ct.phantramchietkhau = "0";
+                                    ct.sotienchietkhau = "0";
+                                    ct.SoPS = item.TVat;
+                                    ct.GhiChu = "...";
+                                    ct.DienGiaiE = "...";
+                                    db.ChungTus.Add(ct);
+                                    if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+                                    {
+                                        ct = new SaovietTax.Models.ChungTu();
+                                        ct.MauSoHD = "0";
+                                        ct.LoaiHoaDon = "01GTKT";
+                                        ct.MaCT = maxct;
+                                        ct.MaLoai = 1;
+                                        ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                        ct.SoHieu = item.SHDon;
+                                        ct.NgayCT = item.NLap;
+                                        ct.NgayGS = item.NLap;
+                                        ct.handung = item.NLap;
+                                        ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                        ct.MaKho = 0;
+                                        ct.MaNguon = 0;
+                                        ct.MaTKNo = tkcothue;
+                                        ct.MaTKCo = tknothue;
+                                        ct.SoPS2No = 0;
+                                        ct.SoPS2Co = 0;
+                                        ct.MaTKTCNo = tkcothue;
+                                        ct.MaTKTCCo = tknothue;
+                                        ct.MaVattu = 0;
+                                        ct.CT_ID = 0;
+                                        ct.MaDT = 1;
+                                        ct.MaKH = 0;
+                                        ct.CTGS = 1;
+                                        ct.MaKHC = 0;
+                                        ct.MaTP = 0;
+                                        ct.DVT = 0;
+                                        ct.User_ID = 1;
+                                        ct.MaNV = 0;
+                                        ct.HanTT = 0;
+                                        ct.SH1 = "...";
+                                        ct.T1 = 0;
+                                        ct.TLCK = 0;
+                                        ct.CK = 0;
+                                        ct.MaDT1 = 0;
+                                        ct.MaDT2 = 0;
+                                        ct.MaDT3 = 0;
+                                        ct.phantramchietkhau = "0";
+                                        ct.sotienchietkhau = "0";
+                                        ct.SoPS = item.TVat2;
+                                        ct.GhiChu = "...";
+                                        ct.DienGiaiE = "...";
+                                        db.ChungTus.Add(ct);
+                                    }
+                                    //Insert hoa don 
+
+                                    db.SaveChanges();
+                                    int maxms = db.ChungTus.Max(m => m.MaSo);
+                                    SaovietTax.Models.HoaDon hd = new SaovietTax.Models.HoaDon();
+                                    hd.MaSo = maxms;
+                                    hd.Loai = -1;
+                                    // hd.MaKhachHang = lstkh.Where(m => m.MST == item.Mst || m.Ten==item.Ten).FirstOrDefault().MaSo;
+                                    hd.MaKhachHang = getKH.MaSo;
+                                    hd.KyHieu = item.KHHDon;
+                                    hd.SoHD = item.SHDon;
+                                    hd.NgayPH = item.NLap;
+                                    hd.MatHang = item.Noidung;
+                                    hd.SoLuong = 0;
+                                    if (item.TgTCThue1 == null || item.TgTCThue1 == 0)
+                                    {
+                                        hd.ThanhTien = item.TgTCThue;
+                                    }
+                                    else
+                                    {
+                                        hd.ThanhTien = item.TgTCThue1;
+                                    }
+                                    hd.TyLe = (short)item.Vat;
+                                    hd.HD = 1;
+                                    hd.KCT = 0;
+                                    hd.HTTT = "...";
+                                    hd.MauSo = "0";
+                                    hd.NK = 0;
+                                    hd.TS = 0;
+                                    hd.DC = 0;
+                                    hd.TyGia = 0;
+                                    hd.HDBL = 0;
+                                    db.HoaDons.Add(hd);
+                                    db.SaveChanges();
+                                    if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+                                    {
+                                        hd = new SaovietTax.Models.HoaDon();
+                                        hd.MaSo = maxms;
+                                        hd.Loai = -1;
+                                        hd.MaKhachHang = getKH.MaSo;
+                                        hd.KyHieu = item.KHHDon;
+                                        hd.SoHD = item.SHDon;
+                                        hd.NgayPH = item.NLap;
+                                        hd.MatHang = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                        hd.SoLuong = 0;
+                                        hd.ThanhTien = item.TgTCThue2;
+                                        hd.TyLe = (short)item.Vat2;
+                                        hd.HD = 1;
+                                        hd.KCT = 0;
+                                        hd.HTTT = "...";
+                                        hd.MauSo = "0";
+                                        hd.NK = 0;
+                                        hd.TS = 0;
+                                        hd.DC = 0;
+                                        hd.TyGia = 0;
+                                        hd.HDBL = 0;
+                                        db.HoaDons.Add(hd);
+                                        try
+                                        {
+                                            db.SaveChanges();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            XtraMessageBox.Show(ex.Message);
+                                        }
+                                    }
+
+                                    //Cập nhật tbimport
+                                    SaovietTax.Models.tbimport tbi = lstim.Where(m => m.ID == item.ID).FirstOrDefault();
+                                    if (tbi != null)
+                                    {
+                                        tbi.Status = 1;
+                                        db.SaveChanges();
+                                    }
+                                    transaction.Commit();
+                                }
+                                catch (Exception ex)
+                                {
+                                    transaction.Rollback();
+                                    XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            using (var transaction = db.Database.BeginTransaction())
+                            {
+                                try
+                                {
+                                    maxct = maxct + 1;
+                                    int tkno = httk.Where(m => m.SoHieu == item.TKNo).FirstOrDefault().MaSo;
+                                    int tkco = httk.Where(m => m.SoHieu == item.TKCo).FirstOrDefault().MaSo;
+
+                                    int tknothue = httk.Where(m => m.SoHieu == item.TKCo).FirstOrDefault().MaSo;
+                                    int tkcothue = httk.Where(m => m.SoHieu == item.TkThue.ToString()).FirstOrDefault().MaSo;
+                                    double sl = 0;
+                                    int mavattu = 0;
+                                    SaovietTax.Models.ChungTu ct;
+                                    foreach (var dt in item.fileImportDetails)
+                                    {
+                                        //Dòng hàng
+                                        ct = new SaovietTax.Models.ChungTu();
+                                        ct.MaCT = maxct;
+                                        ct.MaLoai = 1;
+                                        ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                        ct.SoHieu = item.SHDon;
+                                        ct.NgayCT = item.NLap;
+                                        ct.NgayGS = item.NLap;
+                                        ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                        ct.NgayImport = DateTime.Now;
+                                        ct.MaKho = makho;
+                                        ct.MaNguon = 8;
+                                        ct.MaTKNo = tkno;
+                                        ct.MaTKCo = tkco;
+                                        ct.SoPS = Math.Round(dt.TTien);
+                                        ct.SoPS2No = dt.Soluong;
+                                        ct.SoPS2Co = 0;
+                                        sl = dt.Soluong;
+                                        ct.MaTKTCNo = tkno;
+                                        ct.MaTKTCCo = tkco;
+                                        ct.MaVattu = vattu.Where(m => m.SoHieu == dt.SoHieu).FirstOrDefault().MaSo;
+                                        mavattu = ct.MaVattu.Value;
+                                        ct.CT_ID = 0;
+                                        ct.MaDT = 1;
+                                        ct.MaKH = 0;
+                                        ct.CTGS = 1;
+                                        ct.MaKHC = getKH != null ? getKH.MaSo : 0;
+                                        ct.MaTP = 0;
+                                        ct.DVT = 0;
+                                        ct.User_ID = 1;
+                                        ct.MaNV = 0;
+                                        ct.HanTT = 0;
+                                        ct.SH1 = "...";
+                                        ct.T1 = 0;
+                                        ct.TLCK = 0;
+                                        ct.CK = 0;
+                                        ct.MaDT1 = 0;
+                                        ct.MaDT2 = 0;
+                                        ct.MaDT3 = 0;
+                                        ct.phantramchietkhau = "0";
+                                        ct.sotienchietkhau = "0";
+                                        ct.GhiChu = "...";
+                                        db.ChungTus.Add(ct);
+
+                                        //Tạo tồn kho
+                                        //Kiểm tra tồn kho có vật tư chưa
+                                        if (!tonkholist.Any(m => m.MaVatTu == mavattu))
+                                        {
+                                            SaovietTax.Models.TonKho tonkho = new SaovietTax.Models.TonKho();
+                                            tonkho.MaSoKho = makho;
+                                            tonkho.MaTaiKhoan = 39;
+                                            tonkho.MaVatTu = mavattu;
+                                            tonkho.Tien_0 = 0;
+                                            string propertyName = $"Luong_Nhap_{item.NLap.Month}";
+                                            var property = typeof(SaovietTax.Models.TonKho).GetProperty(propertyName);
+                                            if (property != null)
+                                            {
+                                                property.SetValue(tonkho, dt.Soluong);
+                                            }
+
+                                            string propertyName2 = $"Luong_{item.NLap.Month}";
+                                            var property2 = typeof(SaovietTax.Models.TonKho).GetProperty(propertyName2);
+                                            if (property2 != null)
+                                            {
+                                                property2.SetValue(tonkho, dt.Soluong);
+                                            }
+
+                                            string propertyName3 = $"Tien_Nhap_{item.NLap.Month}";
+                                            var property3 = typeof(SaovietTax.Models.TonKho).GetProperty(propertyName3);
+                                            if (property3 != null)
+                                            {
+                                                property3.SetValue(tonkho, dt.TTien);
+                                            }
+                                            var propertyName4 = $"Tien_{item.NLap.Month}";
+                                            var property4 = typeof(SaovietTax.Models.TonKho).GetProperty(propertyName4);
+                                            if (property4 != null)
+                                            {
+                                                property4.SetValue(tonkho, dt.TTien);
+                                            }
+
+                                            for (int i = item.NLap.Month + 1; i <= 12; i++)
+                                            {
+
+
+                                                propertyName2 = $"Luong_{i}";
+                                                property2 = typeof(SaovietTax.Models.TonKho).GetProperty(propertyName2);
+                                                if (property2 != null)
+                                                {
+                                                    property2.SetValue(tonkho, dt.Soluong);
+                                                }
+
+                                                propertyName3 = $"Tien_{i}";
+                                                property3 = typeof(SaovietTax.Models.TonKho).GetProperty(propertyName3);
+                                                if (property3 != null)
+                                                {
+                                                    property3.SetValue(tonkho, dt.TTien);
+                                                }
+                                            }
+                                            db.TonKhoes.Add(tonkho);
+                                        }
+                                    }
+
+
+                                    //Dòng thuế
+                                    ct = new SaovietTax.Models.ChungTu();
+                                    ct.MauSoHD = "0";
+                                    ct.LoaiHoaDon = "01GTKT";
+                                    ct.MaCT = maxct;
+                                    ct.MaLoai = 1;
+                                    ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                    ct.SoHieu = item.SHDon;
+                                    ct.NgayCT = item.NLap;
+                                    ct.NgayGS = item.NLap;
+                                    ct.handung = item.NLap;
+                                    ct.NgayImport = DateTime.Now;
+                                    ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                    ct.MaKho = makho;
+                                    ct.MaNguon = 8;
+                                    ct.MaTKNo = tkcothue;
+                                    ct.MaTKCo = tknothue;
+                                    ct.SoPS2No = 0;
+                                    ct.SoPS2Co = 0;
+                                    ct.MaTKTCNo = tkcothue;
+                                    ct.MaTKTCCo = tknothue;
+                                    ct.MaVattu = 0;
+                                    ct.CT_ID = 0;
+                                    ct.MaDT = 1;
+                                    ct.MaKH = 0;
+                                    ct.CTGS = 1;
+                                    ct.MaKHC = getKH != null ? getKH.MaSo : 0;
+                                    ct.MaTP = 0;
+                                    ct.DVT = 0;
+                                    ct.User_ID = 1;
+                                    ct.MaNV = 0;
+                                    ct.HanTT = 0;
+                                    ct.SH1 = "...";
+                                    ct.T1 = 0;
+                                    ct.TLCK = 0;
+                                    ct.CK = 0;
+                                    ct.MaDT1 = 0;
+                                    ct.MaDT2 = 0;
+                                    ct.MaDT3 = 0;
+                                    ct.phantramchietkhau = "0";
+                                    ct.sotienchietkhau = "0";
+                                    ct.SoPS = item.TVat;
+                                    ct.GhiChu = "...";
+                                    db.ChungTus.Add(ct);
+                                    if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+                                    {
+                                        ct = new SaovietTax.Models.ChungTu();
+                                        ct.MauSoHD = "0";
+                                        ct.LoaiHoaDon = "01GTKT";
+                                        ct.MaCT = maxct;
+                                        ct.MaLoai = 1;
+                                        ct.ThangCT = short.Parse(item.NLap.Month.ToString());
+                                        ct.SoHieu = item.SHDon;
+                                        ct.NgayCT = item.NLap;
+                                        ct.NgayGS = item.NLap;
+                                        ct.handung = item.NLap;
+                                        ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                        ct.MaKho = makho;
+                                        ct.MaNguon = 8;
+                                        ct.MaTKNo = tkcothue;
+                                        ct.MaTKCo = tknothue;
+                                        ct.SoPS2No = 0;
+                                        ct.SoPS2Co = 0;
+                                        ct.MaTKTCNo = tkcothue;
+                                        ct.MaTKTCCo = tknothue;
+                                        ct.MaVattu = 0;
+                                        ct.CT_ID = 0;
+                                        ct.MaDT = 1;
+                                        ct.MaKH = 0;
+                                        ct.CTGS = 1;
+                                        ct.MaKHC = getKH != null ? getKH.MaSo : 0;
+                                        ct.MaTP = 0;
+                                        ct.DVT = 0;
+                                        ct.User_ID = 1;
+                                        ct.MaNV = 0;
+                                        ct.HanTT = 0;
+                                        ct.SH1 = "...";
+                                        ct.T1 = 0;
+                                        ct.TLCK = 0;
+                                        ct.CK = 0;
+                                        ct.MaDT1 = 0;
+                                        ct.MaDT2 = 0;
+                                        ct.MaDT3 = 0;
+                                        ct.phantramchietkhau = "0";
+                                        ct.sotienchietkhau = "0";
+                                        ct.SoPS = item.TVat2;
+                                        ct.GhiChu = "...";
+                                        db.ChungTus.Add(ct);
+                                    }
+                                    //Insert hoa don 
+
+                                    db.SaveChanges();
+                                    int maxms = db.ChungTus.Max(m => m.MaSo);
+                                    SaovietTax.Models.HoaDon hd = new SaovietTax.Models.HoaDon();
+                                    hd.MaSo = maxms - 1;
+                                    hd.Loai = -1;
+                                    // hd.MaKhachHang = lstkh.Where(m => m.MST == item.Mst || m.Ten==item.Ten).FirstOrDefault().MaSo;
+                                    hd.MaKhachHang = getKH.MaSo;
+                                    hd.KyHieu = item.KHHDon;
+                                    hd.SoHD = item.SHDon;
+                                    hd.NgayPH = item.NLap;
+                                    hd.MatHang = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                    hd.SoLuong = 0;
+                                    if (item.TgTCThue1 == null || item.TgTCThue1 == 0)
+                                    {
+                                        hd.ThanhTien = Math.Round(item.TgTCThue);
+
+                                    }
+                                    else
+                                    {
+                                        hd.ThanhTien = Math.Round(item.TgTCThue1);
+                                    }
+                                    hd.TyLe = (short)item.Vat;
+                                    hd.HD = 1;
+                                    hd.KCT = 0;
+                                    hd.HTTT = "...";
+                                    hd.MauSo = "0";
+                                    hd.NK = 0;
+                                    hd.TS = 0;
+                                    hd.DC = 0;
+                                    hd.TyGia = 0;
+                                    hd.HDBL = 0;
+                                    db.HoaDons.Add(hd);
+                                    db.SaveChanges();
+                                    if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+                                    {
+                                        hd = new SaovietTax.Models.HoaDon();
+                                        hd.MaSo = maxms;
+                                        hd.Loai = 1;
+                                        // hd.MaKhachHang = lstkh.Where(m => m.MST == item.Mst || m.Ten==item.Ten).FirstOrDefault().MaSo;
+                                        hd.MaKhachHang = getKH.MaSo;
+                                        hd.KyHieu = item.KHHDon;
+                                        hd.SoHD = item.SHDon;
+                                        hd.NgayPH = item.NLap;
+                                        hd.MatHang = Helpers.ConvertUnicodeToVni(item.Noidung);
+                                        hd.SoLuong = 0;
+                                        hd.ThanhTien = Math.Round(item.TgTCThue2);
+                                        hd.TyLe = (short)item.Vat2;
+                                        hd.HD = 1;
+                                        hd.KCT = 0;
+                                        hd.HTTT = "...";
+                                        hd.MauSo = "0";
+                                        hd.NK = 0;
+                                        hd.TS = 0;
+                                        hd.DC = 0;
+                                        hd.TyGia = 0;
+                                        hd.HDBL = 0;
+                                        db.HoaDons.Add(hd);
+                                        try
+                                        {
+                                            db.SaveChanges();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            XtraMessageBox.Show(ex.Message);
+                                        }
+                                    }
+
+                                    //Cập nhật tbimport
+                                    SaovietTax.Models.tbimport tbi = lstim.Where(m => m.ID == item.ID).FirstOrDefault();
+                                    if (tbi != null)
+                                    {
+                                        tbi.Status = 1;
+                                        db.SaveChanges();
+                                    }
+                                    transaction.Commit();
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    transaction.Rollback();
+                                    XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
+                                }
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
+                    }
+                }
+            }
+
             this.Close();
-        } 
+        }
+        private void InsertVB6new2()
+        { 
+            var lstkh = db.KhachHangs.ToList();
+            var httk = db.HeThongTKs.ToDictionary(m => m.SoHieu, m => m.MaSo);
+            var vattu = db.Vattus.ToDictionary(m => m.SoHieu, m => m.MaSo);
+            var tonkholist = db.TonKhoes.ToList();
+            var lstim = db.tbimports.ToList();
+
+            int maxct = db.ChungTus.Any() ? db.ChungTus.Max(m => m.MaCT.Value) : 0;
+            int makho = db.KhoHangs.Max(m => m.MaSo);
+
+            // Helper function để tạo mã số
+            int GetMaTK(string soHieu) => httk.ContainsKey(soHieu) ? httk[soHieu] : 0;
+
+            // Helper function để tạo ChungTu cơ bản
+            void SetChungTuBase(SaovietTax.Models.ChungTu ct, FileImport item, int maxct2, int maTKNo, int maTKCo, int maLoai, int maKHC = 0, bool isTax = false)
+            {
+                ct.MaCT = maxct2;
+                ct.MaLoai = (short)maLoai;
+                ct.ThangCT = (short)item.NLap.Month;
+                ct.SoHieu = item.SHDon;
+                ct.NgayCT = item.NLap;
+                ct.NgayGS = item.NLap;
+                ct.handung = item.NLap;
+                ct.NgayImport = DateTime.Now;
+                ct.DienGiai = Helpers.ConvertUnicodeToVni(item.Noidung);
+                ct.MaKho = maLoai == 0 ? 0 : makho;
+                ct.MaNguon = maLoai ==0 ? 0 : 8;
+                ct.MaTKNo = maTKNo;
+                ct.MaTKCo = maTKCo;
+                ct.MaTKTCNo = maTKNo;
+                ct.MaTKTCCo = maTKCo;
+                ct.CT_ID = 0;
+                ct.MaDT = 1;
+                ct.MaKH = 0;
+                ct.CTGS = 1;
+                ct.MaKHC = maKHC;
+                ct.MaTP = 0;
+                ct.DVT = 0;
+                ct.User_ID = 1;
+                ct.MaNV = 0;
+                ct.HanTT = 0;
+                ct.SH1 = "...";
+                ct.T1 = 0;
+                ct.TLCK = 0;
+                ct.CK = 0;
+                ct.MaDT1 = 0;
+                ct.MaDT2 = 0;
+                ct.MaDT3 = 0;
+                ct.phantramchietkhau = "0";
+                ct.sotienchietkhau = "0";
+                ct.GhiChu = "...";
+                ct.LoaiHoaDon = "01GTKT";
+                ct.MauSoHD = "0";
+                ct.solo = "";
+            }
+
+            // Helper function để tạo HoaDon
+            void CreateHoaDon(FileImport item, int maxms, int maKH, int loai)
+            {
+                var hd = new SaovietTax.Models.HoaDon
+                {
+                    MaSo = maxms,
+                    Loai = (short)loai,
+                    MaKhachHang = maKH,
+                    KyHieu = item.KHHDon,
+                    SoHD = item.SHDon,
+                    NgayPH = item.NLap,
+                    MatHang = Helpers.ConvertUnicodeToVni(item.Noidung),
+                    SoLuong = 0,
+                    ThanhTien = item.TgTCThue1 != 0 ? item.TgTCThue1 : item.TgTCThue,
+                    TyLe = (short)item.Vat,
+                    HD = 1,
+                    KCT = 0,
+                    HTTT = "...",
+                    MauSo = "0",
+                    NK = 0,
+                    TS = 0,
+                    DC = 0,
+                    TyGia = 0,
+                    HDBL = 0
+                };
+                db.HoaDons.Add(hd);
+
+                if (item.TgTCThue2  != 0)
+                {
+                    hd = new SaovietTax.Models.HoaDon
+                    {
+                        MaSo = maxms,
+                        Loai = (short)loai,
+                        MaKhachHang = maKH,
+                        KyHieu = item.KHHDon,
+                        SoHD = item.SHDon,
+                        NgayPH = item.NLap,
+                        MatHang = Helpers.ConvertUnicodeToVni(item.Noidung),
+                        SoLuong = 0,
+                        ThanhTien = item.TgTCThue2,
+                        TyLe = (short)item.Vat2,
+                        HD = 1,
+                        KCT = 0,
+                        HTTT = "...",
+                        MauSo = "0",
+                        NK = 0,
+                        TS = 0,
+                        DC = 0,
+                        TyGia = 0,
+                        HDBL = 0
+                    };
+                    db.HoaDons.Add(hd);
+                }
+            }
+
+            // Helper function để tạo tồn kho
+            void CreateTonKho(int mavattu, FileImport item, double soluong, bool isExport, double tien = 0)
+            {
+                if (!tonkholist.Any(m => m.MaVatTu == mavattu))
+                {
+                    var tonkho = new TonKho
+                    {
+                        MaSoKho = makho,
+                        MaTaiKhoan = 39,
+                        MaVatTu = mavattu,
+                        Tien_0 = 0
+                    };
+
+                    int month = item.NLap.Month;
+
+                    if (isExport)
+                    {
+                        // Xuất kho
+                        for (int i = month; i <= 12; i++)
+                        {
+                            SetTonKhoProperty(tonkho, $"Luong_Xuat_{i}", soluong);
+                            SetTonKhoProperty(tonkho, $"Luong_{i}", -soluong);
+                        }
+                    }
+                    else
+                    {
+                        // Nhập kho
+                        SetTonKhoProperty(tonkho, $"Luong_Nhap_{month}", soluong);
+                        SetTonKhoProperty(tonkho, $"Luong_{month}", soluong);
+                        SetTonKhoProperty(tonkho, $"Tien_Nhap_{month}", tien);
+
+                        for (int i = month + 1; i <= 12; i++)
+                        {
+                            SetTonKhoProperty(tonkho, $"Luong_{i}", soluong);
+                            SetTonKhoProperty(tonkho, $"Tien_{i}", tien);
+                        }
+                    }
+                    db.TonKhoes.Add(tonkho);
+                }
+            }
+
+            void SetTonKhoProperty(TonKho tonkho, string propName, object value)
+            {
+                var prop = typeof(TonKho).GetProperty(propName);
+                if (prop != null) prop.SetValue(tonkho, value);
+            }
+
+            // Helper function để tạo ChungTu LQ
+            void CreateChungTuLQ(int maxct2)
+            {
+                var chungTuLQ = new ChungTuLQ
+                {
+                    MaCT = maxct2,
+                    Loai = 0,
+                    HoTen = "...",
+                    DiaChi = "...",
+                    SoCTGoc = "...",
+                    MaKH = 642
+                };
+                db.ChungTuLQs.Add(chungTuLQ);
+
+                chungTuLQ = new ChungTuLQ
+                {
+                    MaCT = maxct,
+                    Loai = 2,
+                    HoTen = "khaùch leû khoâng laáy hoùa ñôn",
+                    DiaChi = "khaùch leû khoâng laáy hoùa ñôn",
+                    SoCTGoc = "01/01/00",
+                    MaKH = 0
+                };
+                db.ChungTuLQs.Add(chungTuLQ);
+            }
+
+            // Xử lý đầu ra
+            if (chkDaura.Checked)
+            {
+                foreach (var item in lstImportRa.Where(i => i.Checked))
+                {
+                    try
+                    {
+                        int tkno = GetMaTK(item.TKNo);
+                        int tkco = GetMaTK(item.TKCo);
+                        int tknogv = GetMaTK("632");
+                        int tkcogv = GetMaTK("156");
+                        int tknothue = GetMaTK(item.TKNo);
+                        int tkcothue = GetMaTK(item.TkThue.ToString());
+
+                        foreach (var dt in item.fileImportDetails)
+                        {
+                            maxct++;
+                            int mavattu = vattu.ContainsKey(dt.SoHieu) ? vattu[dt.SoHieu] : 0;
+
+                            // Dòng hàng
+                            var ct = new SaovietTax.Models.ChungTu();
+                            SetChungTuBase(ct, item, maxct, tkno, tkco, 8);
+                            ct.MaVattu = mavattu;
+                            ct.SoPS = dt.TTien;
+                            ct.SoPS2No = 0;
+                            ct.SoPS2Co = dt.Soluong;
+                            db.ChungTus.Add(ct);
+                            db.SaveChanges();
+
+                            // Dòng GV
+                            var ctgv = new SaovietTax.Models.ChungTu();
+                            SetChungTuBase(ctgv, item, maxct + 1, tknogv, tkcogv, 2);
+                            ctgv.CT_ID = int.Parse("500000" + ct.MaSo.ToString());
+                            ctgv.SoHieu = item.SHDon + "GV";
+                            ctgv.MaVattu = mavattu;
+                            ctgv.SoPS2No = 0;
+                            ctgv.SoPS2Co = dt.Soluong;
+                            ctgv.SoPS = 0;
+                            db.ChungTus.Add(ctgv);
+
+                            // Tạo tồn kho
+                            CreateTonKho(mavattu, item, dt.Soluong, true);
+                        }
+
+                        // Dòng thuế
+                        var ctTax = new SaovietTax.Models.ChungTu();
+                        SetChungTuBase(ctTax, item, maxct, tknothue, tkcothue, 8, 0, true);
+                        ctTax.MaVattu = 0;
+                        ctTax.SoPS2No = 0;
+                        ctTax.SoPS2Co = 0;
+                        ctTax.SoPS = item.TVat;
+                        db.ChungTus.Add(ctTax);
+
+                        if (item.TgTCThue2 != 0)
+                        {
+                            ctTax = new SaovietTax.Models.ChungTu();
+                            SetChungTuBase(ctTax, item, maxct, tknothue, tkcothue, 2, 0, true);
+                            ctTax.MaVattu = 0;
+                            ctTax.SoPS2No = 0;
+                            ctTax.SoPS2Co = 0;
+                            ctTax.SoPS = item.TVat2;
+                            db.ChungTus.Add(ctTax);
+                        }
+
+                        // ChungTu LQ
+                        CreateChungTuLQ(maxct);
+                        maxct++;
+
+                        db.SaveChanges();
+
+                        // HoaDon
+                        int maxms = db.ChungTus.Max(m => m.MaSo);
+                        CreateHoaDon(item, maxms, 642, 1);
+                        db.SaveChanges();
+
+                        // Cập nhật Status
+                        var tbi = lstim.FirstOrDefault(m => m.ID == item.ID);
+                        if (tbi != null)
+                        {
+                            tbi.Status = 1;
+                            db.SaveChanges();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        XtraMessageBox.Show("Loi lưu  " + ex.Message);
+                    }
+                }
+            }
+
+            // Xử lý đầu vào
+            if (chkDauvao.Checked)
+            {
+                foreach (var item in lstImportVao.Where(i => i.Checked))
+                {
+                    var getKH = lstkh.FirstOrDefault(m => m.MST == item.Mst);
+                    int maKH = getKH != null ? getKH.MaSo : 0;
+
+                    bool isTongHop = item.TKNo.Contains("64");
+                    int loai = isTongHop ? 0 : 1;
+
+                    int tkno = GetMaTK(item.TKNo);
+                    int tkco = GetMaTK(item.TKCo);
+                    int tknothue = GetMaTK(item.TKCo);
+                    int tkcothue = GetMaTK(item.TkThue.ToString());
+
+                    foreach (var dt in item.fileImportDetails)
+                    {
+                        maxct++;
+                        var ct = new SaovietTax.Models.ChungTu();
+                        SetChungTuBase(ct, item, maxct, tkno, tkco, loai, isTongHop ? maKH : 0);
+                        ct.MaVattu = 0;
+                        ct.SoPS = dt.TTien;
+                        ct.SoPS2No = 0;
+                        ct.SoPS2Co = isTongHop ? 0 : dt.Soluong;
+
+                        if (!isTongHop)
+                        {
+                            ct.MaVattu = vattu.ContainsKey(dt.SoHieu) ? vattu[dt.SoHieu] : 0;
+                            CreateTonKho(ct.MaVattu.Value, item, dt.Soluong, false, dt.TTien);
+                        }
+
+                        db.ChungTus.Add(ct);
+                    }
+
+                    // Dòng thuế
+                    var ctTax = new SaovietTax.Models.ChungTu();
+                    SetChungTuBase(ctTax, item, maxct, tkcothue, tknothue, loai, isTongHop ? maKH : 0, true);
+                    ctTax.MaVattu = 0;
+                    ctTax.SoPS2No = 0;
+                    ctTax.SoPS2Co = 0;
+                    ctTax.SoPS = item.TVat;
+                    db.ChungTus.Add(ctTax);
+
+                    if (item.TgTCThue2 != 0)
+                    {
+                        ctTax = new SaovietTax.Models.ChungTu();
+                        SetChungTuBase(ctTax, item, maxct, tkcothue, tknothue, loai, 0, true);
+                        ctTax.MaVattu = 0;
+                        ctTax.SoPS2No = 0;
+                        ctTax.SoPS2Co = 0;
+                        ctTax.SoPS = item.TVat2;
+                        db.ChungTus.Add(ctTax);
+                    }
+
+                    db.SaveChanges();
+
+                    // HoaDon
+                    int maxms = db.ChungTus.Max(m => m.MaSo);
+                    int maKHHD = isTongHop ? maKH : 639;
+                    int loaiHD = isTongHop ? -1 : 1;
+                    CreateHoaDon(item, maxms - 1, maKHHD, loaiHD);
+                    db.SaveChanges();
+
+                    // Cập nhật Status
+                    var tbi = lstim.FirstOrDefault(m => m.ID == item.ID);
+                    if (tbi != null)
+                    {
+                        tbi.Status = 1;
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
+        private void InsertVB6New()
+        {
+            // Lấy dữ liệu 1 lần
+            var heThongTKs = db.HeThongTKs.ToDictionary(h => h.SoHieu, h => h);
+            var vattuDict = db.Vattus.ToDictionary(v => v.SoHieu, v => v);
+            var tonKhoDict = db.TonKhoes.ToDictionary(t => t.MaVatTu, t => t);
+            var maxCT = db.ChungTus.Any() ? db.ChungTus.Max(m => m.MaCT.Value) : 1;
+            var maxKho = db.KhoHangs.Max(m => m.MaSo);
+
+            // Cache PropertyInfo
+            var tonKhoProps = typeof(SaovietTax.Models.TonKho)
+                .GetProperties()
+                .Where(p => p.Name.StartsWith("Luong_") || p.Name.StartsWith("Tien_"))
+                .ToDictionary(p => p.Name, p => p);
+
+            // Xử lý xuất kho
+            if (chkDaura.Checked)
+            {
+                foreach (var item in lstImportRa.Where(i => i.Checked))
+                {
+                    using (var tran = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            var chungTus = new List<SaovietTax.Models.ChungTu>();
+                            var hoaDons = new List<SaovietTax.Models.HoaDon>();
+                            var tonKhos = new List<SaovietTax.Models.TonKho>();
+                            int ctID = maxCT;
+                            int thang = item.NLap.Month;
+
+                            foreach (var dt in item.fileImportDetails)
+                            {
+                                int mavattu = vattuDict[dt.SoHieu]?.MaSo ?? 0;
+                                if (mavattu == 0) continue;
+
+                                // Chứng từ bán hàng
+                                chungTus.Add(new SaovietTax.Models.ChungTu
+                                {
+                                    MaCT = ctID,
+                                    MaLoai = 8,
+                                    ThangCT = (short)thang,
+                                    SoHieu = item.SHDon,
+                                    NgayCT = item.NLap,
+                                    NgayGS = item.NLap,
+                                    DienGiai = item.Noidung,
+                                    NgayImport = DateTime.Now,
+                                    MaKho = maxKho,
+                                    MaNguon = 8,
+                                    MaTKNo = heThongTKs[item.TKNo].MaSo,
+                                    MaTKCo = heThongTKs[item.TKCo].MaSo,
+                                    SoPS = dt.TTien,
+                                    SoPS2No = 0,
+                                    SoPS2Co = dt.Soluong,
+                                    MaTKTCNo = heThongTKs[item.TKNo].MaSo,
+                                    MaTKTCCo = heThongTKs[item.TKCo].MaSo,
+                                    MaVattu = mavattu,
+                                    CT_ID = 0,
+                                    MaDT = 1,
+                                    MaKH = 0,
+                                    CTGS = 1,
+                                    MaKHC = 0,
+                                    MaTP = 0,
+                                    DVT = 0,
+                                    User_ID = 1,
+                                    MaNV = 0,
+                                    HanTT = 0,
+                                    SH1 = "...",
+                                    T1 = 0,
+                                    TLCK = 0,
+                                    CK = 0,
+                                    MaDT1 = 0,
+                                    MaDT2 = 0,
+                                    MaDT3 = 0,
+                                    phantramchietkhau = "0",
+                                    sotienchietkhau = "0",
+                                    GhiChu = "..."
+                                });
+
+                                // Chứng từ giá vốn
+                                chungTus.Add(new SaovietTax.Models.ChungTu
+                                {
+                                    MaCT = ctID + 1,
+                                    MaLoai = 2,
+                                    ThangCT = (short)thang,
+                                    SoHieu = item.SHDon + "GV",
+                                    NgayCT = item.NLap,
+                                    NgayGS = item.NLap,
+                                    handung = item.NLap,
+                                    DienGiai = item.Noidung,
+                                    NgayImport = DateTime.Now,
+                                    MaKho = maxKho,
+                                    MaNguon = 8,
+                                    MaTKNo = heThongTKs["632"].MaSo,
+                                    MaTKCo = heThongTKs["156"].MaSo,
+                                    SoPS2No = 0,
+                                    SoPS2Co = dt.Soluong,
+                                    MaTKTCNo = heThongTKs["632"].MaSo,
+                                    MaTKTCCo = heThongTKs["156"].MaSo,
+                                    MaVattu = mavattu,
+                                    CT_ID = 0,
+                                    MaDT = 1,
+                                    MaKH = 0,
+                                    CTGS = 1,
+                                    MaKHC = 0,
+                                    MaTP = 0,
+                                    DVT = 0,
+                                    User_ID = 1,
+                                    MaNV = 0,
+                                    HanTT = 0,
+                                    SH1 = "...",
+                                    T1 = 0,
+                                    TLCK = 0,
+                                    CK = 0,
+                                    MaDT1 = 0,
+                                    MaDT2 = 0,
+                                    MaDT3 = 0,
+                                    phantramchietkhau = "0",
+                                    sotienchietkhau = "0",
+                                    SoPS = 0,
+                                    MauSoHD = "0",
+                                    LoaiHoaDon = "01GTKT",
+                                    GhiChu = "..."
+                                });
+
+                                // Tạo tồn kho
+                                if (!tonKhoDict.ContainsKey(mavattu))
+                                {
+                                    var tonkho = new SaovietTax.Models.TonKho
+                                    {
+                                        MaSoKho = maxKho,
+                                        MaTaiKhoan = 39,
+                                        MaVatTu = mavattu,
+                                        Tien_0 = 0
+                                    };
+                                    for (int i = thang; i <= 12; i++)
+                                    {
+                                        if (tonKhoProps.TryGetValue($"Luong_Xuat_{i}", out var p1))
+                                            p1.SetValue(tonkho, dt.Soluong);
+                                        if (tonKhoProps.TryGetValue($"Luong_{i}", out var p2))
+                                            p2.SetValue(tonkho, -dt.Soluong);
+                                    }
+                                    tonKhos.Add(tonkho);
+                                    tonKhoDict[mavattu] = tonkho;
+                                }
+                                ctID += 2;
+                            }
+
+                            // Chứng từ thuế
+                            chungTus.AddRange(TaoChungTuThue(ctID, item, heThongTKs, thang, maxKho, 2));
+
+                            // Hóa đơn
+                            hoaDons.AddRange(TaoHoaDon(item, maxCT));
+
+                            // Lưu
+                            db.ChungTus.AddRange(chungTus);
+                            db.HoaDons.AddRange(hoaDons);
+                            if (tonKhos.Any()) db.TonKhoes.AddRange(tonKhos);
+                            db.SaveChanges();
+                            maxCT = ctID;
+                            tran.Commit();
+                        }
+                        catch { tran.Rollback(); throw; }
+                    }
+                }
+            }
+
+            // Xử lý nhập kho (tương tự)
+            if (chkDauvao.Checked)
+            {
+                foreach (var item in lstImportVao.Where(i => i.Checked))
+                {
+                    using (var tran = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            var chungTus = new List<SaovietTax.Models.ChungTu>();
+                            var hoaDons = new List<SaovietTax.Models.HoaDon>();
+                            var tonKhos = new List<SaovietTax.Models.TonKho>();
+                            int ctID = maxCT;
+                            int thang = item.NLap.Month;
+
+                            foreach (var dt in item.fileImportDetails)
+                            {
+                                int mavattu = vattuDict[dt.SoHieu]?.MaSo ?? 0;
+                                if (mavattu == 0) continue;
+
+                                // Chứng từ nhập
+                                chungTus.Add(new SaovietTax.Models.ChungTu
+                                {
+                                    MaCT = ctID,
+                                    MaLoai = 1,
+                                    ThangCT = (short)thang,
+                                    SoHieu = item.SHDon,
+                                    NgayCT = item.NLap,
+                                    NgayGS = item.NLap,
+                                    DienGiai = item.Noidung,
+                                    NgayImport = DateTime.Now,
+                                    MaKho = maxKho,
+                                    MaNguon = 8,
+                                    MaTKNo = heThongTKs[item.TKNo].MaSo,
+                                    MaTKCo = heThongTKs[item.TKCo].MaSo,
+                                    SoPS = dt.TTien,
+                                    SoPS2No = 0,
+                                    SoPS2Co = dt.Soluong,
+                                    MaTKTCNo = heThongTKs[item.TKNo].MaSo,
+                                    MaTKTCCo = heThongTKs[item.TKCo].MaSo,
+                                    MaVattu = mavattu,
+                                    CT_ID = 0,
+                                    MaDT = 1,
+                                    MaKH = 0,
+                                    CTGS = 1,
+                                    MaKHC = 0,
+                                    MaTP = 0,
+                                    DVT = 0,
+                                    User_ID = 1,
+                                    MaNV = 0,
+                                    HanTT = 0,
+                                    SH1 = "...",
+                                    T1 = 0,
+                                    TLCK = 0,
+                                    CK = 0,
+                                    MaDT1 = 0,
+                                    MaDT2 = 0,
+                                    MaDT3 = 0,
+                                    phantramchietkhau = "0",
+                                    sotienchietkhau = "0",
+                                    GhiChu = "..."
+                                });
+
+                                // Tạo tồn kho
+                                if (!tonKhoDict.ContainsKey(mavattu))
+                                {
+                                    var tonkho = new SaovietTax.Models.TonKho
+                                    {
+                                        MaSoKho = maxKho,
+                                        MaTaiKhoan = 39,
+                                        MaVatTu = mavattu,
+                                        Tien_0 = 0
+                                    };
+                                    for (int i = thang; i <= 12; i++)
+                                    {
+                                        if (tonKhoProps.TryGetValue($"Luong_Nhap_{i}", out var p1))
+                                            p1.SetValue(tonkho, dt.Soluong);
+                                        if (tonKhoProps.TryGetValue($"Luong_{i}", out var p2))
+                                            p2.SetValue(tonkho, dt.Soluong);
+                                        if (tonKhoProps.TryGetValue($"Tien_Nhap_{i}", out var p3))
+                                            p3.SetValue(tonkho, dt.TTien);
+                                    }
+                                    tonKhos.Add(tonkho);
+                                    tonKhoDict[mavattu] = tonkho;
+                                }
+                                ctID++;
+                            }
+
+                            // Chứng từ thuế
+                            chungTus.AddRange(TaoChungTuThue(ctID, item, heThongTKs, thang, maxKho, 1));
+
+                            // Hóa đơn
+                            hoaDons.AddRange(TaoHoaDon(item, maxCT));
+
+                            // Lưu
+                            db.ChungTus.AddRange(chungTus);
+                            db.HoaDons.AddRange(hoaDons);
+                            if (tonKhos.Any()) db.TonKhoes.AddRange(tonKhos);
+
+                            //var tbi = db.tbimports.FirstOrDefault(i => i.ID == item.ID);
+                            //if (tbi != null) tbi.IsImport = 1;
+
+                            db.SaveChanges();
+                            maxCT = ctID;
+                            tran.Commit();
+                            var test = db.tbimports.ToList();
+                            var tbi = db.tbimports.ToList().FirstOrDefault(i => i.ID == item.ID);
+                            if (tbi != null) tbi.IsImport = 1; 
+                            db.SaveChanges();
+                        }
+                        catch { tran.Rollback(); throw; }
+                    }
+                }
+            }
+        }
+
+        // 2 hàm helper nhỏ
+        private IEnumerable<SaovietTax.Models.ChungTu> TaoChungTuThue(int ctID, FileImport item, Dictionary<string,SaovietTax.Models.HeThongTK> heThongTKs, int thang, int maxKho, int maLoai)
+        {
+            var result = new List<SaovietTax.Models.ChungTu>();
+            var tkNo = heThongTKs[maLoai == 2 ? item.TKNo : item.TKCo].MaSo;
+            var tkCo = heThongTKs[maLoai == 2 ? item.TkThue.ToString() : item.TKCo].MaSo;
+
+            result.Add(new SaovietTax.Models.ChungTu
+            {
+                MauSoHD = "0",
+                LoaiHoaDon = "01GTKT",
+                MaCT = ctID,
+                MaLoai = (short)maLoai,
+                ThangCT = (short)thang,
+                SoHieu = item.SHDon,
+                NgayCT = item.NLap,
+                NgayGS = item.NLap,
+                handung = item.NLap,
+                NgayImport = DateTime.Now,
+                DienGiai = item.Noidung,
+                MaKho = maxKho,
+                MaNguon = 8,
+                MaTKNo = tkNo,
+                MaTKCo = tkCo,
+                SoPS2No = 0,
+                SoPS2Co = 0,
+                MaTKTCNo = tkNo,
+                MaTKTCCo = tkCo,
+                MaVattu = 0,
+                CT_ID = 0,
+                MaDT = 1,
+                MaKH = 0,
+                CTGS = 1,
+                MaKHC = 0,
+                MaTP = 0,
+                DVT = 0,
+                User_ID = 1,
+                MaNV = 0,
+                HanTT = 0,
+                SH1 = "...",
+                T1 = 0,
+                TLCK = 0,
+                CK = 0,
+                MaDT1 = 0,
+                MaDT2 = 0,
+                MaDT3 = 0,
+                phantramchietkhau = "0",
+                sotienchietkhau = "0",
+                SoPS = item.TVat,
+                GhiChu = "..."
+            });
+
+            if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+            {
+                result.Add(new SaovietTax.Models.ChungTu
+                {
+                    MauSoHD = "0",
+                    LoaiHoaDon = "01GTKT",
+                    MaCT = ctID,
+                    MaLoai = (short)maLoai,
+                    ThangCT = (short)thang,
+                    SoHieu = item.SHDon,
+                    NgayCT = item.NLap,
+                    NgayGS = item.NLap,
+                    handung = item.NLap,
+                    NgayImport = DateTime.Now,
+                    DienGiai = item.Noidung,
+                    MaKho = maxKho,
+                    MaNguon = 8,
+                    MaTKNo = tkNo,
+                    MaTKCo = tkCo,
+                    SoPS2No = 0,
+                    SoPS2Co = 0,
+                    MaTKTCNo = tkNo,
+                    MaTKTCCo = tkCo,
+                    MaVattu = 0,
+                    CT_ID = 0,
+                    MaDT = 1,
+                    MaKH = 0,
+                    CTGS = 1,
+                    MaKHC = 0,
+                    MaTP = 0,
+                    DVT = 0,
+                    User_ID = 1,
+                    MaNV = 0,
+                    HanTT = 0,
+                    SH1 = "...",
+                    T1 = 0,
+                    TLCK = 0,
+                    CK = 0,
+                    MaDT1 = 0,
+                    MaDT2 = 0,
+                    MaDT3 = 0,
+                    phantramchietkhau = "0",
+                    sotienchietkhau = "0",
+                    SoPS = item.TVat2,
+                    GhiChu = "..."
+                });
+            }
+            return result;
+        }
+
+        private IEnumerable<SaovietTax.Models.HoaDon> TaoHoaDon(FileImport item, int maxCT)
+        {
+            var result = new List<SaovietTax.Models.HoaDon>();
+            result.Add(new SaovietTax.Models.HoaDon
+            {
+                MaSo = maxCT,
+                Loai = 1,
+                MaKhachHang = 639,
+                KyHieu = item.KHHDon,
+                SoHD = item.SHDon,
+                NgayPH = item.NLap,
+                MatHang = item.Noidung,
+                SoLuong = 0,
+                ThanhTien = item.TgTCThue1!=0 ? item.TgTCThue1 : (item.TgTCThue!=0 ? item.TgTCThue : 0),
+                TyLe = (short)item.Vat,
+                HD = 1,
+                KCT = 0,
+                HTTT = "...",
+                MauSo = "0",
+                NK = 0,
+                TS = 0,
+                DC = 0,
+                TyGia = 0,
+                HDBL = 0
+            });
+
+            if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+            {
+                result.Add(new SaovietTax.Models.HoaDon
+                {
+                    MaSo = maxCT + 1,
+                    Loai = 1,
+                    MaKhachHang = 639,
+                    KyHieu = item.KHHDon,
+                    SoHD = item.SHDon,
+                    NgayPH = item.NLap,
+                    MatHang = item.Noidung,
+                    SoLuong = 0,
+                    ThanhTien = item.TgTCThue2,
+                    TyLe = (short)(item.Vat2),
+                    HD = 1,
+                    KCT = 0,
+                    HTTT = "...",
+                    MauSo = "0",
+                    NK = 0,
+                    TS = 0,
+                    DC = 0,
+                    TyGia = 0,
+                    HDBL = 0
+                });
+            }
+            return result;
+        }
         private void simpleButton7_Click(object sender, EventArgs e)
         {
             progressPanel1.Visible = true;

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bcf13e396c664cc8a81b30997594010d" Name="Diagram1">
+        <EntityTypeShape EntityType="DatablankModel.BaoCaoCP" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.BaoCaoCP2" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.BARCODE" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.BKNhomP" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.CDT" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.cdts48" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.ChungTu2" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.ChungTuLQ" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.ChungTuLQP" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.ChungTuP" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.CNDauNam" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.CNDauNam2" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.CPGVHD" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.CTGhiSo" Width="1.5" PointX="10.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.CTKetChuyen" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.CTTaiSan" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.DCPTung" Width="1.5" PointX="12.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.DinhMuc" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.DoituongCT" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.DTQLy" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.DVTVattu" Width="1.5" PointX="14.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.HeThongTK" Width="1.5" PointX="14.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.HoaDon" Width="1.5" PointX="10.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.HoaDonP" Width="1.5" PointX="0.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.KCChitiet" Width="1.5" PointX="2.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.KhachHang" Width="1.5" PointX="4.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.KhoHang" Width="1.5" PointX="6.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.KiemKe" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.KiemKeN" Width="1.5" PointX="16.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.KQKD911" Width="1.5" PointX="16.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.LaiSuat" Width="1.5" PointX="16.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.LoaiChungTu" Width="1.5" PointX="16.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.LoaiTaiSan" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.NguonNhapXuat" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.NguyenTe" Width="1.5" PointX="18.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.NhanVien" Width="1.5" PointX="6.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.PhanLoai154" Width="1.5" PointX="18.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.PhanLoaiKhachHang" Width="1.5" PointX="18.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.PhanLoaiNhanVien" Width="1.5" PointX="18.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.PhanLoaiVattu" Width="1.5" PointX="18.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.PhieuNX" Width="1.5" PointX="2.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.QuocGia" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.Report" Width="1.5" PointX="20.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.SHchungtu" Width="1.5" PointX="20.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.SoDuKhachHang" Width="1.5" PointX="20.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tableHoadonvao" Width="1.5" PointX="8.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.TaiSan" Width="1.5" PointX="10.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbDinhdanhNganhang" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbDinhdanhtaikhoan" Width="1.5" PointX="22.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbFontsize" Width="1.5" PointX="4.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbGetphieu" Width="1.5" PointX="22.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbGhichuHT" Width="1.5" PointX="22.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbHoadonThaythe" Width="1.5" PointX="22.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbimport" Width="1.5" PointX="22.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbimportdetail" Width="1.5" PointX="16.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbMatdinhghichu" Width="1.5" PointX="22.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbNguyenLieuThanhPham" Width="1.5" PointX="0.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbNhapkhonguyenlieu" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbNhapkhotp" Width="1.5" PointX="24.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbNhapkhotpChitiet" Width="1.5" PointX="24.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbPL1" Width="1.5" PointX="6.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbPL2" Width="1.5" PointX="24.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.tbThongTinToKhai" Width="1.5" PointX="24.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.ThanhPham" Width="1.5" PointX="18.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.ThongSo" Width="1.5" PointX="24.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.THUE" Width="1.5" PointX="2.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.TinhTrang" Width="1.5" PointX="8.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.TonKho" Width="1.5" PointX="10.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.TP154" Width="1.5" PointX="20.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.User" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.Vattu" Width="1.5" PointX="26.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.VTDauNam" Width="1.5" PointX="26.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.DanhSachVatTu" Width="1.5" PointX="26.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.ChungTu" Width="1.5" PointX="23.375" PointY="26.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

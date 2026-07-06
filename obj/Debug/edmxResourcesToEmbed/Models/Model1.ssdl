@@ -1,0 +1,1821 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatablankModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BaoCaoCP">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="CoCon" Type="smallint" />
+    <Property Name="MaCha" Type="int" />
+    <Property Name="Cap" Type="smallint" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="Kq1" Type="float" />
+    <Property Name="Kq2" Type="float" />
+    <Property Name="Kq3" Type="float" />
+    <Property Name="Kq4" Type="float" />
+    <Property Name="Kq5" Type="float" />
+    <Property Name="Kq6" Type="float" />
+    <Property Name="BC_ID" Type="int" />
+    <Property Name="Ngay1" Type="datetime2" Precision="0" />
+    <Property Name="Ngay2" Type="datetime2" Precision="0" />
+    <Property Name="Kq7" Type="float" />
+    <Property Name="Kq8" Type="float" />
+    <Property Name="MK" Type="int" />
+  </EntityType>
+  <EntityType Name="BaoCaoCP2">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="CoCon" Type="smallint" />
+    <Property Name="MaCha" Type="int" />
+    <Property Name="Cap" Type="smallint" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="Kq1" Type="float" />
+    <Property Name="Kq2" Type="float" />
+    <Property Name="Kq3" Type="float" />
+    <Property Name="Kq4" Type="float" />
+    <Property Name="Kq5" Type="float" />
+    <Property Name="Kq6" Type="float" />
+    <Property Name="BC_ID" Type="int" />
+    <Property Name="Ngay1" Type="datetime2" Precision="0" />
+    <Property Name="Ngay2" Type="datetime2" Precision="0" />
+    <Property Name="Kq7" Type="float" />
+    <Property Name="Kq8" Type="float" />
+    <Property Name="MK" Type="int" />
+  </EntityType>
+  <EntityType Name="BARCODE">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BarCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="GiaBan" Type="float" />
+  </EntityType>
+  <EntityType Name="BKNhomPS">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCT" Type="int" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="Ngay" Type="datetime2" Precision="0" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="100" />
+    <Property Name="SoPSNo" Type="float" />
+    <Property Name="SoPSCo" Type="float" />
+    <Property Name="ShDU" Type="nvarchar" MaxLength="20" />
+    <Property Name="ShTK" Type="nvarchar" MaxLength="20" />
+    <Property Name="SoPS2No" Type="float" />
+    <Property Name="SoPS2Co" Type="float" />
+    <Property Name="NgayGS" Type="datetime2" Precision="0" />
+    <Property Name="ShVT" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="CDTS">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TaiSan" Type="smallint" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="60" />
+    <Property Name="MaTk1" Type="int" />
+    <Property Name="MaTk2" Type="int" />
+    <Property Name="MaTk3" Type="float" />
+    <Property Name="DauNam" Type="float" />
+    <Property Name="CuoiKy" Type="float" />
+    <Property Name="NhomCha" Type="smallint" />
+    <Property Name="CoChiTiet" Type="smallint" />
+    <Property Name="DienGiaiE" Type="nvarchar" MaxLength="80" />
+    <Property Name="shtk1" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk2" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk3" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk4" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk5" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk6" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk7" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk8" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk9" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk10" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="cdts48">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TaiSan" Type="smallint" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="60" />
+    <Property Name="MaTk1" Type="int" />
+    <Property Name="MaTk2" Type="int" />
+    <Property Name="MaTk3" Type="float" />
+    <Property Name="DauNam" Type="float" />
+    <Property Name="CuoiKy" Type="float" />
+    <Property Name="NhomCha" Type="smallint" />
+    <Property Name="CoChiTiet" Type="smallint" />
+    <Property Name="DienGiaiE" Type="nvarchar" MaxLength="80" />
+    <Property Name="shtk1" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk2" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk3" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk4" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk5" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk6" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk7" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk8" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk9" Type="nvarchar" MaxLength="50" />
+    <Property Name="shtk10" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ChungTu">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCT" Type="int" />
+    <Property Name="MaLoai" Type="smallint" />
+    <Property Name="ThangCT" Type="smallint" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="NgayCT" Type="datetime2" Precision="0" />
+    <Property Name="NgayGS" Type="datetime2" Precision="0" />
+    <Property Name="NgayTL" Type="datetime2" Precision="0" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="255" />
+    <Property Name="MaKho" Type="int" />
+    <Property Name="MaNguon" Type="int" />
+    <Property Name="MaTKNo" Type="int" />
+    <Property Name="MaTKCo" Type="int" />
+    <Property Name="SoPS" Type="float" />
+    <Property Name="SoPS2No" Type="float" />
+    <Property Name="SoPS2Co" Type="float" />
+    <Property Name="MaTKTCNo" Type="int" />
+    <Property Name="MaTKTCCo" Type="int" />
+    <Property Name="MaVattu" Type="int" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="20" />
+    <Property Name="CT_ID" Type="float" />
+    <Property Name="SoXuat" Type="float" />
+    <Property Name="MaDT" Type="int" />
+    <Property Name="MaKH" Type="int" />
+    <Property Name="CTGS" Type="int" />
+    <Property Name="MaKHC" Type="int" />
+    <Property Name="MaTP" Type="int" />
+    <Property Name="DVT" Type="smallint" />
+    <Property Name="User_ID" Type="int" />
+    <Property Name="DienGiaiE" Type="nvarchar" MaxLength="150" />
+    <Property Name="TyGia" Type="float" />
+    <Property Name="MaNV" Type="int" />
+    <Property Name="HanTT" Type="smallint" />
+    <Property Name="SH1" Type="nvarchar" MaxLength="20" />
+    <Property Name="T1" Type="smallint" />
+    <Property Name="TLCK" Type="float" />
+    <Property Name="CK" Type="float" />
+    <Property Name="MaDT1" Type="int" />
+    <Property Name="MaDT2" Type="int" />
+    <Property Name="MaDT3" Type="int" />
+    <Property Name="XuLy" Type="smallint" />
+    <Property Name="MauSoHD" Type="nvarchar" MaxLength="255" />
+    <Property Name="LoaiHoaDon" Type="nvarchar" MaxLength="255" />
+    <Property Name="Nguoimuahang" Type="nvarchar" MaxLength="255" />
+    <Property Name="hinhthucthanhtoan" Type="nvarchar" MaxLength="255" />
+    <Property Name="sophieudathang" Type="nvarchar" MaxLength="255" />
+    <Property Name="chondiengiai" Type="nvarchar" MaxLength="255" />
+    <Property Name="phantramchietkhau" Type="nvarchar" MaxLength="255" />
+    <Property Name="sotienchietkhau" Type="nvarchar" MaxLength="255" />
+    <Property Name="solo" Type="nvarchar" MaxLength="255" />
+    <Property Name="handung" Type="datetime2" Precision="0" />
+    <Property Name="nhanban" Type="float" />
+    <Property Name="SoPSGoc" Type="float" />
+    <Property Name="NgayImport" Type="datetime2" Precision="0" />
+  </EntityType>
+  <EntityType Name="ChungTu2">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCT" Type="int" />
+    <Property Name="MaLoai" Type="smallint" />
+    <Property Name="ThangCT" Type="smallint" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="NgayCT" Type="datetime2" Precision="0" />
+    <Property Name="NgayGS" Type="datetime2" Precision="0" />
+    <Property Name="NgayTL" Type="datetime2" Precision="0" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="255" />
+    <Property Name="MaKho" Type="int" />
+    <Property Name="MaNguon" Type="int" />
+    <Property Name="MaTKNo" Type="int" />
+    <Property Name="MaTKCo" Type="int" />
+    <Property Name="SoPS" Type="float" />
+    <Property Name="SoPS2No" Type="float" />
+    <Property Name="SoPS2Co" Type="float" />
+    <Property Name="MaTKTCNo" Type="int" />
+    <Property Name="MaTKTCCo" Type="int" />
+    <Property Name="MaVattu" Type="int" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="20" />
+    <Property Name="CT_ID" Type="int" />
+    <Property Name="SoXuat" Type="float" />
+    <Property Name="MaDT" Type="int" />
+    <Property Name="MaKH" Type="int" />
+    <Property Name="CTGS" Type="int" />
+    <Property Name="MaKHC" Type="int" />
+    <Property Name="MaTP" Type="int" />
+    <Property Name="DVT" Type="smallint" />
+    <Property Name="User_ID" Type="int" />
+    <Property Name="DienGiaiE" Type="nvarchar" MaxLength="150" />
+    <Property Name="TyGia" Type="float" />
+    <Property Name="MaNV" Type="int" />
+    <Property Name="HanTT" Type="smallint" />
+    <Property Name="SH1" Type="nvarchar" MaxLength="20" />
+    <Property Name="T1" Type="smallint" />
+    <Property Name="TLCK" Type="float" />
+    <Property Name="CK" Type="float" />
+    <Property Name="MaDT1" Type="int" />
+    <Property Name="MaDT2" Type="int" />
+    <Property Name="MaDT3" Type="int" />
+  </EntityType>
+  <EntityType Name="ChungTuLQ">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCT" Type="int" />
+    <Property Name="Loai" Type="smallint" />
+    <Property Name="HoTen" Type="nvarchar" MaxLength="300" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="300" />
+    <Property Name="SoCTGoc" Type="nvarchar" MaxLength="50" />
+    <Property Name="MaKH" Type="int" />
+  </EntityType>
+  <EntityType Name="ChungTuLQP">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCT" Type="int" />
+    <Property Name="Loai" Type="smallint" />
+    <Property Name="HoTen" Type="nvarchar" MaxLength="50" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="50" />
+    <Property Name="SoCTGoc" Type="nvarchar" MaxLength="50" />
+    <Property Name="MaKH" Type="int" />
+  </EntityType>
+  <EntityType Name="ChungTuP">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCT" Type="int" />
+    <Property Name="MaLoai" Type="smallint" />
+    <Property Name="ThangCT" Type="smallint" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="NgayCT" Type="datetime2" Precision="0" />
+    <Property Name="NgayGS" Type="datetime2" Precision="0" />
+    <Property Name="NgayTL" Type="datetime2" Precision="0" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="255" />
+    <Property Name="MaKho" Type="int" />
+    <Property Name="MaNguon" Type="int" />
+    <Property Name="MaTKNo" Type="int" />
+    <Property Name="MaTKCo" Type="int" />
+    <Property Name="SoPS" Type="float" />
+    <Property Name="SoPS2No" Type="float" />
+    <Property Name="SoPS2Co" Type="float" />
+    <Property Name="MaTKTCNo" Type="int" />
+    <Property Name="MaTKTCCo" Type="int" />
+    <Property Name="MaVattu" Type="int" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="20" />
+    <Property Name="CT_ID" Type="int" />
+    <Property Name="SoXuat" Type="float" />
+    <Property Name="MaDT" Type="int" />
+    <Property Name="MaKH" Type="int" />
+    <Property Name="CTGS" Type="int" />
+    <Property Name="MaKHC" Type="int" />
+    <Property Name="MaTP" Type="int" />
+    <Property Name="DVT" Type="smallint" />
+    <Property Name="User_ID" Type="int" />
+    <Property Name="DienGiaiE" Type="nvarchar" MaxLength="255" />
+    <Property Name="TyGia" Type="float" />
+    <Property Name="MaNV" Type="int" />
+    <Property Name="HanTT" Type="smallint" />
+    <Property Name="SH1" Type="nvarchar" MaxLength="20" />
+    <Property Name="T1" Type="smallint" />
+    <Property Name="TLCK" Type="float" />
+    <Property Name="CK" Type="float" />
+    <Property Name="MaDT1" Type="int" />
+    <Property Name="MaDT2" Type="int" />
+    <Property Name="MaDT3" Type="int" />
+    <Property Name="MauSoHD" Type="nvarchar" MaxLength="255" />
+    <Property Name="LoaiHoaDon" Type="nvarchar" MaxLength="255" />
+    <Property Name="Nguoimuahang" Type="nvarchar" MaxLength="255" />
+    <Property Name="hinhthucthanhtoan" Type="nvarchar" MaxLength="255" />
+    <Property Name="sophieudathang" Type="nvarchar" MaxLength="255" />
+    <Property Name="chondiengiai" Type="nvarchar" MaxLength="255" />
+    <Property Name="solo" Type="nvarchar" MaxLength="255" />
+    <Property Name="handung" Type="datetime2" Precision="0" />
+  </EntityType>
+  <EntityType Name="CNDauNam">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaTaiKhoan" Type="int" />
+    <Property Name="MaKhachHang" Type="int" />
+    <Property Name="DuNo_0" Type="float" />
+    <Property Name="DuCo_0" Type="float" />
+    <Property Name="DuNT_0" Type="float" />
+    <Property Name="SoXuat" Type="float" />
+    <Property Name="HanTT" Type="smallint" />
+  </EntityType>
+  <EntityType Name="CNDauNam2">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaTaiKhoan" Type="int" />
+    <Property Name="MaKhachHang" Type="int" />
+    <Property Name="DuNo_0" Type="float" />
+    <Property Name="DuCo_0" Type="float" />
+    <Property Name="DuNT_0" Type="float" />
+    <Property Name="SoXuat" Type="float" />
+    <Property Name="HanTT" Type="smallint" />
+  </EntityType>
+  <EntityType Name="CPGVHD">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaDT" Type="int" />
+    <Property Name="MaVattu" Type="int" />
+    <Property Name="CP1" Type="float" />
+    <Property Name="CP2" Type="float" />
+    <Property Name="CP3" Type="float" />
+    <Property Name="CP4" Type="float" />
+    <Property Name="TT2" Type="float" />
+    <Property Name="TNK" Type="float" />
+    <Property Name="TyGia1" Type="float" />
+    <Property Name="SL" Type="float" />
+    <Property Name="TT" Type="float" />
+    <Property Name="PN" Type="nvarchar" MaxLength="20" />
+    <Property Name="MaDT1" Type="int" />
+    <Property Name="MaDT2" Type="int" />
+    <Property Name="MaDT3" Type="int" />
+  </EntityType>
+  <EntityType Name="CTGhiSo">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="CTKetChuyen">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="STT" Type="smallint" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="80" />
+    <Property Name="TK1" Type="nvarchar" MaxLength="20" />
+    <Property Name="TK2" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="CTTaiSan">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCTKT" Type="int" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="15" />
+    <Property Name="Thang" Type="smallint" />
+    <Property Name="VaoSo" Type="datetime2" Precision="0" />
+    <Property Name="NgayGhi" Type="datetime2" Precision="0" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="100" />
+    <Property Name="MaLoai" Type="int" />
+    <Property Name="MaNhom" Type="int" />
+    <Property Name="MaTS" Type="int" />
+    <Property Name="NG_NS" Type="float" />
+    <Property Name="NG_TBS" Type="float" />
+    <Property Name="NG_CNK" Type="float" />
+    <Property Name="NG_TD" Type="float" />
+    <Property Name="CL_NS" Type="float" />
+    <Property Name="CL_TBS" Type="float" />
+    <Property Name="CL_CNK" Type="float" />
+    <Property Name="CL_TD" Type="float" />
+    <Property Name="DienGiaiE" Type="nvarchar" MaxLength="100" />
+    <Property Name="taisanIdCu" Type="float" />
+  </EntityType>
+  <EntityType Name="DCPTung">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaTS" Type="int" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="DonVi" Type="nvarchar" MaxLength="15" />
+    <Property Name="SoLuong" Type="float" />
+    <Property Name="GiaThanh" Type="float" />
+  </EntityType>
+  <EntityType Name="DinhMuc">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaTP" Type="int" />
+    <Property Name="MaNVL" Type="int" />
+    <Property Name="SoLuong" Type="float" />
+    <Property Name="Thang" Type="smallint" />
+    <Property Name="ThangHL" Type="smallint" />
+  </EntityType>
+  <EntityType Name="DoituongCT">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="50" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="NgayKy" Type="datetime2" Precision="0" />
+    <Property Name="MaKhachHang" Type="int" />
+    <Property Name="TriGia" Type="float" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="20" />
+    <Property Name="NgayTH" Type="datetime2" Precision="0" />
+  </EntityType>
+  <EntityType Name="DTQLy">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="DVTVattu">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaVattu" Type="int" />
+    <Property Name="DonVi" Type="nvarchar" MaxLength="20" />
+    <Property Name="TyLeQD" Type="float" />
+    <Property Name="GiaBan" Type="float" />
+    <Property Name="MadvtvattuCu" Type="float" />
+  </EntityType>
+  <EntityType Name="HeThongTK">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="Cap" Type="smallint" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="60" />
+    <Property Name="Kieu" Type="smallint" />
+    <Property Name="Loai" Type="smallint" />
+    <Property Name="TKCon" Type="smallint" />
+    <Property Name="MaNT" Type="int" />
+    <Property Name="DuNo_0" Type="float" />
+    <Property Name="DuCo_0" Type="float" />
+    <Property Name="DuNT_0" Type="float" />
+    <Property Name="No_1" Type="float" />
+    <Property Name="Co_1" Type="float" />
+    <Property Name="No_1_NT" Type="float" />
+    <Property Name="Co_1_NT" Type="float" />
+    <Property Name="DuNo_1" Type="float" />
+    <Property Name="DuCo_1" Type="float" />
+    <Property Name="DuNT_1" Type="float" />
+    <Property Name="No_2" Type="float" />
+    <Property Name="Co_2" Type="float" />
+    <Property Name="No_2_NT" Type="float" />
+    <Property Name="Co_2_NT" Type="float" />
+    <Property Name="DuNo_2" Type="float" />
+    <Property Name="DuCo_2" Type="float" />
+    <Property Name="DuNT_2" Type="float" />
+    <Property Name="No_3" Type="float" />
+    <Property Name="Co_3" Type="float" />
+    <Property Name="No_3_NT" Type="float" />
+    <Property Name="Co_3_NT" Type="float" />
+    <Property Name="DuNo_3" Type="float" />
+    <Property Name="DuCo_3" Type="float" />
+    <Property Name="DuNT_3" Type="float" />
+    <Property Name="No_4" Type="float" />
+    <Property Name="Co_4" Type="float" />
+    <Property Name="No_4_NT" Type="float" />
+    <Property Name="Co_4_NT" Type="float" />
+    <Property Name="DuNo_4" Type="float" />
+    <Property Name="DuCo_4" Type="float" />
+    <Property Name="DuNT_4" Type="float" />
+    <Property Name="No_5" Type="float" />
+    <Property Name="Co_5" Type="float" />
+    <Property Name="No_5_NT" Type="float" />
+    <Property Name="Co_5_NT" Type="float" />
+    <Property Name="DuNo_5" Type="float" />
+    <Property Name="DuCo_5" Type="float" />
+    <Property Name="DuNT_5" Type="float" />
+    <Property Name="No_6" Type="float" />
+    <Property Name="Co_6" Type="float" />
+    <Property Name="No_6_NT" Type="float" />
+    <Property Name="Co_6_NT" Type="float" />
+    <Property Name="DuNo_6" Type="float" />
+    <Property Name="DuCo_6" Type="float" />
+    <Property Name="DuNT_6" Type="float" />
+    <Property Name="No_7" Type="float" />
+    <Property Name="Co_7" Type="float" />
+    <Property Name="No_7_NT" Type="float" />
+    <Property Name="Co_7_NT" Type="float" />
+    <Property Name="DuNo_7" Type="float" />
+    <Property Name="DuCo_7" Type="float" />
+    <Property Name="DuNT_7" Type="float" />
+    <Property Name="No_8" Type="float" />
+    <Property Name="Co_8" Type="float" />
+    <Property Name="No_8_NT" Type="float" />
+    <Property Name="Co_8_NT" Type="float" />
+    <Property Name="DuNo_8" Type="float" />
+    <Property Name="DuCo_8" Type="float" />
+    <Property Name="DuNT_8" Type="float" />
+    <Property Name="No_9" Type="float" />
+    <Property Name="Co_9" Type="float" />
+    <Property Name="No_9_NT" Type="float" />
+    <Property Name="Co_9_NT" Type="float" />
+    <Property Name="DuNo_9" Type="float" />
+    <Property Name="DuCo_9" Type="float" />
+    <Property Name="DuNT_9" Type="float" />
+    <Property Name="No_10" Type="float" />
+    <Property Name="Co_10" Type="float" />
+    <Property Name="No_10_NT" Type="float" />
+    <Property Name="Co_10_NT" Type="float" />
+    <Property Name="DuNo_10" Type="float" />
+    <Property Name="DuCo_10" Type="float" />
+    <Property Name="DuNT_10" Type="float" />
+    <Property Name="No_11" Type="float" />
+    <Property Name="Co_11" Type="float" />
+    <Property Name="No_11_NT" Type="float" />
+    <Property Name="Co_11_NT" Type="float" />
+    <Property Name="DuNo_11" Type="float" />
+    <Property Name="DuCo_11" Type="float" />
+    <Property Name="DuNT_11" Type="float" />
+    <Property Name="No_12" Type="float" />
+    <Property Name="Co_12" Type="float" />
+    <Property Name="No_12_NT" Type="float" />
+    <Property Name="Co_12_NT" Type="float" />
+    <Property Name="DuNo_12" Type="float" />
+    <Property Name="DuCo_12" Type="float" />
+    <Property Name="DuNT_12" Type="float" />
+    <Property Name="TK_ID" Type="smallint" />
+    <Property Name="TK_ID2" Type="smallint" />
+    <Property Name="SoDuMax" Type="float" />
+    <Property Name="SoDuMin" Type="float" />
+    <Property Name="TKCha0" Type="int" />
+    <Property Name="TKCha1" Type="int" />
+    <Property Name="TKCha2" Type="int" />
+    <Property Name="TKCha3" Type="int" />
+    <Property Name="TKCha4" Type="int" />
+    <Property Name="TKCha5" Type="int" />
+    <Property Name="MaTC" Type="int" />
+    <Property Name="KC_N" Type="float" />
+    <Property Name="KC_C" Type="float" />
+    <Property Name="DuNo" Type="float" />
+    <Property Name="DuCo" Type="float" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="50" />
+    <Property Name="CapDuoi" Type="smallint" />
+    <Property Name="TenE" Type="nvarchar" MaxLength="60" />
+    <Property Name="TK_ID3" Type="int" />
+    <Property Name="TenDA" Type="nvarchar" MaxLength="50" />
+    <Property Name="NhomDA" Type="nvarchar" MaxLength="3" />
+    <Property Name="DiaDiem" Type="nvarchar" MaxLength="50" />
+    <Property Name="DuToan" Type="float" />
+    <Property Name="Von1" Type="float" />
+    <Property Name="Von2" Type="float" />
+    <Property Name="Von3" Type="float" />
+    <Property Name="NgayKC" Type="datetime2" Precision="0" />
+    <Property Name="NgayHT" Type="datetime2" Precision="0" />
+    <Property Name="PSNLK" Type="float" />
+    <Property Name="PSCLK" Type="float" />
+    <Property Name="PSNLK2005" Type="float" />
+    <Property Name="PSCLK2005" Type="float" />
+    <Property Name="PSNLK2006" Type="float" />
+    <Property Name="PSCLK2006" Type="float" />
+    <Property Name="PSNLK2008" Type="float" />
+    <Property Name="PSCLK2008" Type="float" />
+    <Property Name="PSNLK2009" Type="float" />
+    <Property Name="PSCLK2009" Type="float" />
+    <Property Name="PSNLK2010" Type="float" />
+    <Property Name="PSCLK2010" Type="float" />
+    <Property Name="PSNLK2011" Type="float" />
+    <Property Name="PSCLK2011" Type="float" />
+    <Property Name="PSNLK2012" Type="float" />
+    <Property Name="PSCLK2012" Type="float" />
+    <Property Name="PSNLK2013" Type="float" />
+    <Property Name="PSCLK2013" Type="float" />
+    <Property Name="THEMMOI" Type="nvarchar" MaxLength="255" />
+    <Property Name="PSNLK2014" Type="float" />
+    <Property Name="PSCLK2014" Type="float" />
+    <Property Name="PSNLK2015" Type="float" />
+    <Property Name="PSCLK2015" Type="float" />
+    <Property Name="PSNLK2016" Type="float" />
+    <Property Name="PSCLK2016" Type="float" />
+    <Property Name="PSNLK2017" Type="float" />
+    <Property Name="PSCLK2017" Type="float" />
+    <Property Name="PSNLK2018" Type="float" />
+    <Property Name="PSCLK2018" Type="float" />
+    <Property Name="PSNLK2019" Type="float" />
+    <Property Name="PSCLK2019" Type="float" />
+    <Property Name="PSNLK2020" Type="float" />
+    <Property Name="PSCLK2020" Type="float" />
+    <Property Name="PSNLK2021" Type="float" />
+    <Property Name="PSCLK2021" Type="float" />
+    <Property Name="PSNLK2022" Type="float" />
+    <Property Name="PSCLK2022" Type="float" />
+    <Property Name="PSNLK2023" Type="float" />
+    <Property Name="PSCLK2023" Type="float" />
+    <Property Name="PSNLK2024" Type="float" />
+    <Property Name="PSCLK2024" Type="float" />
+    <Property Name="PSNLK2025" Type="float" />
+    <Property Name="PSCLK2025" Type="float" />
+  </EntityType>
+  <EntityType Name="HoaDon">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" Nullable="false" />
+    <Property Name="Loai" Type="smallint" />
+    <Property Name="MaKhachHang" Type="int" />
+    <Property Name="KyHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="SoHD" Type="nvarchar" MaxLength="20" />
+    <Property Name="NgayPH" Type="datetime2" Precision="0" />
+    <Property Name="MatHang" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoLuong" Type="float" />
+    <Property Name="ThanhTien" Type="float" />
+    <Property Name="TyLe" Type="smallint" />
+    <Property Name="HD" Type="smallint" />
+    <Property Name="KCT" Type="smallint" />
+    <Property Name="GiaTT" Type="float" />
+    <Property Name="HTTT" Type="nvarchar" MaxLength="20" />
+    <Property Name="MauSo" Type="nvarchar" MaxLength="20" />
+    <Property Name="HDBL" Type="smallint" />
+    <Property Name="NK" Type="smallint" />
+    <Property Name="TS" Type="smallint" />
+    <Property Name="DC" Type="smallint" />
+    <Property Name="TyGia" Type="float" />
+    <Property Name="pathInvoice" Type="nvarchar" MaxLength="255" />
+    <Property Name="Ghichuhd" Type="nvarchar" MaxLength="255" />
+    <Property Name="IdNhap" Type="nvarchar" MaxLength="255" />
+    <Property Name="IdTemplate" Type="nvarchar" MaxLength="255" />
+    <Property Name="StatusPH" Type="nvarchar" MaxLength="255" />
+    <Property Name="TendoHDid" Type="nvarchar" MaxLength="255" />
+    <Property Name="has_e_invoice" Type="float" />
+    <Property Name="TendoHDState" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="HoaDonP">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Loai" Type="smallint" />
+    <Property Name="MaKhachHang" Type="int" />
+    <Property Name="KyHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="SoHD" Type="nvarchar" MaxLength="20" />
+    <Property Name="NgayPH" Type="datetime2" Precision="0" />
+    <Property Name="MatHang" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoLuong" Type="float" />
+    <Property Name="ThanhTien" Type="float" />
+    <Property Name="TyLe" Type="smallint" />
+    <Property Name="HD" Type="smallint" />
+    <Property Name="KCT" Type="smallint" />
+    <Property Name="GiaTT" Type="float" />
+    <Property Name="HTTT" Type="nvarchar" MaxLength="20" />
+    <Property Name="MauSo" Type="nvarchar" MaxLength="20" />
+    <Property Name="HDBL" Type="smallint" />
+    <Property Name="NK" Type="smallint" />
+    <Property Name="TS" Type="smallint" />
+    <Property Name="DC" Type="smallint" />
+    <Property Name="TyGia" Type="float" />
+  </EntityType>
+  <EntityType Name="KCChitiet">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaKC" Type="int" />
+    <Property Name="TK1" Type="int" />
+    <Property Name="TK2" Type="int" />
+  </EntityType>
+  <EntityType Name="KhachHang">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaPhanLoai" Type="int" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="255" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="255" />
+    <Property Name="MST" Type="nvarchar" MaxLength="20" />
+    <Property Name="Tel" Type="nvarchar" MaxLength="20" />
+    <Property Name="Fax" Type="nvarchar" MaxLength="20" />
+    <Property Name="EMail" Type="nvarchar" MaxLength="20" />
+    <Property Name="TaiKhoan" Type="nvarchar" MaxLength="100" />
+    <Property Name="DaiDien" Type="nvarchar" MaxLength="100" />
+    <Property Name="DuMax" Type="float" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="100" />
+    <Property Name="MaNT" Type="int" />
+    <Property Name="contact_id" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="KhoHang">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TenKho" Type="nvarchar" MaxLength="50" />
+    <Property Name="MaTK" Type="int" />
+    <Property Name="MaTKGV" Type="int" />
+  </EntityType>
+  <EntityType Name="KiemKe">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaSoKho" Type="int" />
+    <Property Name="MaTaiKhoan" Type="int" />
+    <Property Name="MaVatTu" Type="int" />
+    <Property Name="Luong_1" Type="float" />
+    <Property Name="Tien_1" Type="float" />
+    <Property Name="Luong_2" Type="float" />
+    <Property Name="Tien_2" Type="float" />
+    <Property Name="Luong_3" Type="float" />
+    <Property Name="Tien_3" Type="float" />
+    <Property Name="Luong_4" Type="float" />
+    <Property Name="Tien_4" Type="float" />
+    <Property Name="Luong_5" Type="float" />
+    <Property Name="Tien_5" Type="float" />
+    <Property Name="Luong_6" Type="float" />
+    <Property Name="Tien_6" Type="float" />
+    <Property Name="Luong_7" Type="float" />
+    <Property Name="Tien_7" Type="float" />
+    <Property Name="Luong_8" Type="float" />
+    <Property Name="Tien_8" Type="float" />
+    <Property Name="Luong_9" Type="float" />
+    <Property Name="Tien_9" Type="float" />
+    <Property Name="Luong_10" Type="float" />
+    <Property Name="Tien_10" Type="float" />
+    <Property Name="Luong_11" Type="float" />
+    <Property Name="Tien_11" Type="float" />
+    <Property Name="Tien_12" Type="float" />
+    <Property Name="Luong_12" Type="float" />
+  </EntityType>
+  <EntityType Name="KiemKeN">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ngay" Type="datetime2" Precision="0" />
+    <Property Name="MaTaiKhoan" Type="int" />
+    <Property Name="MaSoKho" Type="int" />
+    <Property Name="MaVattu" Type="int" />
+    <Property Name="SoLuong" Type="float" />
+    <Property Name="ThanhTien" Type="float" />
+    <Property Name="ThanhTien2" Type="float" />
+  </EntityType>
+  <EntityType Name="KQKD911">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="Ma" Type="int" />
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="100" />
+    <Property Name="SHTKNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="SHTKCo" Type="nvarchar" MaxLength="20" />
+    <Property Name="DauNam" Type="float" />
+    <Property Name="KyTruoc" Type="float" />
+    <Property Name="KyNay" Type="float" />
+    <Property Name="TongHop" Type="smallint" />
+    <Property Name="MaSoCha" Type="int" />
+    <Property Name="TenE" Type="nvarchar" MaxLength="60" />
+    <Property Name="MaTK" Type="int" />
+    <Property Name="Cap" Type="smallint" />
+  </EntityType>
+  <EntityType Name="LaiSuat">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaTK" Type="int" />
+    <Property Name="Ngay" Type="datetime2" Precision="0" />
+    <Property Name="LS" Type="float" />
+    <Property Name="MaKH" Type="int" />
+  </EntityType>
+  <EntityType Name="LoaiChungTu">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="15" />
+    <Property Name="CapTren" Type="float" />
+    <Property Name="Cap" Type="smallint" />
+  </EntityType>
+  <EntityType Name="LoaiTaiSan">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="15" />
+    <Property Name="CapTren" Type="float" />
+    <Property Name="Cap" Type="smallint" />
+  </EntityType>
+  <EntityType Name="NguonNhapXuat">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaLoai" Type="smallint" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="NguyenTe">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="KyHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="TyGia" Type="float" />
+  </EntityType>
+  <EntityType Name="NhanVien">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaPhanLoai" Type="int" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="50" />
+    <Property Name="NgaySinh" Type="datetime2" Precision="0" />
+    <Property Name="CMND" Type="nvarchar" MaxLength="20" />
+    <Property Name="Tel1" Type="nvarchar" MaxLength="20" />
+    <Property Name="Tel2" Type="nvarchar" MaxLength="20" />
+    <Property Name="EMail" Type="nvarchar" MaxLength="20" />
+    <Property Name="TaiKhoan" Type="nvarchar" MaxLength="50" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PhanLoai154">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="TenPhanLoai" Type="nvarchar" MaxLength="50" />
+    <Property Name="PLCon" Type="smallint" />
+    <Property Name="PLCha" Type="int" />
+    <Property Name="Cap" Type="smallint" />
+  </EntityType>
+  <EntityType Name="PhanLoaiKhachHang">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="12" />
+    <Property Name="TenPhanLoai" Type="nvarchar" MaxLength="50" />
+    <Property Name="VAT" Type="smallint" />
+    <Property Name="PLCon" Type="smallint" />
+    <Property Name="PLCha" Type="int" />
+    <Property Name="Cap" Type="smallint" />
+  </EntityType>
+  <EntityType Name="PhanLoaiNhanVien">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="TenPhanLoai" Type="nvarchar" MaxLength="50" />
+    <Property Name="PLCon" Type="smallint" />
+    <Property Name="PLCha" Type="int" />
+    <Property Name="Cap" Type="smallint" />
+  </EntityType>
+  <EntityType Name="PhanLoaiVattu">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="12" />
+    <Property Name="TenPhanLoai" Type="nvarchar" MaxLength="50" />
+    <Property Name="VAT" Type="smallint" />
+    <Property Name="PLCon" Type="smallint" />
+    <Property Name="Cap" Type="smallint" />
+    <Property Name="MaTK" Type="int" />
+    <Property Name="PLCha" Type="smallint" />
+    <Property Name="MaPhanLoaiCu" Type="float" />
+    <Property Name="TKNo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="PhieuNX">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoCT" Type="nvarchar" MaxLength="20" />
+    <Property Name="DienGiaiCT" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoLuong" Type="float" />
+    <Property Name="ThanhTien" Type="float" />
+    <Property Name="Kho" Type="nvarchar" MaxLength="50" />
+    <Property Name="DVT" Type="nvarchar" MaxLength="20" />
+    <Property Name="DonGia" Type="float" />
+    <Property Name="TyLe" Type="smallint" />
+    <Property Name="Thue" Type="float" />
+    <Property Name="ThanhTien2" Type="float" />
+    <Property Name="CK" Type="float" />
+  </EntityType>
+  <EntityType Name="QuocGia">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Reports">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar" MaxLength="20" />
+    <Property Name="FileSize" Type="int" />
+  </EntityType>
+  <EntityType Name="SHchungtu">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="SHTK" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="SoDuKhachHang">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaTaiKhoan" Type="int" />
+    <Property Name="MaKhachHang" Type="int" />
+    <Property Name="DuNo_0" Type="float" />
+    <Property Name="DuCo_0" Type="float" />
+    <Property Name="DuNT_0" Type="float" />
+    <Property Name="No_1" Type="float" />
+    <Property Name="Co_1" Type="float" />
+    <Property Name="No_1_NT" Type="float" />
+    <Property Name="Co_1_NT" Type="float" />
+    <Property Name="DuNo_1" Type="float" />
+    <Property Name="DuCo_1" Type="float" />
+    <Property Name="DuNT_1" Type="float" />
+    <Property Name="No_2" Type="float" />
+    <Property Name="Co_2" Type="float" />
+    <Property Name="No_2_NT" Type="float" />
+    <Property Name="Co_2_NT" Type="float" />
+    <Property Name="DuNo_2" Type="float" />
+    <Property Name="DuCo_2" Type="float" />
+    <Property Name="DuNT_2" Type="float" />
+    <Property Name="No_3" Type="float" />
+    <Property Name="Co_3" Type="float" />
+    <Property Name="No_3_NT" Type="float" />
+    <Property Name="Co_3_NT" Type="float" />
+    <Property Name="DuNo_3" Type="float" />
+    <Property Name="DuCo_3" Type="float" />
+    <Property Name="DuNT_3" Type="float" />
+    <Property Name="No_4" Type="float" />
+    <Property Name="Co_4" Type="float" />
+    <Property Name="No_4_NT" Type="float" />
+    <Property Name="Co_4_NT" Type="float" />
+    <Property Name="DuNo_4" Type="float" />
+    <Property Name="DuCo_4" Type="float" />
+    <Property Name="DuNT_4" Type="float" />
+    <Property Name="No_5" Type="float" />
+    <Property Name="Co_5" Type="float" />
+    <Property Name="No_5_NT" Type="float" />
+    <Property Name="Co_5_NT" Type="float" />
+    <Property Name="DuNo_5" Type="float" />
+    <Property Name="DuCo_5" Type="float" />
+    <Property Name="DuNT_5" Type="float" />
+    <Property Name="No_6" Type="float" />
+    <Property Name="Co_6" Type="float" />
+    <Property Name="No_6_NT" Type="float" />
+    <Property Name="Co_6_NT" Type="float" />
+    <Property Name="DuNo_6" Type="float" />
+    <Property Name="DuCo_6" Type="float" />
+    <Property Name="DuNT_6" Type="float" />
+    <Property Name="No_7" Type="float" />
+    <Property Name="Co_7" Type="float" />
+    <Property Name="No_7_NT" Type="float" />
+    <Property Name="Co_7_NT" Type="float" />
+    <Property Name="DuNo_7" Type="float" />
+    <Property Name="DuCo_7" Type="float" />
+    <Property Name="DuNT_7" Type="float" />
+    <Property Name="No_8" Type="float" />
+    <Property Name="Co_8" Type="float" />
+    <Property Name="No_8_NT" Type="float" />
+    <Property Name="Co_8_NT" Type="float" />
+    <Property Name="DuNo_8" Type="float" />
+    <Property Name="DuCo_8" Type="float" />
+    <Property Name="DuNT_8" Type="float" />
+    <Property Name="No_9" Type="float" />
+    <Property Name="Co_9" Type="float" />
+    <Property Name="No_9_NT" Type="float" />
+    <Property Name="Co_9_NT" Type="float" />
+    <Property Name="DuNo_9" Type="float" />
+    <Property Name="DuCo_9" Type="float" />
+    <Property Name="DuNT_9" Type="float" />
+    <Property Name="No_10" Type="float" />
+    <Property Name="Co_10" Type="float" />
+    <Property Name="No_10_NT" Type="float" />
+    <Property Name="Co_10_NT" Type="float" />
+    <Property Name="DuNo_10" Type="float" />
+    <Property Name="DuCo_10" Type="float" />
+    <Property Name="DuNT_10" Type="float" />
+    <Property Name="No_11" Type="float" />
+    <Property Name="Co_11" Type="float" />
+    <Property Name="No_11_NT" Type="float" />
+    <Property Name="Co_11_NT" Type="float" />
+    <Property Name="DuNo_11" Type="float" />
+    <Property Name="DuCo_11" Type="float" />
+    <Property Name="DuNT_11" Type="float" />
+    <Property Name="No_12" Type="float" />
+    <Property Name="Co_12" Type="float" />
+    <Property Name="No_12_NT" Type="float" />
+    <Property Name="Co_12_NT" Type="float" />
+    <Property Name="DuNo_12" Type="float" />
+    <Property Name="DuCo_12" Type="float" />
+    <Property Name="DuNT_12" Type="float" />
+  </EntityType>
+  <EntityType Name="tableHoadonvao">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NgayMua" Type="datetime2" Precision="0" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="255" />
+    <Property Name="TenKH" Type="nvarchar" MaxLength="255" />
+    <Property Name="MaSoHH" Type="nvarchar" MaxLength="255" />
+    <Property Name="TenHH" Type="nvarchar" MaxLength="255" />
+    <Property Name="SL" Type="float" />
+    <Property Name="DonGia" Type="float" />
+    <Property Name="ThanhTien" Type="float" />
+    <Property Name="Hinhthuc" Type="float" />
+    <Property Name="TKNo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKThue" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="TaiSan">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="15" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="NangLuc" Type="nvarchar" MaxLength="50" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="50" />
+    <Property Name="MaNuoc" Type="int" />
+    <Property Name="MaTaiKhoan" Type="int" />
+    <Property Name="MaLoai" Type="int" />
+    <Property Name="MaNhom" Type="int" />
+    <Property Name="ThangTang" Type="smallint" />
+    <Property Name="ThangGiam" Type="smallint" />
+    <Property Name="NamSX" Type="smallint" />
+    <Property Name="NamSD" Type="smallint" />
+    <Property Name="NamKH" Type="smallint" />
+    <Property Name="SHCT" Type="nvarchar" MaxLength="20" />
+    <Property Name="NCT" Type="datetime2" Precision="0" />
+    <Property Name="taisanIdCu" Type="float" />
+  </EntityType>
+  <EntityType Name="tbDinhdanhNganhang">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Noidung" Type="nvarchar" MaxLength="255" />
+    <Property Name="TK" Type="nvarchar" MaxLength="255" />
+    <Property Name="TK2" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tbDinhdanhtaikhoan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="255" />
+    <Property Name="KeyValue" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKNo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKThue" Type="nvarchar" MaxLength="255" />
+    <Property Name="Uutien" Type="nvarchar" MaxLength="255" />
+    <Property Name="Loai" Type="nvarchar" MaxLength="255" />
+    <Property Name="IsChecked" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tbFontsize">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MemnuFont" Type="nvarchar" MaxLength="255" />
+    <Property Name="MenuSize" Type="float" />
+    <Property Name="MenuBold" Type="float" />
+    <Property Name="ControlvniFont" Type="nvarchar" MaxLength="255" />
+    <Property Name="ControlvniSize" Type="float" />
+    <Property Name="ControluniFont" Type="nvarchar" MaxLength="255" />
+    <Property Name="ControluniSize" Type="float" />
+  </EntityType>
+  <EntityType Name="tbGetphieu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCT" Type="nvarchar" MaxLength="255" />
+    <Property Name="TenNM" Type="nvarchar" MaxLength="255" />
+    <Property Name="TenCty" Type="nvarchar" MaxLength="255" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="255" />
+    <Property Name="HTTT" Type="nvarchar" MaxLength="255" />
+    <Property Name="CCCD" Type="nvarchar" MaxLength="255" />
+    <Property Name="TyLe" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tbGhichuHT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHD" Type="nvarchar" MaxLength="255" />
+    <Property Name="NgayLap" Type="datetime2" Precision="0" />
+    <Property Name="Noidung" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tbHoadonThaythe">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHD" Type="nvarchar" MaxLength="255" />
+    <Property Name="KHHD" Type="nvarchar" MaxLength="255" />
+    <Property Name="NgayLap" Type="datetime2" Precision="0" />
+    <Property Name="HD1" Type="float" />
+    <Property Name="HD2" Type="float" />
+    <Property Name="Noidung" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tbimport">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SHDon" Type="nvarchar" MaxLength="255" />
+    <Property Name="KHHDon" Type="nvarchar" MaxLength="255" />
+    <Property Name="NLap" Type="datetime2" Precision="0" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="255" />
+    <Property Name="Noidung" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKNo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TkThue" Type="nvarchar" MaxLength="255" />
+    <Property Name="Mst" Type="nvarchar" MaxLength="255" />
+    <Property Name="Status" Type="float" />
+    <Property Name="Ngaytao" Type="nvarchar" MaxLength="255" />
+    <Property Name="TongTien" Type="float" />
+    <Property Name="Vat" Type="float" />
+    <Property Name="SohieuTP" Type="nvarchar" MaxLength="255" />
+    <Property Name="TPhi" Type="float" />
+    <Property Name="TgTCThue" Type="float" />
+    <Property Name="TgTThue" Type="float" />
+    <Property Name="Path" Type="nvarchar" MaxLength="255" />
+    <Property Name="Type" Type="nvarchar" MaxLength="255" />
+    <Property Name="IsHaschild" Type="nvarchar" MaxLength="255" />
+    <Property Name="InvoiceType" Type="nvarchar" MaxLength="255" />
+    <Property Name="TVat3" Type="float" />
+    <Property Name="TVat2" Type="float" />
+    <Property Name="TVat" Type="float" />
+    <Property Name="Vat3" Type="nvarchar" MaxLength="255" />
+    <Property Name="Vat2" Type="nvarchar" MaxLength="255" />
+    <Property Name="TgTCThue1" Type="float" />
+    <Property Name="TgTCThue2" Type="float" />
+    <Property Name="TgTCThue3" Type="float" />
+    <Property Name="Macdinhstatus" Type="nvarchar" MaxLength="255" />
+    <Property Name="Khmshdon" Type="nvarchar" MaxLength="255" />
+    <Property Name="idhoadon" Type="nvarchar" MaxLength="255" />
+    <Property Name="IsImport" Type="float" />
+    <Property Name="hdon" Type="nvarchar" MaxLength="255" />
+    <Property Name="Khautruthue" Type="float" />
+  </EntityType>
+  <EntityType Name="tbimportdetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoLuong" Type="float" />
+    <Property Name="DonGia" Type="float" />
+    <Property Name="DVT" Type="nvarchar" MaxLength="255" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="255" />
+    <Property Name="MaCT" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKNo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
+    <Property Name="TTien" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Percent" Type="nvarchar" MaxLength="255" />
+    <Property Name="IsMacdinh" Type="float" />
+    <Property Name="Tchat" Type="float" />
+    <Property Name="SoPSGoc" Type="float" />
+    <Property Name="VAT" Type="float" />
+    <Property Name="TTien_New" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="tbMatdinhghichu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TK" Type="nvarchar" MaxLength="255" />
+    <Property Name="Noidung" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tbNguyenLieuThanhPham">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TPSoHieu" Type="nvarchar" MaxLength="255" />
+    <Property Name="IDNguyenLieu" Type="float" />
+    <Property Name="SoHieuNguyenLieu" Type="nvarchar" MaxLength="255" />
+    <Property Name="TiLe" Type="float" />
+    <Property Name="stt" Type="float" />
+  </EntityType>
+  <EntityType Name="tbNhapkhonguyenlieu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="float" />
+    <Property Name="TTien" Type="float" />
+    <Property Name="SL" Type="float" />
+    <Property Name="SoHieuTP" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tbNhapkhotp">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NgayLap" Type="datetime2" Precision="0" />
+    <Property Name="NgayTao" Type="datetime2" Precision="0" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="255" />
+    <Property Name="Ghichu" Type="nvarchar" MaxLength="255" />
+    <Property Name="Status" Type="nvarchar" MaxLength="255" />
+    <Property Name="Ghichu2" Type="nvarchar" MaxLength="255" />
+    <Property Name="SoHieu2" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tbNhapkhotpChitiet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="255" />
+    <Property Name="SOLuong" Type="float" />
+    <Property Name="DonGia" Type="float" />
+    <Property Name="ParentID" Type="float" />
+  </EntityType>
+  <EntityType Name="tbPL1">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TenHH" Type="nvarchar" MaxLength="255" />
+    <Property Name="GT1" Type="float" />
+    <Property Name="GT2" Type="float" />
+  </EntityType>
+  <EntityType Name="tbPL2">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TenHH" Type="nvarchar" MaxLength="255" />
+    <Property Name="GT1" Type="float" />
+    <Property Name="GT2" Type="float" />
+  </EntityType>
+  <EntityType Name="tbThongTinToKhai">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quy1" Type="float" />
+    <Property Name="Quy2" Type="float" />
+    <Property Name="Quy3" Type="float" />
+    <Property Name="Quy4" Type="float" />
+    <Property Name="T1" Type="float" />
+    <Property Name="T2" Type="float" />
+    <Property Name="T3" Type="float" />
+    <Property Name="T4" Type="float" />
+    <Property Name="T5" Type="float" />
+    <Property Name="T6" Type="float" />
+    <Property Name="T7" Type="float" />
+    <Property Name="T8" Type="float" />
+    <Property Name="T9" Type="float" />
+    <Property Name="T10" Type="float" />
+    <Property Name="T11" Type="float" />
+    <Property Name="T12" Type="float" />
+    <Property Name="NguoiKy" Type="nvarchar" MaxLength="255" />
+    <Property Name="Nam" Type="smallint" />
+    <Property Name="k1" Type="nvarchar" MaxLength="255" />
+    <Property Name="k2" Type="nvarchar" MaxLength="255" />
+    <Property Name="k3" Type="nvarchar" MaxLength="255" />
+    <Property Name="k4" Type="nvarchar" MaxLength="255" />
+    <Property Name="k5" Type="nvarchar" MaxLength="255" />
+    <Property Name="k6" Type="nvarchar" MaxLength="255" />
+    <Property Name="k7" Type="nvarchar" MaxLength="255" />
+    <Property Name="k8" Type="nvarchar" MaxLength="255" />
+    <Property Name="k9" Type="nvarchar" MaxLength="255" />
+    <Property Name="k10" Type="nvarchar" MaxLength="255" />
+    <Property Name="k11" Type="nvarchar" MaxLength="255" />
+    <Property Name="k12" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml1" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml2" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml3" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml4" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml5" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml6" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml7" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml8" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml9" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml10" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml11" Type="nvarchar" MaxLength="255" />
+    <Property Name="xml12" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="ThanhPham">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaCT" Type="int" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="Thang" Type="smallint" />
+    <Property Name="Ngay" Type="datetime2" Precision="0" />
+    <Property Name="MaKhoTP" Type="int" />
+    <Property Name="MaKhoNVL" Type="int" />
+    <Property Name="MaTK" Type="int" />
+    <Property Name="MaTP" Type="int" />
+    <Property Name="SoLuong" Type="float" />
+    <Property Name="MaTKCP" Type="int" />
+    <Property Name="MaTKNC" Type="int" />
+    <Property Name="MaTKSX" Type="int" />
+    <Property Name="CPNVL" Type="float" />
+    <Property Name="CPNC" Type="float" />
+    <Property Name="CPSXC" Type="float" />
+    <Property Name="CPBH" Type="float" />
+    <Property Name="CPQL" Type="float" />
+    <Property Name="MaTKKH" Type="int" />
+    <Property Name="CPKH" Type="float" />
+    <Property Name="Ma154" Type="int" />
+    <Property Name="GiaThanh" Type="float" />
+    <Property Name="XK" Type="smallint" />
+    <Property Name="CPTC" Type="float" />
+  </EntityType>
+  <EntityType Name="ThongSo">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaTS" Type="int" />
+    <Property Name="Thang" Type="smallint" />
+    <Property Name="KH_NS" Type="float" />
+    <Property Name="KH_TBS" Type="float" />
+    <Property Name="KH_CNK" Type="float" />
+    <Property Name="KH_TD" Type="float" />
+    <Property Name="NG_NS" Type="float" />
+    <Property Name="NG_TBS" Type="float" />
+    <Property Name="NG_CNK" Type="float" />
+    <Property Name="NG_TD" Type="float" />
+    <Property Name="CL_NS" Type="float" />
+    <Property Name="CL_TBS" Type="float" />
+    <Property Name="CL_CNK" Type="float" />
+    <Property Name="CL_TD" Type="float" />
+    <Property Name="MaDTQL" Type="int" />
+    <Property Name="MaDTSD" Type="int" />
+    <Property Name="MaTTSD" Type="int" />
+    <Property Name="taisanIdCu" Type="float" />
+  </EntityType>
+  <EntityType Name="THUE">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="Ma" Type="int" />
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DienGiai" Type="nvarchar" MaxLength="50" />
+    <Property Name="MaTk" Type="int" />
+    <Property Name="KyTruocSang" Type="float" />
+    <Property Name="KyNay" Type="float" />
+    <Property Name="LuyKePN" Type="float" />
+    <Property Name="DaNop" Type="float" />
+    <Property Name="LuyKeDN" Type="float" />
+    <Property Name="TongHop" Type="smallint" />
+    <Property Name="DienGiaiE" Type="nvarchar" MaxLength="50" />
+    <Property Name="DaHoan" Type="float" />
+    <Property Name="MienGiam" Type="float" />
+  </EntityType>
+  <EntityType Name="TinhTrang">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TonKho">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaSoKho" Type="int" />
+    <Property Name="MaTaiKhoan" Type="int" />
+    <Property Name="MaVatTu" Type="int" />
+    <Property Name="Tien_0" Type="float" />
+    <Property Name="Luong_0" Type="float" />
+    <Property Name="SoXuat" Type="float" />
+    <Property Name="Tien_Nhap_1" Type="float" />
+    <Property Name="Luong_Nhap_1" Type="float" />
+    <Property Name="Tien_Xuat_1" Type="float" />
+    <Property Name="Luong_Xuat_1" Type="float" />
+    <Property Name="Luong_1" Type="float" />
+    <Property Name="Tien_1" Type="float" />
+    <Property Name="Tien_Nhap_2" Type="float" />
+    <Property Name="Luong_Nhap_2" Type="float" />
+    <Property Name="Tien_Xuat_2" Type="float" />
+    <Property Name="Luong_Xuat_2" Type="float" />
+    <Property Name="Luong_2" Type="float" />
+    <Property Name="Tien_2" Type="float" />
+    <Property Name="Tien_Nhap_3" Type="float" />
+    <Property Name="Luong_Nhap_3" Type="float" />
+    <Property Name="Tien_Xuat_3" Type="float" />
+    <Property Name="Luong_Xuat_3" Type="float" />
+    <Property Name="Luong_3" Type="float" />
+    <Property Name="Tien_3" Type="float" />
+    <Property Name="Tien_Nhap_4" Type="float" />
+    <Property Name="Luong_Nhap_4" Type="float" />
+    <Property Name="Tien_Xuat_4" Type="float" />
+    <Property Name="Luong_Xuat_4" Type="float" />
+    <Property Name="Luong_4" Type="float" />
+    <Property Name="Tien_4" Type="float" />
+    <Property Name="Tien_Nhap_5" Type="float" />
+    <Property Name="Luong_Nhap_5" Type="float" />
+    <Property Name="Tien_Xuat_5" Type="float" />
+    <Property Name="Luong_Xuat_5" Type="float" />
+    <Property Name="Luong_5" Type="float" />
+    <Property Name="Tien_5" Type="float" />
+    <Property Name="Tien_Nhap_6" Type="float" />
+    <Property Name="Luong_Nhap_6" Type="float" />
+    <Property Name="Tien_Xuat_6" Type="float" />
+    <Property Name="Luong_Xuat_6" Type="float" />
+    <Property Name="Luong_6" Type="float" />
+    <Property Name="Tien_6" Type="float" />
+    <Property Name="Tien_Nhap_7" Type="float" />
+    <Property Name="Luong_Nhap_7" Type="float" />
+    <Property Name="Tien_Xuat_7" Type="float" />
+    <Property Name="Luong_Xuat_7" Type="float" />
+    <Property Name="Luong_7" Type="float" />
+    <Property Name="Tien_7" Type="float" />
+    <Property Name="Tien_Nhap_8" Type="float" />
+    <Property Name="Luong_Nhap_8" Type="float" />
+    <Property Name="Tien_Xuat_8" Type="float" />
+    <Property Name="Luong_Xuat_8" Type="float" />
+    <Property Name="Luong_8" Type="float" />
+    <Property Name="Tien_8" Type="float" />
+    <Property Name="Tien_Nhap_9" Type="float" />
+    <Property Name="Luong_Nhap_9" Type="float" />
+    <Property Name="Tien_Xuat_9" Type="float" />
+    <Property Name="Luong_Xuat_9" Type="float" />
+    <Property Name="Luong_9" Type="float" />
+    <Property Name="Tien_9" Type="float" />
+    <Property Name="Tien_Nhap_10" Type="float" />
+    <Property Name="Luong_Nhap_10" Type="float" />
+    <Property Name="Tien_Xuat_10" Type="float" />
+    <Property Name="Luong_Xuat_10" Type="float" />
+    <Property Name="Luong_10" Type="float" />
+    <Property Name="Tien_10" Type="float" />
+    <Property Name="Tien_Nhap_11" Type="float" />
+    <Property Name="Luong_Nhap_11" Type="float" />
+    <Property Name="Tien_Xuat_11" Type="float" />
+    <Property Name="Luong_Xuat_11" Type="float" />
+    <Property Name="Luong_11" Type="float" />
+    <Property Name="Tien_11" Type="float" />
+    <Property Name="Tien_Nhap_12" Type="float" />
+    <Property Name="Luong_Nhap_12" Type="float" />
+    <Property Name="Tien_Xuat_12" Type="float" />
+    <Property Name="Luong_Xuat_12" Type="float" />
+    <Property Name="Tien_12" Type="float" />
+    <Property Name="Luong_12" Type="float" />
+  </EntityType>
+  <EntityType Name="TP154">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaPhanLoai" Type="int" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="TenVattu" Type="nvarchar" MaxLength="255" />
+    <Property Name="DonVi" Type="nvarchar" MaxLength="20" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="50" />
+    <Property Name="DK" Type="float" />
+    <Property Name="DK1" Type="float" />
+    <Property Name="CK1" Type="float" />
+    <Property Name="CPNVL" Type="float" />
+    <Property Name="CPNC" Type="float" />
+    <Property Name="CPM" Type="float" />
+    <Property Name="CPKH_1" Type="float" />
+    <Property Name="CPSXC_1" Type="float" />
+    <Property Name="CPKH_2" Type="float" />
+    <Property Name="CPSXC_2" Type="float" />
+    <Property Name="CPKH_3" Type="float" />
+    <Property Name="CPSXC_3" Type="float" />
+    <Property Name="CPKH_4" Type="float" />
+    <Property Name="CPSXC_4" Type="float" />
+    <Property Name="CPKH_5" Type="float" />
+    <Property Name="CPSXC_5" Type="float" />
+    <Property Name="CPKH_6" Type="float" />
+    <Property Name="CPSXC_6" Type="float" />
+    <Property Name="CPKH_7" Type="float" />
+    <Property Name="CPSXC_7" Type="float" />
+    <Property Name="CPKH_8" Type="float" />
+    <Property Name="CPSXC_8" Type="float" />
+    <Property Name="CPKH_9" Type="float" />
+    <Property Name="CPSXC_9" Type="float" />
+    <Property Name="CPKH_10" Type="float" />
+    <Property Name="CPSXC_10" Type="float" />
+    <Property Name="CPKH_11" Type="float" />
+    <Property Name="CPSXC_11" Type="float" />
+    <Property Name="CPKH_12" Type="float" />
+    <Property Name="CPSXC_12" Type="float" />
+    <Property Name="CPBH1" Type="float" />
+    <Property Name="CPQL1" Type="float" />
+    <Property Name="CPBHTT1" Type="float" />
+    <Property Name="CPQLTT1" Type="float" />
+    <Property Name="CPSXCTT1" Type="float" />
+    <Property Name="CPNVLPB1" Type="float" />
+    <Property Name="CPNCPB1" Type="float" />
+    <Property Name="CPMPB1" Type="float" />
+    <Property Name="CPBH2" Type="float" />
+    <Property Name="CPQL2" Type="float" />
+    <Property Name="CPBHTT2" Type="float" />
+    <Property Name="CPQLTT2" Type="float" />
+    <Property Name="CPSXCTT2" Type="float" />
+    <Property Name="CPNVLPB2" Type="float" />
+    <Property Name="CPNCPB2" Type="float" />
+    <Property Name="CPMPB2" Type="float" />
+    <Property Name="CPBH3" Type="float" />
+    <Property Name="CPQL3" Type="float" />
+    <Property Name="CPBHTT3" Type="float" />
+    <Property Name="CPQLTT3" Type="float" />
+    <Property Name="CPSXCTT3" Type="float" />
+    <Property Name="CPNVLPB3" Type="float" />
+    <Property Name="CPNCPB3" Type="float" />
+    <Property Name="CPMPB3" Type="float" />
+    <Property Name="CPBH4" Type="float" />
+    <Property Name="CPQL4" Type="float" />
+    <Property Name="CPBHTT4" Type="float" />
+    <Property Name="CPQLTT4" Type="float" />
+    <Property Name="CPSXCTT4" Type="float" />
+    <Property Name="CPNVLPB4" Type="float" />
+    <Property Name="CPNCPB4" Type="float" />
+    <Property Name="CPMPB4" Type="float" />
+    <Property Name="CPBH5" Type="float" />
+    <Property Name="CPQL5" Type="float" />
+    <Property Name="CPBHTT5" Type="float" />
+    <Property Name="CPQLTT5" Type="float" />
+    <Property Name="CPSXCTT5" Type="float" />
+    <Property Name="CPNVLPB5" Type="float" />
+    <Property Name="CPNCPB5" Type="float" />
+    <Property Name="CPMPB5" Type="float" />
+    <Property Name="CPBH6" Type="float" />
+    <Property Name="CPQL6" Type="float" />
+    <Property Name="CPBHTT6" Type="float" />
+    <Property Name="CPQLTT6" Type="float" />
+    <Property Name="CPSXCTT6" Type="float" />
+    <Property Name="CPNVLPB6" Type="float" />
+    <Property Name="CPNCPB6" Type="float" />
+    <Property Name="CPMPB6" Type="float" />
+    <Property Name="CPBH7" Type="float" />
+    <Property Name="CPQL7" Type="float" />
+    <Property Name="CPBHTT7" Type="float" />
+    <Property Name="CPQLTT7" Type="float" />
+    <Property Name="CPSXCTT7" Type="float" />
+    <Property Name="CPNVLPB7" Type="float" />
+    <Property Name="CPNCPB7" Type="float" />
+    <Property Name="CPMPB7" Type="float" />
+    <Property Name="CPBH8" Type="float" />
+    <Property Name="CPQL8" Type="float" />
+    <Property Name="CPBHTT8" Type="float" />
+    <Property Name="CPQLTT8" Type="float" />
+    <Property Name="CPSXCTT8" Type="float" />
+    <Property Name="CPNVLPB8" Type="float" />
+    <Property Name="CPNCPB8" Type="float" />
+    <Property Name="CPMPB8" Type="float" />
+    <Property Name="CPBH9" Type="float" />
+    <Property Name="CPQL9" Type="float" />
+    <Property Name="CPBHTT9" Type="float" />
+    <Property Name="CPQLTT9" Type="float" />
+    <Property Name="CPSXCTT9" Type="float" />
+    <Property Name="CPNVLPB9" Type="float" />
+    <Property Name="CPNCPB9" Type="float" />
+    <Property Name="CPMPB9" Type="float" />
+    <Property Name="CPBH10" Type="float" />
+    <Property Name="CPQL10" Type="float" />
+    <Property Name="CPBHTT10" Type="float" />
+    <Property Name="CPQLTT10" Type="float" />
+    <Property Name="CPSXCTT10" Type="float" />
+    <Property Name="CPNVLPB10" Type="float" />
+    <Property Name="CPNCPB10" Type="float" />
+    <Property Name="CPMPB10" Type="float" />
+    <Property Name="CPBH11" Type="float" />
+    <Property Name="CPQL11" Type="float" />
+    <Property Name="CPBHTT11" Type="float" />
+    <Property Name="CPQLTT11" Type="float" />
+    <Property Name="CPSXCTT11" Type="float" />
+    <Property Name="CPNVLPB11" Type="float" />
+    <Property Name="CPNCPB11" Type="float" />
+    <Property Name="CPMPB11" Type="float" />
+    <Property Name="CPBH12" Type="float" />
+    <Property Name="CPQL12" Type="float" />
+    <Property Name="CPBHTT12" Type="float" />
+    <Property Name="CPQLTT12" Type="float" />
+    <Property Name="CPSXCTT12" Type="float" />
+    <Property Name="CPNVLPB12" Type="float" />
+    <Property Name="CPNCPB12" Type="float" />
+    <Property Name="CPMPB12" Type="float" />
+    <Property Name="DT" Type="float" />
+    <Property Name="CPTC1" Type="float" />
+    <Property Name="CPTCTT1" Type="float" />
+    <Property Name="CPTC2" Type="float" />
+    <Property Name="CPTCTT2" Type="float" />
+    <Property Name="CPTC3" Type="float" />
+    <Property Name="CPTCTT3" Type="float" />
+    <Property Name="CPTC4" Type="float" />
+    <Property Name="CPTCTT4" Type="float" />
+    <Property Name="CPTC5" Type="float" />
+    <Property Name="CPTCTT5" Type="float" />
+    <Property Name="CPTC6" Type="float" />
+    <Property Name="CPTCTT6" Type="float" />
+    <Property Name="CPTC7" Type="float" />
+    <Property Name="CPTCTT7" Type="float" />
+    <Property Name="CPTC8" Type="float" />
+    <Property Name="CPTCTT8" Type="float" />
+    <Property Name="CPTC9" Type="float" />
+    <Property Name="CPTCTT9" Type="float" />
+    <Property Name="CPTC10" Type="float" />
+    <Property Name="CPTCTT10" Type="float" />
+    <Property Name="CPTC11" Type="float" />
+    <Property Name="CPTCTT11" Type="float" />
+    <Property Name="CPTC12" Type="float" />
+    <Property Name="CPTCTT12" Type="float" />
+    <Property Name="CPTC" Type="float" />
+    <Property Name="MaTK" Type="int" />
+    <Property Name="KPB" Type="smallint" />
+    <Property Name="SanLuong" Type="float" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TenNSD" Type="nvarchar" MaxLength="50" />
+    <Property Name="Psw" Type="int" />
+    <Property Name="UserRight" Type="smallint" />
+    <Property Name="VT" Type="int" />
+    <Property Name="TS" Type="smallint" />
+    <Property Name="HDV" Type="smallint" />
+    <Property Name="WS" Type="nvarchar" MaxLength="20" />
+    <Property Name="IsReister" Type="float" />
+    <Property Name="MacAddress" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Vattu">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaPhanLoai" Type="int" />
+    <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+    <Property Name="TenVattu" Type="nvarchar" MaxLength="255" />
+    <Property Name="DonVi" Type="nvarchar" MaxLength="20" />
+    <Property Name="TonMin" Type="float" />
+    <Property Name="TonMax" Type="float" />
+    <Property Name="GiaDuPhong" Type="float" />
+    <Property Name="GiaHT" Type="float" />
+    <Property Name="dvt2" Type="smallint" />
+    <Property Name="DonVi2" Type="nvarchar" MaxLength="20" />
+    <Property Name="TyLeQD" Type="real" />
+    <Property Name="GhiChu" Type="nvarchar" MaxLength="50" />
+    <Property Name="VAT" Type="smallint" />
+    <Property Name="GiaBan1" Type="float" />
+    <Property Name="GiaBan2" Type="float" />
+    <Property Name="GiaBan3" Type="float" />
+    <Property Name="CK" Type="float" />
+    <Property Name="ThueNK" Type="float" />
+    <Property Name="L" Type="float" />
+    <Property Name="T" Type="float" />
+    <Property Name="TenVattu2" Type="nvarchar" MaxLength="255" />
+    <Property Name="PTGB" Type="nvarchar" MaxLength="255" />
+    <Property Name="TendoName" Type="nvarchar" MaxLength="255" />
+    <Property Name="TendoSku" Type="nvarchar" MaxLength="255" />
+    <Property Name="TendoUom" Type="nvarchar" MaxLength="255" />
+    <Property Name="TendoId" Type="nvarchar" MaxLength="255" />
+    <Property Name="TendoPrice" Type="float" />
+    <Property Name="TendokhoInventory" Type="float" />
+    <Property Name="TendoQuality" Type="float" />
+    <Property Name="TendoSkuId" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="VTDauNam">
+    <Key>
+      <PropertyRef Name="MaSo" />
+    </Key>
+    <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaSoKho" Type="int" />
+    <Property Name="MaTaiKhoan" Type="int" />
+    <Property Name="MaVattu" Type="int" />
+    <Property Name="Tien_0" Type="float" />
+    <Property Name="Luong_0" Type="float" />
+    <Property Name="SoXuat" Type="float" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="DanhSachVatTu">
+    <Key>
+      <PropertyRef Name="mavattu" />
+    </Key>
+    <Property Name="mavattu" Type="int" Nullable="false" />
+    <Property Name="SOHIEU" Type="nvarchar" MaxLength="20" />
+    <Property Name="TenVattu" Type="nvarchar" MaxLength="255" />
+    <Property Name="solo" Type="nvarchar" MaxLength="255" />
+    <Property Name="Handung" Type="datetime2" Precision="0" />
+    <Property Name="soluongnhap" Type="float" />
+    <Property Name="soluongxuat" Type="float" />
+    <Property Name="conlai" Type="float" />
+  </EntityType>
+  <EntityContainer Name="DatablankModelStoreContainer">
+    <EntitySet Name="BaoCaoCP" EntityType="Self.BaoCaoCP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BaoCaoCP2" EntityType="Self.BaoCaoCP2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BARCODE" EntityType="Self.BARCODE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BKNhomPS" EntityType="Self.BKNhomPS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CDTS" EntityType="Self.CDTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="cdts48" EntityType="Self.cdts48" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChungTu" EntityType="Self.ChungTu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChungTu2" EntityType="Self.ChungTu2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChungTuLQ" EntityType="Self.ChungTuLQ" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChungTuLQP" EntityType="Self.ChungTuLQP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChungTuP" EntityType="Self.ChungTuP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CNDauNam" EntityType="Self.CNDauNam" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CNDauNam2" EntityType="Self.CNDauNam2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CPGVHD" EntityType="Self.CPGVHD" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CTGhiSo" EntityType="Self.CTGhiSo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CTKetChuyen" EntityType="Self.CTKetChuyen" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CTTaiSan" EntityType="Self.CTTaiSan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DCPTung" EntityType="Self.DCPTung" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DinhMuc" EntityType="Self.DinhMuc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DoituongCT" EntityType="Self.DoituongCT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DTQLy" EntityType="Self.DTQLy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DVTVattu" EntityType="Self.DVTVattu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HeThongTK" EntityType="Self.HeThongTK" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HoaDon" EntityType="Self.HoaDon" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HoaDonP" EntityType="Self.HoaDonP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KCChitiet" EntityType="Self.KCChitiet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KhachHang" EntityType="Self.KhachHang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KhoHang" EntityType="Self.KhoHang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KiemKe" EntityType="Self.KiemKe" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KiemKeN" EntityType="Self.KiemKeN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KQKD911" EntityType="Self.KQKD911" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LaiSuat" EntityType="Self.LaiSuat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoaiChungTu" EntityType="Self.LoaiChungTu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoaiTaiSan" EntityType="Self.LoaiTaiSan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NguonNhapXuat" EntityType="Self.NguonNhapXuat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NguyenTe" EntityType="Self.NguyenTe" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhanLoai154" EntityType="Self.PhanLoai154" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhanLoaiKhachHang" EntityType="Self.PhanLoaiKhachHang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhanLoaiNhanVien" EntityType="Self.PhanLoaiNhanVien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhanLoaiVattu" EntityType="Self.PhanLoaiVattu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhieuNX" EntityType="Self.PhieuNX" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QuocGia" EntityType="Self.QuocGia" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reports" EntityType="Self.Reports" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SHchungtu" EntityType="Self.SHchungtu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SoDuKhachHang" EntityType="Self.SoDuKhachHang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tableHoadonvao" EntityType="Self.tableHoadonvao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TaiSan" EntityType="Self.TaiSan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbDinhdanhNganhang" EntityType="Self.tbDinhdanhNganhang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbDinhdanhtaikhoan" EntityType="Self.tbDinhdanhtaikhoan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbFontsize" EntityType="Self.tbFontsize" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbGetphieu" EntityType="Self.tbGetphieu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbGhichuHT" EntityType="Self.tbGhichuHT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbHoadonThaythe" EntityType="Self.tbHoadonThaythe" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbimport" EntityType="Self.tbimport" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbimportdetail" EntityType="Self.tbimportdetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbMatdinhghichu" EntityType="Self.tbMatdinhghichu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbNguyenLieuThanhPham" EntityType="Self.tbNguyenLieuThanhPham" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbNhapkhonguyenlieu" EntityType="Self.tbNhapkhonguyenlieu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbNhapkhotp" EntityType="Self.tbNhapkhotp" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbNhapkhotpChitiet" EntityType="Self.tbNhapkhotpChitiet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbPL1" EntityType="Self.tbPL1" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbPL2" EntityType="Self.tbPL2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbThongTinToKhai" EntityType="Self.tbThongTinToKhai" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ThanhPham" EntityType="Self.ThanhPham" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ThongSo" EntityType="Self.ThongSo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THUE" EntityType="Self.THUE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TinhTrang" EntityType="Self.TinhTrang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TonKho" EntityType="Self.TonKho" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TP154" EntityType="Self.TP154" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vattu" EntityType="Self.Vattu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VTDauNam" EntityType="Self.VTDauNam" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DanhSachVatTu" EntityType="Self.DanhSachVatTu" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [DanhSachVatTu].[mavattu] AS [mavattu], 
+    [DanhSachVatTu].[SOHIEU] AS [SOHIEU], 
+    [DanhSachVatTu].[TenVattu] AS [TenVattu], 
+    [DanhSachVatTu].[solo] AS [solo], 
+    [DanhSachVatTu].[Handung] AS [Handung], 
+    [DanhSachVatTu].[soluongnhap] AS [soluongnhap], 
+    [DanhSachVatTu].[soluongxuat] AS [soluongxuat], 
+    [DanhSachVatTu].[conlai] AS [conlai]
+    FROM [dbo].[DanhSachVatTu] AS [DanhSachVatTu]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

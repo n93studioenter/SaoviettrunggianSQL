@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "s/iTVi19KnE=",
+  "dgSpecHash": "L0lSo65o0x0=",
   "success": true,
   "projectFilePath": "D:\\DA3\\SourcePmTrungGiangsQL\\SaovietTax\\SaovietTax\\SaovietTax.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "C:\\Users\\Admin\\.nuget\\packages\\closedxml.parser\\2.0.0\\closedxml.parser.2.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\documentformat.openxml\\3.1.1\\documentformat.openxml.3.1.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\documentformat.openxml.framework\\3.1.1\\documentformat.openxml.framework.3.1.1.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\entityframework\\6.2.0\\entityframework.6.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\exceldatareader\\3.7.0\\exceldatareader.3.7.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\excelnumberformat\\1.1.0\\excelnumberformat.1.1.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\excss\\4.2.3\\excss.4.2.3.nupkg.sha512",

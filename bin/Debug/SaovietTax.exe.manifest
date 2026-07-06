@@ -2202,6 +2202,30 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="EntityFramework.dll" size="5225168">
+      <assemblyIdentity name="EntityFramework" version="6.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>nCD7KthqdgsMauvZMByQCYkdAq4UcgqTkmwLU1uK0Js=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="EntityFramework.SqlServer.dll" size="622288">
+      <assemblyIdentity name="EntityFramework.SqlServer" version="6.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>4OEmw7inupUB0D+Z1Upcu9F0vOy2FwCYq0zBIZ8n+TM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ExcelDataReader.dll" size="181760">
       <assemblyIdentity name="ExcelDataReader" version="3.7.0.0" publicKeyToken="93517DBE6A4012FA" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -3066,14 +3090,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SaovietTax.exe" size="8331264">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SaovietTax.exe" size="8991232">
       <assemblyIdentity name="SaovietTax" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>1UvZ1L3VVg8wPG2zIL3c0B6x5lNXEffyUgwobn6fwwg=</dsig:DigestValue>
+        <dsig:DigestValue>ckGtNI1xYZKK1fF0pMupPtralj1BrtLdk8OmEsqe9Ho=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -7811,7 +7835,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>rdXoZM3Uhp8pkwDdILN5/kJZ2L0ILJRHmW2CG0iK6q8=</dsig:DigestValue>
+      <dsig:DigestValue>HFwTRMtKLDFpqh2hgYSMEEH12HQxnM32qHzMjfz7WGk=</dsig:DigestValue>
     </hash>
   </file>
   <file name="LdaNative.dll" size="164136">
@@ -7830,6 +7854,24 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>oOVwfu+/I9lhksgUgTQbstHaNvod6TZN+WRYalMSaVA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Models\Model1.Context.tt" size="22930">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>iH6jRm/ArXOO/wVogKb8ZOaRJ6DvCC6vOswudwQkDnQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Models\Model1.tt" size="25275">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CabSpKm6yYNT6twBZzKHKM3v3aBYMgNzK0uSDYpHoWw=</dsig:DigestValue>
     </hash>
   </file>
   <file name="musl-x64\libSkiaSharp.so" size="11248224">
@@ -7886,13 +7928,13 @@
       <dsig:DigestValue>61M17eqm8hIsBE6CqrI1HcjJtOD+XleMcZIvthvihec=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="SaovietTax.exe.config" size="9179">
+  <file name="SaovietTax.exe.config" size="9622">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>qpyxeJ89dZ4CE9unOQxc9h6gu2R8yhva1Chs4WC5HIU=</dsig:DigestValue>
+      <dsig:DigestValue>WajIpoOISn1Bxh3jAC6mOYaGZHYQaUWuw4pSnOhi+VA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="selenium-manager\linux\selenium-manager" size="5422816">
