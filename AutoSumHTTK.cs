@@ -1,14 +1,10 @@
 ﻿using DevExpress.XtraEditors;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SaovietTax
@@ -19,13 +15,18 @@ namespace SaovietTax
         {
             InitializeComponent();
         }
-        private  string _connectionString;
+
+        private string _connectionString;
 
         private void AutoSumHTTK_Load(object sender, EventArgs e)
         {
             _connectionString = ConfigurationManager.ConnectionStrings["SqlConn"].ConnectionString;
             CapNhatHeThongTK();
         }
+
+        // ============================================================
+        // HÀM CHÍNH: CẬP NHẬT HETHONGTK
+        // ============================================================
         public void CapNhatHeThongTK()
         {
             using (SqlConnection conn = new SqlConnection(_connectionString))
@@ -35,123 +36,252 @@ namespace SaovietTax
                 {
                     try
                     {
-                        ResetSoDuKhachHangFull(conn, tran);  // 👈 THÊM BƯỚC NÀY
+                        // BƯỚC 0: KIỂM TRA TK 156
+                        CheckTK156(conn, tran);
 
-                        TaoSoDuKhachHang(conn, tran);
-                        // ===== BƯỚC 1: RESET Co_1..12 =====
+                        // BƯỚC 1: Lấy danh sách tài khoản có phát sinh
+                        DataTable dtTaiKhoanPS = GetTaiKhoanCoPhatSinh(conn, tran);
+
+                        if (dtTaiKhoanPS.Rows.Count == 0)
+                        {
+                            XtraMessageBox.Show("Không có chứng từ nào để tính toán!", "Thông báo",
+                                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            this.Close();
+                            return;
+                        }
+
+                        // BƯỚC 2: Reset Co_1..12 cho tất cả tài khoản
                         ResetCoThang(conn, tran);
 
-                        // ===== BƯỚC 2: Cập nhật No_i, Co_i từ chứng từ =====
-                        CapNhatSoDuKhachHangTuChungTu(conn, tran);
+                        // BƯỚC 3: Reset toàn bộ dữ liệu cho tài khoản có phát sinh
+                        ResetTaiKhoanCoPhatSinh(conn, tran, dtTaiKhoanPS);
 
-                        // ===== BƯỚC 3: Tính DuNo, DuCo cho SoDuKhachHang =====
-                        TinhDuNoDuCo_SoDuKhachHang(conn, tran);
+                        // BƯỚC 4: Cập nhật số phát sinh từ chứng từ
+                        CapNhatSoPhatSinhTuChungTu(conn, tran);
 
-                        // ===== BƯỚC 4: Tính DuNT =====
-                        TinhDuNT_SoDuKhachHang(conn, tran);
+                        // BƯỚC 5: Tách dư nợ/dư có ban đầu
+                        TachDuNoDuCoBanDau(conn, tran);
 
-                        // ===== BƯỚC 5: Tổng hợp lên HeThongTK =====
-                        TongHopLenHeThongTK(conn, tran);
+                        // BƯỚC 6: Tính dư nợ/dư có cho tài khoản cấp con
+                        TinhDuNoDuCoTaiKhoanCon(conn, tran);
 
-                        // ===== BƯỚC 6: Tổng hợp tài khoản cấp cha =====
-                        TongHopTaiKhoanCapCha(conn, tran);
+                        // BƯỚC 7: Tính dư nợ/dư có cho tài khoản cấp cha
+                        TinhDuNoDuCoTaiKhoanCha(conn, tran);
 
-                        // ===== BƯỚC 7: Tách Dư Nợ/Dư Có =====
-                        TachDuNoDuCo_HeThongTK(conn, tran);
+                        // BƯỚC 8: Tách dư nợ/dư có lần cuối
+                        TachDuNoDuCoLanCuoi(conn, tran);
+
+                        // BƯỚC 9: Cập nhật SoDuKhachHang
+                        CapNhatSoDuKhachHang(conn, tran);
+
+                        // BƯỚC 10: Kiểm tra kết quả
+                        CheckKetQua(conn, tran);
 
                         tran.Commit();
-                        Console.WriteLine("✅ Cập nhật HeThongTK thành công!");
+
+                        XtraMessageBox.Show("✅ Cập nhật HeThongTK thành công!", "Thông báo",
+                                          MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.Close();
                     }
                     catch (Exception ex)
                     {
                         tran.Rollback();
-                        Console.WriteLine($"❌ Lỗi: {ex.Message}");
+                        XtraMessageBox.Show($"❌ Lỗi: {ex.Message}", "Lỗi",
+                                          MessageBoxButtons.OK, MessageBoxIcon.Error);
                         throw;
                     }
                 }
             }
         }
-        private void ResetSoDuKhachHangFull(SqlConnection conn, SqlTransaction tran)
-        {
-            string sql = @"
-        UPDATE SoDuKhachHang SET 
-            No_1 = 0, Co_1 = 0, No_1_NT = 0, Co_1_NT = 0,
-            No_2 = 0, Co_2 = 0, No_2_NT = 0, Co_2_NT = 0,
-            No_3 = 0, Co_3 = 0, No_3_NT = 0, Co_3_NT = 0,
-            No_4 = 0, Co_4 = 0, No_4_NT = 0, Co_4_NT = 0,
-            No_5 = 0, Co_5 = 0, No_5_NT = 0, Co_5_NT = 0,
-            No_6 = 0, Co_6 = 0, No_6_NT = 0, Co_6_NT = 0,
-            No_7 = 0, Co_7 = 0, No_7_NT = 0, Co_7_NT = 0,
-            No_8 = 0, Co_8 = 0, No_8_NT = 0, Co_8_NT = 0,
-            No_9 = 0, Co_9 = 0, No_9_NT = 0, Co_9_NT = 0,
-            No_10 = 0, Co_10 = 0, No_10_NT = 0, Co_10_NT = 0,
-            No_11 = 0, Co_11 = 0, No_11_NT = 0, Co_11_NT = 0,
-            No_12 = 0, Co_12 = 0, No_12_NT = 0, Co_12_NT = 0,
-            DuNo_0 = 0, DuCo_0 = 0,
-            DuNo_1 = 0, DuCo_1 = 0, DuNT_1 = 0,
-            DuNo_2 = 0, DuCo_2 = 0, DuNT_2 = 0,
-            DuNo_3 = 0, DuCo_3 = 0, DuNT_3 = 0,
-            DuNo_4 = 0, DuCo_4 = 0, DuNT_4 = 0,
-            DuNo_5 = 0, DuCo_5 = 0, DuNT_5 = 0,
-            DuNo_6 = 0, DuCo_6 = 0, DuNT_6 = 0,
-            DuNo_7 = 0, DuCo_7 = 0, DuNT_7 = 0,
-            DuNo_8 = 0, DuCo_8 = 0, DuNT_8 = 0,
-            DuNo_9 = 0, DuCo_9 = 0, DuNT_9 = 0,
-            DuNo_10 = 0, DuCo_10 = 0, DuNT_10 = 0,
-            DuNo_11 = 0, DuCo_11 = 0, DuNT_11 = 0,
-            DuNo_12 = 0, DuCo_12 = 0, DuNT_12 = 0
-        WHERE MaKhachHang > 0";
 
-            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
-            {
-                cmd.ExecuteNonQuery();
-            }
-        }
-        private void TaoSoDuKhachHang(SqlConnection conn, SqlTransaction tran)
-        {
-            string sql = @"
-        INSERT INTO SoDuKhachHang (MaKhachHang, MaTaiKhoan, DuNo_0, DuCo_0,
-                                    No_1, Co_1, No_2, Co_2, No_3, Co_3,
-                                    No_4, Co_4, No_5, Co_5, No_6, Co_6,
-                                    No_7, Co_7, No_8, Co_8, No_9, Co_9,
-                                    No_10, Co_10, No_11, Co_11, No_12, Co_12)
-        SELECT 
-            MaKH,
-            18 AS MaTaiKhoan,
-            0 AS DuNo_0,
-            0 AS DuCo_0,
-            0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0
-        FROM ChungTu
-        WHERE MaKH > 0
-          AND NOT EXISTS (SELECT 1 FROM SoDuKhachHang WHERE MaKhachHang = ChungTu.MaKH)
-        
-        UNION
-        
-        SELECT 
-            MaKHC,
-            82 AS MaTaiKhoan,
-            0 AS DuNo_0,
-            0 AS DuCo_0,
-            0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0
-        FROM ChungTu
-        WHERE MaKHC > 0
-          AND NOT EXISTS (SELECT 1 FROM SoDuKhachHang WHERE MaKhachHang = ChungTu.MaKHC)";
-
-            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
-            {
-                int soLuong = cmd.ExecuteNonQuery();
-                if (soLuong > 0)
-                    Console.WriteLine($"✅ Đã tạo {soLuong} dòng SoDuKhachHang mới");
-            }
-        }
         // ============================================================
-        // BƯỚC 1: RESET Co_1..12 VỀ 0
+        // BƯỚC 0: KIỂM TRA TK 156
+        // ============================================================
+        private void CheckTK156(SqlConnection conn, SqlTransaction tran)
+        {
+            Console.WriteLine("\n🔍 KIỂM TRA TK 156:");
+            Console.WriteLine("========================================");
+
+            // Tìm MaSo của TK 156
+            string sql = "SELECT MaSo FROM HethongTK WHERE SoHieu = '156'";
+            int maSo156 = 0;
+            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+            {
+                object result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    maSo156 = Convert.ToInt32(result);
+                    Console.WriteLine($"✅ TK 156 có MaSo = {maSo156}");
+                }
+                else
+                {
+                    Console.WriteLine("❌ KHÔNG tìm thấy TK 156 trong HeThongTK!");
+                    return;
+                }
+            }
+
+            // Kiểm tra chứng từ dùng TK 156
+            string sqlCT = $@"
+                SELECT COUNT(*) FROM ChungTu 
+                WHERE (MaTKNo = {maSo156} OR MaTKCo = {maSo156}) AND SoPS <> 0";
+
+            using (SqlCommand cmd = new SqlCommand(sqlCT, conn, tran))
+            {
+                object result = cmd.ExecuteScalar();
+                int count = 0;
+                if (result != null && result != DBNull.Value)
+                {
+                    count = Convert.ToInt32(result);
+                }
+                Console.WriteLine($"📄 Có {count} chứng từ sử dụng TK 156 (MaSo={maSo156})");
+            }
+
+            // Kiểm tra dữ liệu hiện tại của TK 156
+            string sqlData = $@"
+                SELECT No_7, Co_7, DuNo_7, DuCo_7 
+                FROM HethongTK WHERE MaSo = {maSo156}";
+
+            using (SqlCommand cmd = new SqlCommand(sqlData, conn, tran))
+            {
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        Console.WriteLine($"📊 Dữ liệu hiện tại TK 156:");
+                        Console.WriteLine($"   No_7: {reader["No_7"]}, Co_7: {reader["Co_7"]}");
+                        Console.WriteLine($"   DuNo_7: {reader["DuNo_7"]}, DuCo_7: {reader["DuCo_7"]}");
+                    }
+                    reader.Close();
+                }
+            }
+            Console.WriteLine("");
+        }
+
+        // ============================================================
+        // BƯỚC 1: LẤY DANH SÁCH TÀI KHOẢN CÓ PHÁT SINH (QUAN TRỌNG)
+        // ============================================================
+        private DataTable GetTaiKhoanCoPhatSinh(SqlConnection conn, SqlTransaction tran)
+        {
+            // Lấy tất cả MaSo có phát sinh từ chứng từ, BỎ QUA TK GỐC
+            string sql = @"
+        SELECT DISTINCT MaSo 
+        FROM HethongTK 
+        WHERE MaSo IN (
+            SELECT MaTKNo FROM ChungTu WHERE SoPS <> 0
+            UNION
+            SELECT MaTKCo FROM ChungTu WHERE SoPS <> 0
+        )
+        AND MaSo > 0
+        AND MaSo NOT IN (1, 2, 6, 7, 20, 30, 40)  -- Bỏ qua TK gốc
+        ORDER BY MaSo";
+
+            DataTable dt = new DataTable();
+            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+            {
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+            }
+
+            // Tự động thêm các TK cấp cha có TK con (KHÔNG BAO GỒM TK GỐC)
+            string sqlGetCha = @"
+        SELECT DISTINCT TkCha0 AS MaSo
+        FROM HethongTK 
+        WHERE TkCha0 > 0
+        AND TkCha0 NOT IN (1, 2, 6, 7, 20, 30, 40)";
+
+            DataTable dtCha = new DataTable();
+            using (SqlCommand cmd = new SqlCommand(sqlGetCha, conn, tran))
+            {
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dtCha);
+                }
+            }
+
+            // Thêm các TK cấp cha vào danh sách (nếu chưa có)
+            foreach (DataRow row in dtCha.Rows)
+            {
+                int maSoCha = Convert.ToInt32(row["MaSo"]);
+                bool exists = false;
+                foreach (DataRow r in dt.Rows)
+                {
+                    if (Convert.ToInt32(r["MaSo"]) == maSoCha)
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists)
+                {
+                    DataRow newRow = dt.NewRow();
+                    newRow["MaSo"] = maSoCha;
+                    dt.Rows.Add(newRow);
+                    Console.WriteLine($"✅ Đã thêm TK cấp cha (MaSo={maSoCha}) vào danh sách reset");
+                }
+            }
+
+            Console.WriteLine($"📌 Có {dt.Rows.Count} tài khoản cần reset và tính toán");
+            return dt;
+        }
+
+        // ============================================================
+        // HÀM LẤY MASO TỪ SOHIEU
+        // ============================================================
+        private int GetMaSoFromSoHieu(SqlConnection conn, SqlTransaction tran, string soHieu)
+        {
+            string sql = "SELECT MaSo FROM HethongTK WHERE SoHieu = @SoHieu";
+            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+            {
+                cmd.Parameters.AddWithValue("@SoHieu", soHieu);
+                object result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    return Convert.ToInt32(result);
+                }
+                return 0;
+            }
+        }
+
+        // ============================================================
+        // HÀM LẤY SOHIEU TỪ MASO
+        // ============================================================
+        private string GetSoHieuFromMaSo(SqlConnection conn, SqlTransaction tran, int maSo)
+        {
+            string sql = "SELECT SoHieu FROM HethongTK WHERE MaSo = @MaSo";
+            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+            {
+                cmd.Parameters.AddWithValue("@MaSo", maSo);
+                object result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    return result.ToString();
+                }
+                return "";
+            }
+        }
+
+        // ============================================================
+        // HÀM LẤY TÊN TỪ MASO
+        // ============================================================
+        private string GetTenFromMaSo(SqlConnection conn, SqlTransaction tran, int maSo)
+        {
+            string sql = "SELECT Ten FROM HethongTK WHERE MaSo = @MaSo";
+            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+            {
+                cmd.Parameters.AddWithValue("@MaSo", maSo);
+                object result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    return result.ToString();
+                }
+                return "";
+            }
+        }
+
+        // ============================================================
+        // BƯỚC 2: RESET CO_1..12 CHO TẤT CẢ TÀI KHOẢN
         // ============================================================
         private void ResetCoThang(SqlConnection conn, SqlTransaction tran)
         {
@@ -173,410 +303,497 @@ namespace SaovietTax
 
             using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
             {
-                cmd.ExecuteNonQuery();
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"✅ Đã reset Co cho {rows} tài khoản");
             }
         }
 
         // ============================================================
-        // BƯỚC 2: Cập nhật No_i, Co_i từ chứng từ
+        // BƯỚC 3: RESET TOÀN BỘ DỮ LIỆU CHO TÀI KHOẢN CÓ PHÁT SINH
         // ============================================================
-        /// <summary>
-        /// Cập nhật No_i, Co_i cho SoDuKhachHang từ chứng từ
-        /// </summary>
-        private void CapNhatSoDuKhachHangTuChungTu(SqlConnection conn, SqlTransaction tran)
+        private void ResetTaiKhoanCoPhatSinh(SqlConnection conn, SqlTransaction tran, DataTable dtTaiKhoan)
         {
-            // ============ BƯỚC 1: Lấy danh sách tài khoản công nợ (TK_ID = 3500 hoặc 3310) ============
-            string sqlTK = "SELECT MaSo FROM HethongTK WHERE TK_ID IN (3500, 3310)";
-            DataTable dtTK = new DataTable();
-            using (SqlCommand cmd = new SqlCommand(sqlTK, conn, tran))
+            if (dtTaiKhoan.Rows.Count == 0) return;
+
+            // Lọc bỏ các TK gốc
+            DataTable dtFiltered = dtTaiKhoan.Clone();
+            foreach (DataRow row in dtTaiKhoan.Rows)
             {
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                int maSo = Convert.ToInt32(row["MaSo"]);
+                if (maSo != 1 && maSo != 2 && maSo != 6 && maSo != 7 && maSo != 20 && maSo != 30 && maSo != 40)
                 {
-                    da.Fill(dtTK);
+                    dtFiltered.ImportRow(row);
                 }
             }
 
-            // Nếu không có tài khoản công nợ thì thoát
-            if (dtTK.Rows.Count == 0)
-            {
-                Console.WriteLine("⚠️ Không có tài khoản công nợ (TK_ID=3500,3310)");
-                return;
-            }
+            if (dtFiltered.Rows.Count == 0) return;
 
-            // Tạo chuỗi IN (ví dụ: 18,82,101)
+            // Tạo chuỗi IN
             string inClause = "";
-            for (int i = 0; i < dtTK.Rows.Count; i++)
+            for (int i = 0; i < dtFiltered.Rows.Count; i++)
             {
                 if (i > 0) inClause += ",";
-                inClause += dtTK.Rows[i]["MaSo"].ToString();
+                inClause += dtFiltered.Rows[i]["MaSo"].ToString();
             }
 
-            Console.WriteLine($"📌 Danh sách TK công nợ: {inClause}");
-
-            // ============ BƯỚC 2: Lấy tổng hợp chứng từ công nợ ============
-            string sqlSelect = $@"
-        SELECT 
-            MaKH,
-            MaKHC,
-            ThangCT,
-            SUM(CASE WHEN MaTKNo IN ({inClause}) THEN SoPS ELSE 0 END) AS No_PS,
-            SUM(CASE WHEN MaTKCo IN ({inClause}) THEN SoPS ELSE 0 END) AS Co_PS
-        FROM ChungTu
-        WHERE (MaKH > 0 Or MaKHC >0)
-        GROUP BY MaKH,MaKHC, ThangCT
-        ORDER BY MaKH,MaKHC,ThangCT";
-
-            DataTable dt = new DataTable();
-            using (SqlCommand cmd = new SqlCommand(sqlSelect, conn, tran))
-            {
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                {
-                    da.Fill(dt);
-                }
-            }
-
-            Console.WriteLine($"📌 Có {dt.Rows.Count} dòng chứng từ công nợ cần cập nhật");
-
-            // ============ BƯỚC 3: Cập nhật từng dòng vào SoDuKhachHang ============
-            foreach (DataRow row in dt.Rows)
-            {
-                int maKH = Convert.ToInt32(row["MaKH"]);
-                if (maKH == 0)
-                {
-                    maKH = Convert.ToInt32(row["MaKHC"]);
-                }
-                int thang = Convert.ToInt32(row["ThangCT"]);
-                double no = Convert.ToDouble(row["No_PS"]);
-                double co = Convert.ToDouble(row["Co_PS"]);
-
-                string colNo = $"No_{thang}";
-                string colCo = $"Co_{thang}";
-
-                string sqlUpdate = $@"
-            UPDATE SoDuKhachHang 
-            SET 
-                {colNo} = ISNULL({colNo}, 0) + @No,
-                No_{thang}_NT = ISNULL(No_{thang}_NT, 0) + @No,  -- Nếu có cột ngoại tệ
-                {colCo} = ISNULL({colCo}, 0) + @Co,
-                Co_{thang}_NT = ISNULL(Co_{thang}_NT, 0) + @Co   -- Nếu có cột ngoại tệ
-            WHERE MaKhachHang = @MaKH";
-
-                using (SqlCommand cmd = new SqlCommand(sqlUpdate, conn, tran))
-                {
-                    cmd.Parameters.AddWithValue("@No", no);
-                    cmd.Parameters.AddWithValue("@Co", co);
-                    cmd.Parameters.AddWithValue("@MaKH", maKH);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-
-            XtraMessageBox.Show("Đã tính xong!");
-            this.Close();
-        }
-
-        // ============================================================
-        // BƯỚC 3: TÍNH DuNo, DuCo CHO SoDuKhachHang
-        // ============================================================
-        private void TinhDuNoDuCo_SoDuKhachHang(SqlConnection conn, SqlTransaction tran)
-        {
-            string sql = @"
-        -- ===== RESET DuNo, DuCo về 0 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_1 = 0, DuCo_1 = 0,
-            DuNo_2 = 0, DuCo_2 = 0,
-            DuNo_3 = 0, DuCo_3 = 0,
-            DuNo_4 = 0, DuCo_4 = 0,
-            DuNo_5 = 0, DuCo_5 = 0,
-            DuNo_6 = 0, DuCo_6 = 0,
-            DuNo_7 = 0, DuCo_7 = 0,
-            DuNo_8 = 0, DuCo_8 = 0,
-            DuNo_9 = 0, DuCo_9 = 0,
-            DuNo_10 = 0, DuCo_10 = 0,
-            DuNo_11 = 0, DuCo_11 = 0,
-            DuNo_12 = 0, DuCo_12 = 0
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 1 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_1 = IIF(ISNULL(DuNo_0, 0) - ISNULL(DuCo_0, 0) + ISNULL(No_1, 0) - ISNULL(Co_1, 0) > 0, 
-                         ISNULL(DuNo_0, 0) - ISNULL(DuCo_0, 0) + ISNULL(No_1, 0) - ISNULL(Co_1, 0), 0),
-            DuCo_1 = IIF(ISNULL(DuNo_0, 0) - ISNULL(DuCo_0, 0) + ISNULL(No_1, 0) - ISNULL(Co_1, 0) < 0, 
-                         -(ISNULL(DuNo_0, 0) - ISNULL(DuCo_0, 0) + ISNULL(No_1, 0) - ISNULL(Co_1, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 2 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_2 = IIF(ISNULL(DuNo_1, 0) - ISNULL(DuCo_1, 0) + ISNULL(No_2, 0) - ISNULL(Co_2, 0) > 0, 
-                         ISNULL(DuNo_1, 0) - ISNULL(DuCo_1, 0) + ISNULL(No_2, 0) - ISNULL(Co_2, 0), 0),
-            DuCo_2 = IIF(ISNULL(DuNo_1, 0) - ISNULL(DuCo_1, 0) + ISNULL(No_2, 0) - ISNULL(Co_2, 0) < 0, 
-                         -(ISNULL(DuNo_1, 0) - ISNULL(DuCo_1, 0) + ISNULL(No_2, 0) - ISNULL(Co_2, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 3 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_3 = IIF(ISNULL(DuNo_2, 0) - ISNULL(DuCo_2, 0) + ISNULL(No_3, 0) - ISNULL(Co_3, 0) > 0, 
-                         ISNULL(DuNo_2, 0) - ISNULL(DuCo_2, 0) + ISNULL(No_3, 0) - ISNULL(Co_3, 0), 0),
-            DuCo_3 = IIF(ISNULL(DuNo_2, 0) - ISNULL(DuCo_2, 0) + ISNULL(No_3, 0) - ISNULL(Co_3, 0) < 0, 
-                         -(ISNULL(DuNo_2, 0) - ISNULL(DuCo_2, 0) + ISNULL(No_3, 0) - ISNULL(Co_3, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 4 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_4 = IIF(ISNULL(DuNo_3, 0) - ISNULL(DuCo_3, 0) + ISNULL(No_4, 0) - ISNULL(Co_4, 0) > 0, 
-                         ISNULL(DuNo_3, 0) - ISNULL(DuCo_3, 0) + ISNULL(No_4, 0) - ISNULL(Co_4, 0), 0),
-            DuCo_4 = IIF(ISNULL(DuNo_3, 0) - ISNULL(DuCo_3, 0) + ISNULL(No_4, 0) - ISNULL(Co_4, 0) < 0, 
-                         -(ISNULL(DuNo_3, 0) - ISNULL(DuCo_3, 0) + ISNULL(No_4, 0) - ISNULL(Co_4, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 5 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_5 = IIF(ISNULL(DuNo_4, 0) - ISNULL(DuCo_4, 0) + ISNULL(No_5, 0) - ISNULL(Co_5, 0) > 0, 
-                         ISNULL(DuNo_4, 0) - ISNULL(DuCo_4, 0) + ISNULL(No_5, 0) - ISNULL(Co_5, 0), 0),
-            DuCo_5 = IIF(ISNULL(DuNo_4, 0) - ISNULL(DuCo_4, 0) + ISNULL(No_5, 0) - ISNULL(Co_5, 0) < 0, 
-                         -(ISNULL(DuNo_4, 0) - ISNULL(DuCo_4, 0) + ISNULL(No_5, 0) - ISNULL(Co_5, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 6 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_6 = IIF(ISNULL(DuNo_5, 0) - ISNULL(DuCo_5, 0) + ISNULL(No_6, 0) - ISNULL(Co_6, 0) > 0, 
-                         ISNULL(DuNo_5, 0) - ISNULL(DuCo_5, 0) + ISNULL(No_6, 0) - ISNULL(Co_6, 0), 0),
-            DuCo_6 = IIF(ISNULL(DuNo_5, 0) - ISNULL(DuCo_5, 0) + ISNULL(No_6, 0) - ISNULL(Co_6, 0) < 0, 
-                         -(ISNULL(DuNo_5, 0) - ISNULL(DuCo_5, 0) + ISNULL(No_6, 0) - ISNULL(Co_6, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 7 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_7 = IIF(ISNULL(DuNo_6, 0) - ISNULL(DuCo_6, 0) + ISNULL(No_7, 0) - ISNULL(Co_7, 0) > 0, 
-                         ISNULL(DuNo_6, 0) - ISNULL(DuCo_6, 0) + ISNULL(No_7, 0) - ISNULL(Co_7, 0), 0),
-            DuCo_7 = IIF(ISNULL(DuNo_6, 0) - ISNULL(DuCo_6, 0) + ISNULL(No_7, 0) - ISNULL(Co_7, 0) < 0, 
-                         -(ISNULL(DuNo_6, 0) - ISNULL(DuCo_6, 0) + ISNULL(No_7, 0) - ISNULL(Co_7, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 8 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_8 = IIF(ISNULL(DuNo_7, 0) - ISNULL(DuCo_7, 0) + ISNULL(No_8, 0) - ISNULL(Co_8, 0) > 0, 
-                         ISNULL(DuNo_7, 0) - ISNULL(DuCo_7, 0) + ISNULL(No_8, 0) - ISNULL(Co_8, 0), 0),
-            DuCo_8 = IIF(ISNULL(DuNo_7, 0) - ISNULL(DuCo_7, 0) + ISNULL(No_8, 0) - ISNULL(Co_8, 0) < 0, 
-                         -(ISNULL(DuNo_7, 0) - ISNULL(DuCo_7, 0) + ISNULL(No_8, 0) - ISNULL(Co_8, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 9 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_9 = IIF(ISNULL(DuNo_8, 0) - ISNULL(DuCo_8, 0) + ISNULL(No_9, 0) - ISNULL(Co_9, 0) > 0, 
-                         ISNULL(DuNo_8, 0) - ISNULL(DuCo_8, 0) + ISNULL(No_9, 0) - ISNULL(Co_9, 0), 0),
-            DuCo_9 = IIF(ISNULL(DuNo_8, 0) - ISNULL(DuCo_8, 0) + ISNULL(No_9, 0) - ISNULL(Co_9, 0) < 0, 
-                         -(ISNULL(DuNo_8, 0) - ISNULL(DuCo_8, 0) + ISNULL(No_9, 0) - ISNULL(Co_9, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 10 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_10 = IIF(ISNULL(DuNo_9, 0) - ISNULL(DuCo_9, 0) + ISNULL(No_10, 0) - ISNULL(Co_10, 0) > 0, 
-                          ISNULL(DuNo_9, 0) - ISNULL(DuCo_9, 0) + ISNULL(No_10, 0) - ISNULL(Co_10, 0), 0),
-            DuCo_10 = IIF(ISNULL(DuNo_9, 0) - ISNULL(DuCo_9, 0) + ISNULL(No_10, 0) - ISNULL(Co_10, 0) < 0, 
-                          -(ISNULL(DuNo_9, 0) - ISNULL(DuCo_9, 0) + ISNULL(No_10, 0) - ISNULL(Co_10, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 11 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_11 = IIF(ISNULL(DuNo_10, 0) - ISNULL(DuCo_10, 0) + ISNULL(No_11, 0) - ISNULL(Co_11, 0) > 0, 
-                          ISNULL(DuNo_10, 0) - ISNULL(DuCo_10, 0) + ISNULL(No_11, 0) - ISNULL(Co_11, 0), 0),
-            DuCo_11 = IIF(ISNULL(DuNo_10, 0) - ISNULL(DuCo_10, 0) + ISNULL(No_11, 0) - ISNULL(Co_11, 0) < 0, 
-                          -(ISNULL(DuNo_10, 0) - ISNULL(DuCo_10, 0) + ISNULL(No_11, 0) - ISNULL(Co_11, 0)), 0)
-        WHERE MaKhachHang > 0;
-
-        -- ===== THÁNG 12 =====
-        UPDATE SoDuKhachHang SET 
-            DuNo_12 = IIF(ISNULL(DuNo_11, 0) - ISNULL(DuCo_11, 0) + ISNULL(No_12, 0) - ISNULL(Co_12, 0) > 0, 
-                          ISNULL(DuNo_11, 0) - ISNULL(DuCo_11, 0) + ISNULL(No_12, 0) - ISNULL(Co_12, 0), 0),
-            DuCo_12 = IIF(ISNULL(DuNo_11, 0) - ISNULL(DuCo_11, 0) + ISNULL(No_12, 0) - ISNULL(Co_12, 0) < 0, 
-                          -(ISNULL(DuNo_11, 0) - ISNULL(DuCo_11, 0) + ISNULL(No_12, 0) - ISNULL(Co_12, 0)), 0)
-        WHERE MaKhachHang > 0;";
+            string sql = $@"
+        UPDATE HethongTK SET 
+            DuNo_0 = 0, DuCo_0 = 0,
+            No_1 = 0, Co_1 = 0, No_1_NT = 0, Co_1_NT = 0,
+            No_2 = 0, Co_2 = 0, No_2_NT = 0, Co_2_NT = 0,
+            No_3 = 0, Co_3 = 0, No_3_NT = 0, Co_3_NT = 0,
+            No_4 = 0, Co_4 = 0, No_4_NT = 0, Co_4_NT = 0,
+            No_5 = 0, Co_5 = 0, No_5_NT = 0, Co_5_NT = 0,
+            No_6 = 0, Co_6 = 0, No_6_NT = 0, Co_6_NT = 0,
+            No_7 = 0, Co_7 = 0, No_7_NT = 0, Co_7_NT = 0,
+            No_8 = 0, Co_8 = 0, No_8_NT = 0, Co_8_NT = 0,
+            No_9 = 0, Co_9 = 0, No_9_NT = 0, Co_9_NT = 0,
+            No_10 = 0, Co_10 = 0, No_10_NT = 0, Co_10_NT = 0,
+            No_11 = 0, Co_11 = 0, No_11_NT = 0, Co_11_NT = 0,
+            No_12 = 0, Co_12 = 0, No_12_NT = 0, Co_12_NT = 0,
+            DuNo_1 = 0, DuCo_1 = 0, DuNT_1 = 0,
+            DuNo_2 = 0, DuCo_2 = 0, DuNT_2 = 0,
+            DuNo_3 = 0, DuCo_3 = 0, DuNT_3 = 0,
+            DuNo_4 = 0, DuCo_4 = 0, DuNT_4 = 0,
+            DuNo_5 = 0, DuCo_5 = 0, DuNT_5 = 0,
+            DuNo_6 = 0, DuCo_6 = 0, DuNT_6 = 0,
+            DuNo_7 = 0, DuCo_7 = 0, DuNT_7 = 0,
+            DuNo_8 = 0, DuCo_8 = 0, DuNT_8 = 0,
+            DuNo_9 = 0, DuCo_9 = 0, DuNT_9 = 0,
+            DuNo_10 = 0, DuCo_10 = 0, DuNT_10 = 0,
+            DuNo_11 = 0, DuCo_11 = 0, DuNT_11 = 0,
+            DuNo_12 = 0, DuCo_12 = 0, DuNT_12 = 0
+        WHERE MaSo IN ({inClause})";
 
             using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
             {
-                cmd.ExecuteNonQuery();
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"✅ Đã reset toàn bộ cho {rows} tài khoản có phát sinh (không bao gồm TK gốc)");
             }
-
-            Console.WriteLine("✅ Đã tính DuNo, DuCo cho 12 tháng!");
         }
 
         // ============================================================
-        // BƯỚC 4: TÍNH DuNT_1..12 (Ngoại tệ)
+        // BƯỚC 4: CẬP NHẬT SỐ PHÁT SINH TỪ CHỨNG TỪ
         // ============================================================
-        private void TinhDuNT_SoDuKhachHang(SqlConnection conn, SqlTransaction tran)
+        private void CapNhatSoPhatSinhTuChungTu(SqlConnection conn, SqlTransaction tran)
         {
-            string fromClause = "FROM SoDuKhachHang INNER JOIN KhachHang ON SoDuKhachHang.MaKhachHang = KhachHang.MaSo";
+            Console.WriteLine("\n📊 CẬP NHẬT SỐ PHÁT SINH TỪ CHỨNG TỪ:");
+            Console.WriteLine("========================================");
 
-            for (int i = 1; i <= 12; i++)
+            // Lấy tổng hợp số phát sinh Nợ
+            string sqlNo = @"
+                SELECT 
+                    MaTKNo AS MaTaiKhoan,
+                    ThangCT,
+                    SUM(SoPS) AS SoPS
+                FROM ChungTu
+                WHERE MaTKNo > 0 AND SoPS <> 0
+                GROUP BY MaTKNo, ThangCT";
+
+            DataTable dtNo = new DataTable();
+            using (SqlCommand cmd = new SqlCommand(sqlNo, conn, tran))
             {
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dtNo);
+                }
+            }
+
+            // Lấy tổng hợp số phát sinh Có
+            string sqlCo = @"
+                SELECT 
+                    MaTKCo AS MaTaiKhoan,
+                    ThangCT,
+                    SUM(SoPS) AS SoPS
+                FROM ChungTu
+                WHERE MaTKCo > 0 AND SoPS <> 0
+                GROUP BY MaTKCo, ThangCT";
+
+            DataTable dtCo = new DataTable();
+            using (SqlCommand cmd = new SqlCommand(sqlCo, conn, tran))
+            {
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dtCo);
+                }
+            }
+
+            // Cập nhật số phát sinh Nợ
+            Console.WriteLine("\n📋 CẬP NHẬT SỐ PHÁT SINH NỢ:");
+            foreach (DataRow row in dtNo.Rows)
+            {
+                int maTaiKhoan = Convert.ToInt32(row["MaTaiKhoan"]);
+                int thang = Convert.ToInt32(row["ThangCT"]);
+                double soPS = Convert.ToDouble(row["SoPS"]);
+                string soHieu = GetSoHieuFromMaSo(conn, tran, maTaiKhoan);
+
+                string sqlUpdate = $@"
+                    UPDATE HethongTK 
+                    SET No_{thang} = No_{thang} + @SoPS
+                    WHERE MaSo = @MaTaiKhoan";
+
+                using (SqlCommand cmd = new SqlCommand(sqlUpdate, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@SoPS", soPS);
+                    cmd.Parameters.AddWithValue("@MaTaiKhoan", maTaiKhoan);
+                    int rows = cmd.ExecuteNonQuery();
+                    if (rows > 0)
+                    {
+                        Console.WriteLine($"   ✅ No_{thang} + {soPS:N0} cho TK {soHieu} (MaSo={maTaiKhoan})");
+                    }
+                }
+            }
+
+            // Cập nhật số phát sinh Có
+            Console.WriteLine("\n📋 CẬP NHẬT SỐ PHÁT SINH CÓ:");
+            foreach (DataRow row in dtCo.Rows)
+            {
+                int maTaiKhoan = Convert.ToInt32(row["MaTaiKhoan"]);
+                int thang = Convert.ToInt32(row["ThangCT"]);
+                double soPS = Convert.ToDouble(row["SoPS"]);
+                string soHieu = GetSoHieuFromMaSo(conn, tran, maTaiKhoan);
+
+                string sqlUpdate = $@"
+                    UPDATE HethongTK 
+                    SET Co_{thang} = Co_{thang} + @SoPS
+                    WHERE MaSo = @MaTaiKhoan";
+
+                using (SqlCommand cmd = new SqlCommand(sqlUpdate, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@SoPS", soPS);
+                    cmd.Parameters.AddWithValue("@MaTaiKhoan", maTaiKhoan);
+                    int rows = cmd.ExecuteNonQuery();
+                    if (rows > 0)
+                    {
+                        Console.WriteLine($"   ✅ Co_{thang} + {soPS:N0} cho TK {soHieu} (MaSo={maTaiKhoan})");
+                    }
+                }
+            }
+
+            Console.WriteLine($"\n✅ Đã cập nhật số phát sinh Nợ: {dtNo.Rows.Count} dòng");
+            Console.WriteLine($"✅ Đã cập nhật số phát sinh Có: {dtCo.Rows.Count} dòng");
+        }
+
+        // ============================================================
+        // BƯỚC 5: TÁCH DƯ NỢ/DƯ CÓ BAN ĐẦU
+        // ============================================================
+        private void TachDuNoDuCoBanDau(SqlConnection conn, SqlTransaction tran)
+        {
+            string sql = @"
+                UPDATE HethongTK SET 
+                    DuNo_0 = IIF(DuNo_0 >= DuCo_0, DuNo_0 - DuCo_0, 0),
+                    DuCo_0 = IIF(DuNo_0 < DuCo_0, DuCo_0 - DuNo_0, 0)
+                WHERE TKCon = 0";
+
+            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+            {
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"✅ Đã tách dư nợ/dư có ban đầu cho {rows} tài khoản");
+            }
+        }
+
+        // ============================================================
+        // BƯỚC 6: TÍNH DƯ NỢ/DƯ CÓ CHO TÀI KHOẢN CẤP CON
+        // ============================================================
+        private void TinhDuNoDuCoTaiKhoanCon(SqlConnection conn, SqlTransaction tran)
+        {
+            // Lấy danh sách MaSo có phát sinh, BỎ QUA TK GỐC
+            string sqlGetMaSo = @"
+        SELECT DISTINCT MaSo 
+        FROM HethongTK 
+        WHERE MaSo IN (
+            SELECT MaTKNo FROM ChungTu WHERE SoPS <> 0
+            UNION
+            SELECT MaTKCo FROM ChungTu WHERE SoPS <> 0
+        )
+        AND MaSo NOT IN (1, 2, 6, 7, 20, 30, 40)  -- Bỏ qua TK gốc";
+
+            DataTable dtMaSo = new DataTable();
+            using (SqlCommand cmd = new SqlCommand(sqlGetMaSo, conn, tran))
+            {
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dtMaSo);
+                }
+            }
+
+            Console.WriteLine($"📌 Tính dư cho {dtMaSo.Rows.Count} tài khoản");
+
+            foreach (DataRow row in dtMaSo.Rows)
+            {
+                int maSo = Convert.ToInt32(row["MaSo"]);
+
                 string sql = $@"
-                    UPDATE SoDuKhachHang 
-                    SET DuNT_{i} = ABS(DuNT_{i - 1} + IIF(DuNo_{i - 1} - DuCo_{i - 1} >= 0, No_{i}_NT - Co_{i}_NT, Co_{i}_NT - No_{i}_NT))
-                    {fromClause}
-                    WHERE KhachHang.MaNT <> 0";
+            UPDATE HethongTK SET 
+                DuNo_1 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1, 0),
+                DuCo_1 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1), 0),
+                DuNo_2 = IIF(DuNo_1 - DuCo_1 + No_2 - Co_2 > 0, DuNo_1 - DuCo_1 + No_2 - Co_2, 0),
+                DuCo_2 = IIF(DuNo_1 - DuCo_1 + No_2 - Co_2 < 0, -(DuNo_1 - DuCo_1 + No_2 - Co_2), 0),
+                DuNo_3 = IIF(DuNo_2 - DuCo_2 + No_3 - Co_3 > 0, DuNo_2 - DuCo_2 + No_3 - Co_3, 0),
+                DuCo_3 = IIF(DuNo_2 - DuCo_2 + No_3 - Co_3 < 0, -(DuNo_2 - DuCo_2 + No_3 - Co_3), 0),
+                DuNo_4 = IIF(DuNo_3 - DuCo_3 + No_4 - Co_4 > 0, DuNo_3 - DuCo_3 + No_4 - Co_4, 0),
+                DuCo_4 = IIF(DuNo_3 - DuCo_3 + No_4 - Co_4 < 0, -(DuNo_3 - DuCo_3 + No_4 - Co_4), 0),
+                DuNo_5 = IIF(DuNo_4 - DuCo_4 + No_5 - Co_5 > 0, DuNo_4 - DuCo_4 + No_5 - Co_5, 0),
+                DuCo_5 = IIF(DuNo_4 - DuCo_4 + No_5 - Co_5 < 0, -(DuNo_4 - DuCo_4 + No_5 - Co_5), 0),
+                DuNo_6 = IIF(DuNo_5 - DuCo_5 + No_6 - Co_6 > 0, DuNo_5 - DuCo_5 + No_6 - Co_6, 0),
+                DuCo_6 = IIF(DuNo_5 - DuCo_5 + No_6 - Co_6 < 0, -(DuNo_5 - DuCo_5 + No_6 - Co_6), 0),
+                DuNo_7 = IIF(DuNo_6 - DuCo_6 + No_7 - Co_7 > 0, DuNo_6 - DuCo_6 + No_7 - Co_7, 0),
+                DuCo_7 = IIF(DuNo_6 - DuCo_6 + No_7 - Co_7 < 0, -(DuNo_6 - DuCo_6 + No_7 - Co_7), 0),
+                DuNo_8 = IIF(DuNo_7 - DuCo_7 + No_8 - Co_8 > 0, DuNo_7 - DuCo_7 + No_8 - Co_8, 0),
+                DuCo_8 = IIF(DuNo_7 - DuCo_7 + No_8 - Co_8 < 0, -(DuNo_7 - DuCo_7 + No_8 - Co_8), 0),
+                DuNo_9 = IIF(DuNo_8 - DuCo_8 + No_9 - Co_9 > 0, DuNo_8 - DuCo_8 + No_9 - Co_9, 0),
+                DuCo_9 = IIF(DuNo_8 - DuCo_8 + No_9 - Co_9 < 0, -(DuNo_8 - DuCo_8 + No_9 - Co_9), 0),
+                DuNo_10 = IIF(DuNo_9 - DuCo_9 + No_10 - Co_10 > 0, DuNo_9 - DuCo_9 + No_10 - Co_10, 0),
+                DuCo_10 = IIF(DuNo_9 - DuCo_9 + No_10 - Co_10 < 0, -(DuNo_9 - DuCo_9 + No_10 - Co_10), 0),
+                DuNo_11 = IIF(DuNo_10 - DuCo_10 + No_11 - Co_11 > 0, DuNo_10 - DuCo_10 + No_11 - Co_11, 0),
+                DuCo_11 = IIF(DuNo_10 - DuCo_10 + No_11 - Co_11 < 0, -(DuNo_10 - DuCo_10 + No_11 - Co_11), 0),
+                DuNo_12 = IIF(DuNo_11 - DuCo_11 + No_12 - Co_12 > 0, DuNo_11 - DuCo_11 + No_12 - Co_12, 0),
+                DuCo_12 = IIF(DuNo_11 - DuCo_11 + No_12 - Co_12 < 0, -(DuNo_11 - DuCo_11 + No_12 - Co_12), 0)
+            WHERE MaSo = {maSo}";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+                {
+                    int rows = cmd.ExecuteNonQuery();
+                    if (maSo == 5107) // TK 133
+                    {
+                        Console.WriteLine($"✅ Đã tính dư cho TK 133 (MaSo=5107): {rows} dòng");
+                    }
+                }
+            }
+
+            Console.WriteLine("✅ Tính dư nợ/dư có cho tất cả tài khoản xong!");
+        }
+
+        // ============================================================
+        // BƯỚC 7: TÍNH DƯ NỢ/DƯ CÓ CHO TÀI KHOẢN CẤP CHA
+        // ============================================================
+        private void TinhDuNoDuCoTaiKhoanCha(SqlConnection conn, SqlTransaction tran)
+        {
+            // Lấy danh sách tài khoản cấp cha (có TK con), BỎ QUA TK GỐC
+            string sqlGetCha = @"
+        SELECT DISTINCT TkCha0 AS MaSo
+        FROM HethongTK 
+        WHERE TkCha0 > 0
+        AND TkCha0 NOT IN (1, 2, 6, 7, 20, 30, 40)";
+
+            DataTable dtCha = new DataTable();
+            using (SqlCommand cmd = new SqlCommand(sqlGetCha, conn, tran))
+            {
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dtCha);
+                }
+            }
+
+            Console.WriteLine($"📌 Có {dtCha.Rows.Count} tài khoản cấp cha cần tổng hợp (đã bỏ qua TK gốc)");
+
+            // Cập nhật từng tài khoản cấp cha
+            foreach (DataRow row in dtCha.Rows)
+            {
+                int maSoCha = Convert.ToInt32(row["MaSo"]);
+
+                string sql = $@"
+            UPDATE HethongTK 
+            SET 
+                DuNo_0 = (SELECT ISNULL(SUM(DuNo_0), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_0 = (SELECT ISNULL(SUM(DuCo_0), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_1 = (SELECT ISNULL(SUM(No_1), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_1 = (SELECT ISNULL(SUM(Co_1), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_1 = (SELECT ISNULL(SUM(DuNo_1), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_1 = (SELECT ISNULL(SUM(DuCo_1), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_2 = (SELECT ISNULL(SUM(No_2), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_2 = (SELECT ISNULL(SUM(Co_2), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_2 = (SELECT ISNULL(SUM(DuNo_2), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_2 = (SELECT ISNULL(SUM(DuCo_2), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_3 = (SELECT ISNULL(SUM(No_3), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_3 = (SELECT ISNULL(SUM(Co_3), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_3 = (SELECT ISNULL(SUM(DuNo_3), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_3 = (SELECT ISNULL(SUM(DuCo_3), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_4 = (SELECT ISNULL(SUM(No_4), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_4 = (SELECT ISNULL(SUM(Co_4), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_4 = (SELECT ISNULL(SUM(DuNo_4), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_4 = (SELECT ISNULL(SUM(DuCo_4), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_5 = (SELECT ISNULL(SUM(No_5), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_5 = (SELECT ISNULL(SUM(Co_5), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_5 = (SELECT ISNULL(SUM(DuNo_5), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_5 = (SELECT ISNULL(SUM(DuCo_5), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_6 = (SELECT ISNULL(SUM(No_6), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_6 = (SELECT ISNULL(SUM(Co_6), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_6 = (SELECT ISNULL(SUM(DuNo_6), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_6 = (SELECT ISNULL(SUM(DuCo_6), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_7 = (SELECT ISNULL(SUM(No_7), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_7 = (SELECT ISNULL(SUM(Co_7), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_7 = (SELECT ISNULL(SUM(DuNo_7), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_7 = (SELECT ISNULL(SUM(DuCo_7), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_8 = (SELECT ISNULL(SUM(No_8), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_8 = (SELECT ISNULL(SUM(Co_8), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_8 = (SELECT ISNULL(SUM(DuNo_8), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_8 = (SELECT ISNULL(SUM(DuCo_8), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_9 = (SELECT ISNULL(SUM(No_9), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_9 = (SELECT ISNULL(SUM(Co_9), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_9 = (SELECT ISNULL(SUM(DuNo_9), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_9 = (SELECT ISNULL(SUM(DuCo_9), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_10 = (SELECT ISNULL(SUM(No_10), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_10 = (SELECT ISNULL(SUM(Co_10), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_10 = (SELECT ISNULL(SUM(DuNo_10), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_10 = (SELECT ISNULL(SUM(DuCo_10), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_11 = (SELECT ISNULL(SUM(No_11), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_11 = (SELECT ISNULL(SUM(Co_11), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_11 = (SELECT ISNULL(SUM(DuNo_11), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_11 = (SELECT ISNULL(SUM(DuCo_11), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                No_12 = (SELECT ISNULL(SUM(No_12), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                Co_12 = (SELECT ISNULL(SUM(Co_12), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuNo_12 = (SELECT ISNULL(SUM(DuNo_12), 0) FROM HethongTK WHERE TkCha0 = {maSoCha}),
+                DuCo_12 = (SELECT ISNULL(SUM(DuCo_12), 0) FROM HethongTK WHERE TkCha0 = {maSoCha})
+            WHERE MaSo = {maSoCha}";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+                {
+                    int rows = cmd.ExecuteNonQuery();
+                    if (maSoCha == 5107) // TK 133
+                    {
+                        Console.WriteLine($"✅ Đã tổng hợp cho TK 133 (MaSo=5107): {rows} dòng");
+                    }
+                }
+            }
+
+            Console.WriteLine($"✅ Đã tính dư nợ/dư có cho {dtCha.Rows.Count} tài khoản cấp cha");
+        }
+
+        // ============================================================
+        // BƯỚC 8: TÁCH DƯ NỢ/DƯ CÓ LẦN CUỐI
+        // ============================================================
+        private void TachDuNoDuCoLanCuoi(SqlConnection conn, SqlTransaction tran)
+        {
+            // Lấy danh sách MaSo có phát sinh, BỎ QUA TK GỐC
+            string sqlGetMaSo = @"
+        SELECT DISTINCT MaSo 
+        FROM HethongTK 
+        WHERE MaSo IN (
+            SELECT MaTKNo FROM ChungTu WHERE SoPS <> 0
+            UNION
+            SELECT MaTKCo FROM ChungTu WHERE SoPS <> 0
+        )
+        AND MaSo NOT IN (1, 2, 6, 7, 20, 30, 40)";
+
+            DataTable dtMaSo = new DataTable();
+            using (SqlCommand cmd = new SqlCommand(sqlGetMaSo, conn, tran))
+            {
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dtMaSo);
+                }
+            }
+
+            foreach (DataRow row in dtMaSo.Rows)
+            {
+                int maSo = Convert.ToInt32(row["MaSo"]);
+
+                string sql = $@"
+            UPDATE HethongTK 
+            SET 
+                DuNo_0 = IIF(DuNo_0 >= DuCo_0, DuNo_0 - DuCo_0, 0),
+                DuCo_0 = IIF(DuNo_0 < DuCo_0, DuCo_0 - DuNo_0, 0),
+                DuNo_1 = IIF(DuNo_1 >= DuCo_1, DuNo_1 - DuCo_1, 0),
+                DuCo_1 = IIF(DuNo_1 < DuCo_1, DuCo_1 - DuNo_1, 0),
+                DuNo_2 = IIF(DuNo_2 >= DuCo_2, DuNo_2 - DuCo_2, 0),
+                DuCo_2 = IIF(DuNo_2 < DuCo_2, DuCo_2 - DuNo_2, 0),
+                DuNo_3 = IIF(DuNo_3 >= DuCo_3, DuNo_3 - DuCo_3, 0),
+                DuCo_3 = IIF(DuNo_3 < DuCo_3, DuCo_3 - DuNo_3, 0),
+                DuNo_4 = IIF(DuNo_4 >= DuCo_4, DuNo_4 - DuCo_4, 0),
+                DuCo_4 = IIF(DuNo_4 < DuCo_4, DuCo_4 - DuNo_4, 0),
+                DuNo_5 = IIF(DuNo_5 >= DuCo_5, DuNo_5 - DuCo_5, 0),
+                DuCo_5 = IIF(DuNo_5 < DuCo_5, DuCo_5 - DuNo_5, 0),
+                DuNo_6 = IIF(DuNo_6 >= DuCo_6, DuNo_6 - DuCo_6, 0),
+                DuCo_6 = IIF(DuNo_6 < DuCo_6, DuCo_6 - DuNo_6, 0),
+                DuNo_7 = IIF(DuNo_7 >= DuCo_7, DuNo_7 - DuCo_7, 0),
+                DuCo_7 = IIF(DuNo_7 < DuCo_7, DuCo_7 - DuNo_7, 0),
+                DuNo_8 = IIF(DuNo_8 >= DuCo_8, DuNo_8 - DuCo_8, 0),
+                DuCo_8 = IIF(DuNo_8 < DuCo_8, DuCo_8 - DuNo_8, 0),
+                DuNo_9 = IIF(DuNo_9 >= DuCo_9, DuNo_9 - DuCo_9, 0),
+                DuCo_9 = IIF(DuNo_9 < DuCo_9, DuCo_9 - DuNo_9, 0),
+                DuNo_10 = IIF(DuNo_10 >= DuCo_10, DuNo_10 - DuCo_10, 0),
+                DuCo_10 = IIF(DuNo_10 < DuCo_10, DuCo_10 - DuNo_10, 0),
+                DuNo_11 = IIF(DuNo_11 >= DuCo_11, DuNo_11 - DuCo_11, 0),
+                DuCo_11 = IIF(DuNo_11 < DuCo_11, DuCo_11 - DuNo_11, 0),
+                DuNo_12 = IIF(DuNo_12 >= DuCo_12, DuNo_12 - DuCo_12, 0),
+                DuCo_12 = IIF(DuNo_12 < DuCo_12, DuCo_12 - DuNo_12, 0)
+            WHERE MaSo = {maSo}";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
                 {
                     cmd.ExecuteNonQuery();
                 }
             }
+
+            Console.WriteLine($"✅ Đã tách dư nợ/dư có lần cuối cho {dtMaSo.Rows.Count} tài khoản");
         }
 
         // ============================================================
-        // BƯỚC 5: TỔNG HỢP TỪ SoDuKhachHang LÊN HeThongTK
+        // BƯỚC 9: CẬP NHẬT SODUKHACHHANG
         // ============================================================
-        /// <summary>
-        /// Bước 5: Tổng hợp từ SoDuKhachHang lên HeThongTK
-        /// </summary>
-        private void TongHopLenHeThongTK(SqlConnection conn, SqlTransaction tran)
+        private void CapNhatSoDuKhachHang(SqlConnection conn, SqlTransaction tran)
         {
-            // ============ BƯỚC 1: Lấy danh sách MaTaiKhoan từ SoDuKhachHang ============
-            string sqlGetTK = "SELECT DISTINCT MaTaiKhoan FROM SoDuKhachHang WHERE MaTaiKhoan > 0";
-            DataTable dtTK = new DataTable();
-            using (SqlCommand cmd = new SqlCommand(sqlGetTK, conn, tran))
+            // Reset No, Co về 0 cho tất cả
+            string sqlReset = @"
+                UPDATE SoDuKhachHang SET 
+                    No_1 = 0, Co_1 = 0, No_1_NT = 0, Co_1_NT = 0,
+                    No_2 = 0, Co_2 = 0, No_2_NT = 0, Co_2_NT = 0,
+                    No_3 = 0, Co_3 = 0, No_3_NT = 0, Co_3_NT = 0,
+                    No_4 = 0, Co_4 = 0, No_4_NT = 0, Co_4_NT = 0,
+                    No_5 = 0, Co_5 = 0, No_5_NT = 0, Co_5_NT = 0,
+                    No_6 = 0, Co_6 = 0, No_6_NT = 0, Co_6_NT = 0,
+                    No_7 = 0, Co_7 = 0, No_7_NT = 0, Co_7_NT = 0,
+                    No_8 = 0, Co_8 = 0, No_8_NT = 0, Co_8_NT = 0,
+                    No_9 = 0, Co_9 = 0, No_9_NT = 0, Co_9_NT = 0,
+                    No_10 = 0, Co_10 = 0, No_10_NT = 0, Co_10_NT = 0,
+                    No_11 = 0, Co_11 = 0, No_11_NT = 0, Co_11_NT = 0,
+                    No_12 = 0, Co_12 = 0, No_12_NT = 0, Co_12_NT = 0";
+
+            using (SqlCommand cmd = new SqlCommand(sqlReset, conn, tran))
             {
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                {
-                    da.Fill(dtTK);
-                }
+                cmd.ExecuteNonQuery();
+                Console.WriteLine("✅ Đã reset SoDuKhachHang");
             }
 
-            if (dtTK.Rows.Count == 0)
+            // Lấy MaSo của TK 331 từ SoHieu
+            int maSo331 = GetMaSoFromSoHieu(conn, tran, "331");
+            if (maSo331 > 0)
             {
-                Console.WriteLine("⚠️ Không có dữ liệu trong SoDuKhachHang");
-                return;
+                CapNhatSoDuKhachHangForTaiKhoan(conn, tran, maSo331, "MaKHC");
             }
 
-            Console.WriteLine($"📌 Có {dtTK.Rows.Count} tài khoản cần tổng hợp");
-
-            // ============ BƯỚC 2: Tổng hợp từng tài khoản ============
-            foreach (DataRow rowTK in dtTK.Rows)
+            // Lấy MaSo của TK 131 từ SoHieu
+            int maSo131 = GetMaSoFromSoHieu(conn, tran, "131");
+            if (maSo131 > 0)
             {
-                int maTaiKhoan = Convert.ToInt32(rowTK["MaTaiKhoan"]);
-
-                // Tổng hợp số liệu từ SoDuKhachHang
-                string sqlTongHop = $@"
-            SELECT 
-                ISNULL(SUM(DuNo_0), 0) AS DuNo_0,
-                ISNULL(SUM(DuCo_0), 0) AS DuCo_0,
-                ISNULL(SUM(No_1), 0) AS No_1,
-                ISNULL(SUM(Co_1), 0) AS Co_1,
-                ISNULL(SUM(No_2), 0) AS No_2,
-                ISNULL(SUM(Co_2), 0) AS Co_2,
-                ISNULL(SUM(No_3), 0) AS No_3,
-                ISNULL(SUM(Co_3), 0) AS Co_3,
-                ISNULL(SUM(No_4), 0) AS No_4,
-                ISNULL(SUM(Co_4), 0) AS Co_4,
-                ISNULL(SUM(No_5), 0) AS No_5,
-                ISNULL(SUM(Co_5), 0) AS Co_5,
-                ISNULL(SUM(No_6), 0) AS No_6,
-                ISNULL(SUM(Co_6), 0) AS Co_6,
-                ISNULL(SUM(No_7), 0) AS No_7,
-                ISNULL(SUM(Co_7), 0) AS Co_7,
-                ISNULL(SUM(No_8), 0) AS No_8,
-                ISNULL(SUM(Co_8), 0) AS Co_8,
-                ISNULL(SUM(No_9), 0) AS No_9,
-                ISNULL(SUM(Co_9), 0) AS Co_9,
-                ISNULL(SUM(No_10), 0) AS No_10,
-                ISNULL(SUM(Co_10), 0) AS Co_10,
-                ISNULL(SUM(No_11), 0) AS No_11,
-                ISNULL(SUM(Co_11), 0) AS Co_11,
-                ISNULL(SUM(No_12), 0) AS No_12,
-                ISNULL(SUM(Co_12), 0) AS Co_12
-            FROM SoDuKhachHang
-            WHERE MaTaiKhoan = @MaTaiKhoan";
-
-                DataTable dtTong = new DataTable();
-                using (SqlCommand cmd = new SqlCommand(sqlTongHop, conn, tran))
-                {
-                    cmd.Parameters.AddWithValue("@MaTaiKhoan", maTaiKhoan);
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        da.Fill(dtTong);
-                    }
-                }
-
-                if (dtTong.Rows.Count == 0) continue;
-
-                DataRow row = dtTong.Rows[0];
-
-                // Cập nhật HeThongTK
-                string sqlUpdate = $@"
-            UPDATE HethongTK SET 
-                DuNo_0 = ISNULL(DuNo_0, 0) + @DuNo_0,
-                DuCo_0 = ISNULL(DuCo_0, 0) + @DuCo_0,
-                No_1 = ISNULL(No_1, 0) + @No_1,
-                Co_1 = ISNULL(Co_1, 0) + @Co_1,
-                No_2 = ISNULL(No_2, 0) + @No_2,
-                Co_2 = ISNULL(Co_2, 0) + @Co_2,
-                No_3 = ISNULL(No_3, 0) + @No_3,
-                Co_3 = ISNULL(Co_3, 0) + @Co_3,
-                No_4 = ISNULL(No_4, 0) + @No_4,
-                Co_4 = ISNULL(Co_4, 0) + @Co_4,
-                No_5 = ISNULL(No_5, 0) + @No_5,
-                Co_5 = ISNULL(Co_5, 0) + @Co_5,
-                No_6 = ISNULL(No_6, 0) + @No_6,
-                Co_6 = ISNULL(Co_6, 0) + @Co_6,
-                No_7 = ISNULL(No_7, 0) + @No_7,
-                Co_7 = ISNULL(Co_7, 0) + @Co_7,
-                No_8 = ISNULL(No_8, 0) + @No_8,
-                Co_8 = ISNULL(Co_8, 0) + @Co_8,
-                No_9 = ISNULL(No_9, 0) + @No_9,
-                Co_9 = ISNULL(Co_9, 0) + @Co_9,
-                No_10 = ISNULL(No_10, 0) + @No_10,
-                Co_10 = ISNULL(Co_10, 0) + @Co_10,
-                No_11 = ISNULL(No_11, 0) + @No_11,
-                Co_11 = ISNULL(Co_11, 0) + @Co_11,
-                No_12 = ISNULL(No_12, 0) + @No_12,
-                Co_12 = ISNULL(Co_12, 0) + @Co_12
-            WHERE MaSo = @MaTaiKhoan";
-
-                using (SqlCommand cmd = new SqlCommand(sqlUpdate, conn, tran))
-                {
-                    cmd.Parameters.AddWithValue("@MaTaiKhoan", maTaiKhoan);
-                    cmd.Parameters.AddWithValue("@DuNo_0", Convert.ToDouble(row["DuNo_0"]));
-                    cmd.Parameters.AddWithValue("@DuCo_0", Convert.ToDouble(row["DuCo_0"]));
-                    cmd.Parameters.AddWithValue("@No_1", Convert.ToDouble(row["No_1"]));
-                    cmd.Parameters.AddWithValue("@Co_1", Convert.ToDouble(row["Co_1"]));
-                    cmd.Parameters.AddWithValue("@No_2", Convert.ToDouble(row["No_2"]));
-                    cmd.Parameters.AddWithValue("@Co_2", Convert.ToDouble(row["Co_2"]));
-                    cmd.Parameters.AddWithValue("@No_3", Convert.ToDouble(row["No_3"]));
-                    cmd.Parameters.AddWithValue("@Co_3", Convert.ToDouble(row["Co_3"]));
-                    cmd.Parameters.AddWithValue("@No_4", Convert.ToDouble(row["No_4"]));
-                    cmd.Parameters.AddWithValue("@Co_4", Convert.ToDouble(row["Co_4"]));
-                    cmd.Parameters.AddWithValue("@No_5", Convert.ToDouble(row["No_5"]));
-                    cmd.Parameters.AddWithValue("@Co_5", Convert.ToDouble(row["Co_5"]));
-                    cmd.Parameters.AddWithValue("@No_6", Convert.ToDouble(row["No_6"]));
-                    cmd.Parameters.AddWithValue("@Co_6", Convert.ToDouble(row["Co_6"]));
-                    cmd.Parameters.AddWithValue("@No_7", Convert.ToDouble(row["No_7"]));
-                    cmd.Parameters.AddWithValue("@Co_7", Convert.ToDouble(row["Co_7"]));
-                    cmd.Parameters.AddWithValue("@No_8", Convert.ToDouble(row["No_8"]));
-                    cmd.Parameters.AddWithValue("@Co_8", Convert.ToDouble(row["Co_8"]));
-                    cmd.Parameters.AddWithValue("@No_9", Convert.ToDouble(row["No_9"]));
-                    cmd.Parameters.AddWithValue("@Co_9", Convert.ToDouble(row["Co_9"]));
-                    cmd.Parameters.AddWithValue("@No_10", Convert.ToDouble(row["No_10"]));
-                    cmd.Parameters.AddWithValue("@Co_10", Convert.ToDouble(row["Co_10"]));
-                    cmd.Parameters.AddWithValue("@No_11", Convert.ToDouble(row["No_11"]));
-                    cmd.Parameters.AddWithValue("@Co_11", Convert.ToDouble(row["Co_11"]));
-                    cmd.Parameters.AddWithValue("@No_12", Convert.ToDouble(row["No_12"]));
-                    cmd.Parameters.AddWithValue("@Co_12", Convert.ToDouble(row["Co_12"]));
-
-                    cmd.ExecuteNonQuery();
-                }
+                CapNhatSoDuKhachHangForTaiKhoan(conn, tran, maSo131, "MaKH");
             }
 
-            Console.WriteLine("✅ Đã tổng hợp lên HeThongTK!");
+            // Tính dư nợ/dư có cho SoDuKhachHang
+            TinhDuNoDuCoSoDuKhachHang(conn, tran);
+
+            // Tính DuNT cho SoDuKhachHang
+            TinhDuNTSoDuKhachHang(conn, tran);
         }
 
-        /// <summary>
-        /// Bước 6: Tổng hợp tài khoản cấp cha
-        /// </summary>
-        private void TongHopTaiKhoanCapCha(SqlConnection conn, SqlTransaction tran)
+        // ============================================================
+        // CẬP NHẬT SODUKHACHHANG CHO 1 TÀI KHOẢN
+        // ============================================================
+        private void CapNhatSoDuKhachHangForTaiKhoan(SqlConnection conn, SqlTransaction tran, int maTaiKhoan, string colDoiTuong)
         {
-            // ============ BƯỚC 1: Lấy danh sách tài khoản cấp cha ============
-            string sqlGet = "SELECT MaSo FROM HethongTK WHERE TkCha0 > 0 AND TKCon = 0";
+            string sql = $@"
+                SELECT 
+                    {colDoiTuong} AS MaDoiTuong,
+                    ThangCT,
+                    SUM(CASE WHEN MaTKNo = {maTaiKhoan} THEN SoPS ELSE 0 END) AS No_PS,
+                    SUM(CASE WHEN MaTKCo = {maTaiKhoan} THEN SoPS ELSE 0 END) AS Co_PS
+                FROM ChungTu
+                WHERE {colDoiTuong} > 0 AND (MaTKNo = {maTaiKhoan} OR MaTKCo = {maTaiKhoan})
+                GROUP BY {colDoiTuong}, ThangCT";
+
             DataTable dt = new DataTable();
-            using (SqlCommand cmd = new SqlCommand(sqlGet, conn, tran))
+            using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
             {
                 using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                 {
@@ -584,94 +801,170 @@ namespace SaovietTax
                 }
             }
 
-            if (dt.Rows.Count == 0)
-            {
-                Console.WriteLine("⚠️ Không có tài khoản cấp cha cần tổng hợp");
-                return;
-            }
-
-            Console.WriteLine($"📌 Có {dt.Rows.Count} tài khoản cấp cha cần tổng hợp");
-
-            // ============ BƯỚC 2: Cập nhật từng tài khoản cấp cha ============
             foreach (DataRow row in dt.Rows)
             {
-                int maSo = Convert.ToInt32(row["MaSo"]);
+                int maDoiTuong = Convert.ToInt32(row["MaDoiTuong"]);
+                int thang = Convert.ToInt32(row["ThangCT"]);
+                double noPS = Convert.ToDouble(row["No_PS"]);
+                double coPS = Convert.ToDouble(row["Co_PS"]);
 
+                // Kiểm tra tồn tại
+                string sqlCheck = @"
+                    SELECT COUNT(*) FROM SoDuKhachHang 
+                    WHERE MaKhachHang = @MaDoiTuong AND MaTaiKhoan = @MaTaiKhoan";
+
+                using (SqlCommand cmd = new SqlCommand(sqlCheck, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@MaDoiTuong", maDoiTuong);
+                    cmd.Parameters.AddWithValue("@MaTaiKhoan", maTaiKhoan);
+                    object result = cmd.ExecuteScalar();
+                    int count = 0;
+                    if (result != null && result != DBNull.Value)
+                    {
+                        count = Convert.ToInt32(result);
+                    }
+
+                    if (count == 0)
+                    {
+                        string sqlInsert = @"
+                            INSERT INTO SoDuKhachHang (MaKhachHang, MaTaiKhoan, DuNo_0, DuCo_0)
+                            VALUES (@MaDoiTuong, @MaTaiKhoan, 0, 0)";
+
+                        using (SqlCommand cmdInsert = new SqlCommand(sqlInsert, conn, tran))
+                        {
+                            cmdInsert.Parameters.AddWithValue("@MaDoiTuong", maDoiTuong);
+                            cmdInsert.Parameters.AddWithValue("@MaTaiKhoan", maTaiKhoan);
+                            cmdInsert.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                // Cập nhật số phát sinh
                 string sqlUpdate = $@"
-            UPDATE HethongTK SET 
-                DuNo_0 = (SELECT ISNULL(SUM(DuNo_0), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                DuCo_0 = (SELECT ISNULL(SUM(DuCo_0), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_1 = (SELECT ISNULL(SUM(No_1), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_1 = (SELECT ISNULL(SUM(Co_1), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_2 = (SELECT ISNULL(SUM(No_2), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_2 = (SELECT ISNULL(SUM(Co_2), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_3 = (SELECT ISNULL(SUM(No_3), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_3 = (SELECT ISNULL(SUM(Co_3), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_4 = (SELECT ISNULL(SUM(No_4), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_4 = (SELECT ISNULL(SUM(Co_4), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_5 = (SELECT ISNULL(SUM(No_5), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_5 = (SELECT ISNULL(SUM(Co_5), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_6 = (SELECT ISNULL(SUM(No_6), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_6 = (SELECT ISNULL(SUM(Co_6), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_7 = (SELECT ISNULL(SUM(No_7), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_7 = (SELECT ISNULL(SUM(Co_7), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_8 = (SELECT ISNULL(SUM(No_8), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_8 = (SELECT ISNULL(SUM(Co_8), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_9 = (SELECT ISNULL(SUM(No_9), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_9 = (SELECT ISNULL(SUM(Co_9), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_10 = (SELECT ISNULL(SUM(No_10), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_10 = (SELECT ISNULL(SUM(Co_10), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_11 = (SELECT ISNULL(SUM(No_11), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_11 = (SELECT ISNULL(SUM(Co_11), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                No_12 = (SELECT ISNULL(SUM(No_12), 0) FROM HethongTK WHERE TkCha0 = @MaSo),
-                Co_12 = (SELECT ISNULL(SUM(Co_12), 0) FROM HethongTK WHERE TkCha0 = @MaSo)
-            WHERE MaSo = @MaSo";
+                    UPDATE SoDuKhachHang 
+                    SET No_{thang} = No_{thang} + @No_PS,
+                        Co_{thang} = Co_{thang} + @Co_PS
+                    WHERE MaKhachHang = @MaDoiTuong AND MaTaiKhoan = @MaTaiKhoan";
 
                 using (SqlCommand cmd = new SqlCommand(sqlUpdate, conn, tran))
                 {
-                    cmd.Parameters.AddWithValue("@MaSo", maSo);
+                    cmd.Parameters.AddWithValue("@No_PS", noPS);
+                    cmd.Parameters.AddWithValue("@Co_PS", coPS);
+                    cmd.Parameters.AddWithValue("@MaDoiTuong", maDoiTuong);
+                    cmd.Parameters.AddWithValue("@MaTaiKhoan", maTaiKhoan);
                     cmd.ExecuteNonQuery();
                 }
             }
 
-            Console.WriteLine("✅ Đã tổng hợp tài khoản cấp cha!");
+            Console.WriteLine($"✅ Đã cập nhật SoDuKhachHang cho TK {maTaiKhoan}: {dt.Rows.Count} dòng");
         }
 
-        private void TachDuNoDuCo_HeThongTK(SqlConnection conn, SqlTransaction tran)
+        // ============================================================
+        // TÍNH DƯ NỢ/DƯ CÓ CHO SODUKHACHHANG
+        // ============================================================
+        private void TinhDuNoDuCoSoDuKhachHang(SqlConnection conn, SqlTransaction tran)
         {
             string sql = @"
-                UPDATE HethongTK SET 
-                    DuNo_0 = IIF(DuNo_0 >= DuCo_0, DuNo_0 - DuCo_0, 0),
-                    DuCo_0 = IIF(DuNo_0 < DuCo_0, DuCo_0 - DuNo_0, 0),
-                    DuNo_1 = IIF(DuNo_1 >= DuCo_1, DuNo_1 - DuCo_1, 0),
-                    DuCo_1 = IIF(DuNo_1 < DuCo_1, DuCo_1 - DuNo_1, 0),
-                    DuNo_2 = IIF(DuNo_2 >= DuCo_2, DuNo_2 - DuCo_2, 0),
-                    DuCo_2 = IIF(DuNo_2 < DuCo_2, DuCo_2 - DuNo_2, 0),
-                    DuNo_3 = IIF(DuNo_3 >= DuCo_3, DuNo_3 - DuCo_3, 0),
-                    DuCo_3 = IIF(DuNo_3 < DuCo_3, DuCo_3 - DuNo_3, 0),
-                    DuNo_4 = IIF(DuNo_4 >= DuCo_4, DuNo_4 - DuCo_4, 0),
-                    DuCo_4 = IIF(DuNo_4 < DuCo_4, DuCo_4 - DuNo_4, 0),
-                    DuNo_5 = IIF(DuNo_5 >= DuCo_5, DuNo_5 - DuCo_5, 0),
-                    DuCo_5 = IIF(DuNo_5 < DuCo_5, DuCo_5 - DuNo_5, 0),
-                    DuNo_6 = IIF(DuNo_6 >= DuCo_6, DuNo_6 - DuCo_6, 0),
-                    DuCo_6 = IIF(DuNo_6 < DuCo_6, DuCo_6 - DuNo_6, 0),
-                    DuNo_7 = IIF(DuNo_7 >= DuCo_7, DuNo_7 - DuCo_7, 0),
-                    DuCo_7 = IIF(DuNo_7 < DuCo_7, DuCo_7 - DuNo_7, 0),
-                    DuNo_8 = IIF(DuNo_8 >= DuCo_8, DuNo_8 - DuCo_8, 0),
-                    DuCo_8 = IIF(DuNo_8 < DuCo_8, DuCo_8 - DuNo_8, 0),
-                    DuNo_9 = IIF(DuNo_9 >= DuCo_9, DuNo_9 - DuCo_9, 0),
-                    DuCo_9 = IIF(DuNo_9 < DuCo_9, DuCo_9 - DuNo_9, 0),
-                    DuNo_10 = IIF(DuNo_10 >= DuCo_10, DuNo_10 - DuCo_10, 0),
-                    DuCo_10 = IIF(DuNo_10 < DuCo_10, DuCo_10 - DuNo_10, 0),
-                    DuNo_11 = IIF(DuNo_11 >= DuCo_11, DuNo_11 - DuCo_11, 0),
-                    DuCo_11 = IIF(DuNo_11 < DuCo_11, DuCo_11 - DuNo_11, 0),
-                    DuNo_12 = IIF(DuNo_12 >= DuCo_12, DuNo_12 - DuCo_12, 0),
-                    DuCo_12 = IIF(DuNo_12 < DuCo_12, DuCo_12 - DuNo_12, 0)
-                WHERE TK_ID2 <> 1310";
+                UPDATE SoDuKhachHang SET 
+                    DuNo_1 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1, 0),
+                    DuCo_1 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1), 0),
+                    DuNo_2 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2, 0),
+                    DuCo_2 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2), 0),
+                    DuNo_3 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3, 0),
+                    DuCo_3 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3), 0),
+                    DuNo_4 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4, 0),
+                    DuCo_4 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4), 0),
+                    DuNo_5 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5, 0),
+                    DuCo_5 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5), 0),
+                    DuNo_6 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6, 0),
+                    DuCo_6 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6), 0),
+                    DuNo_7 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7, 0),
+                    DuCo_7 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7), 0),
+                    DuNo_8 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8, 0),
+                    DuCo_8 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8), 0),
+                    DuNo_9 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9, 0),
+                    DuCo_9 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9), 0),
+                    DuNo_10 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10, 0),
+                    DuCo_10 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10), 0),
+                    DuNo_11 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 + No_11 - Co_11 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 + No_11 - Co_11, 0),
+                    DuCo_11 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 + No_11 - Co_11 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 + No_11 - Co_11), 0),
+                    DuNo_12 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 + No_11 - Co_11 + No_12 - Co_12 > 0, DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 + No_11 - Co_11 + No_12 - Co_12, 0),
+                    DuCo_12 = IIF(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 + No_11 - Co_11 + No_12 - Co_12 < 0, -(DuNo_0 - DuCo_0 + No_1 - Co_1 + No_2 - Co_2 + No_3 - Co_3 + No_4 - Co_4 + No_5 - Co_5 + No_6 - Co_6 + No_7 - Co_7 + No_8 - Co_8 + No_9 - Co_9 + No_10 - Co_10 + No_11 - Co_11 + No_12 - Co_12), 0)";
 
             using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
             {
                 cmd.ExecuteNonQuery();
+                Console.WriteLine("✅ Đã tính dư nợ/dư có cho SoDuKhachHang");
+            }
+        }
+
+        // ============================================================
+        // TÍNH DUNT CHO SODUKHACHHANG
+        // ============================================================
+        private void TinhDuNTSoDuKhachHang(SqlConnection conn, SqlTransaction tran)
+        {
+            for (int i = 1; i <= 12; i++)
+            {
+                string sql = $@"
+                    UPDATE SoDuKhachHang 
+                    SET DuNT_{i} = ABS(DuNT_{i - 1} + IIF(DuNo_{i - 1} - DuCo_{i - 1} >= 0, No_{i}_NT - Co_{i}_NT, Co_{i}_NT - No_{i}_NT))
+                    WHERE EXISTS (
+                        SELECT 1 FROM KhachHang 
+                        WHERE KhachHang.MaSo = SoDuKhachHang.MaKhachHang 
+                        AND KhachHang.MaNT <> 0
+                    )";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            Console.WriteLine("✅ Đã tính DuNT cho SoDuKhachHang");
+        }
+
+        // ============================================================
+        // BƯỚC 10: KIỂM TRA KẾT QUẢ
+        // ============================================================
+        private void CheckKetQua(SqlConnection conn, SqlTransaction tran)
+        {
+            Console.WriteLine("\n📊 KẾT QUẢ SAU KHI TÍNH:");
+            Console.WriteLine("========================================");
+
+            string[] listCheck = { "156", "1331", "331", "131" };
+
+            foreach (string soHieu in listCheck)
+            {
+                int maSo = GetMaSoFromSoHieu(conn, tran, soHieu);
+                if (maSo == 0)
+                {
+                    Console.WriteLine($"❌ KHÔNG tìm thấy TK {soHieu} trong HeThongTK!");
+                    continue;
+                }
+
+                string sql = $@"
+                    SELECT MaSo, SoHieu, Ten, 
+                           No_7, Co_7, DuNo_7, DuCo_7
+                    FROM HethongTK 
+                    WHERE MaSo = {maSo}";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Console.WriteLine($"✅ TK {soHieu} (MaSo={maSo}):");
+                            Console.WriteLine($"   Tháng 7: Nợ={reader["No_7"]}, Có={reader["Co_7"]}, Dư Nợ={reader["DuNo_7"]}, Dư Có={reader["DuCo_7"]}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"❌ KHÔNG tìm thấy TK {soHieu}");
+                        }
+                        reader.Close();
+                    }
+                }
+                Console.WriteLine("");
             }
         }
     }

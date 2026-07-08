@@ -25,6 +25,5 @@ namespace SaovietTax.Models
         public string TKCo { get; set; }
         public string GhiChu { get; set; }
         public string TKNo { get; set; }
-        public Nullable<double> MaPhanLoaiCu { get; set; }
     }
 }

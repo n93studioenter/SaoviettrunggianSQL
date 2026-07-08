@@ -132,6 +132,66 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ChungTus">
+      <EntityTypeMapping TypeName="DatablankModel.ChungTu">
+        <MappingFragment StoreEntitySet="ChungTu">
+          <ScalarProperty Name="MaSo" ColumnName="MaSo" />
+          <ScalarProperty Name="MaCT" ColumnName="MaCT" />
+          <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+          <ScalarProperty Name="ThangCT" ColumnName="ThangCT" />
+          <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
+          <ScalarProperty Name="NgayCT" ColumnName="NgayCT" />
+          <ScalarProperty Name="NgayGS" ColumnName="NgayGS" />
+          <ScalarProperty Name="NgayTL" ColumnName="NgayTL" />
+          <ScalarProperty Name="DienGiai" ColumnName="DienGiai" />
+          <ScalarProperty Name="MaKho" ColumnName="MaKho" />
+          <ScalarProperty Name="MaNguon" ColumnName="MaNguon" />
+          <ScalarProperty Name="MaTKNo" ColumnName="MaTKNo" />
+          <ScalarProperty Name="MaTKCo" ColumnName="MaTKCo" />
+          <ScalarProperty Name="SoPS" ColumnName="SoPS" />
+          <ScalarProperty Name="SoPS2No" ColumnName="SoPS2No" />
+          <ScalarProperty Name="SoPS2Co" ColumnName="SoPS2Co" />
+          <ScalarProperty Name="MaTKTCNo" ColumnName="MaTKTCNo" />
+          <ScalarProperty Name="MaTKTCCo" ColumnName="MaTKTCCo" />
+          <ScalarProperty Name="MaVattu" ColumnName="MaVattu" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="CT_ID" ColumnName="CT_ID" />
+          <ScalarProperty Name="SoXuat" ColumnName="SoXuat" />
+          <ScalarProperty Name="MaDT" ColumnName="MaDT" />
+          <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+          <ScalarProperty Name="CTGS" ColumnName="CTGS" />
+          <ScalarProperty Name="MaKHC" ColumnName="MaKHC" />
+          <ScalarProperty Name="MaTP" ColumnName="MaTP" />
+          <ScalarProperty Name="DVT" ColumnName="DVT" />
+          <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+          <ScalarProperty Name="DienGiaiE" ColumnName="DienGiaiE" />
+          <ScalarProperty Name="TyGia" ColumnName="TyGia" />
+          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+          <ScalarProperty Name="HanTT" ColumnName="HanTT" />
+          <ScalarProperty Name="SH1" ColumnName="SH1" />
+          <ScalarProperty Name="T1" ColumnName="T1" />
+          <ScalarProperty Name="TLCK" ColumnName="TLCK" />
+          <ScalarProperty Name="CK" ColumnName="CK" />
+          <ScalarProperty Name="MaDT1" ColumnName="MaDT1" />
+          <ScalarProperty Name="MaDT2" ColumnName="MaDT2" />
+          <ScalarProperty Name="MaDT3" ColumnName="MaDT3" />
+          <ScalarProperty Name="XuLy" ColumnName="XuLy" />
+          <ScalarProperty Name="MauSoHD" ColumnName="MauSoHD" />
+          <ScalarProperty Name="LoaiHoaDon" ColumnName="LoaiHoaDon" />
+          <ScalarProperty Name="Nguoimuahang" ColumnName="Nguoimuahang" />
+          <ScalarProperty Name="hinhthucthanhtoan" ColumnName="hinhthucthanhtoan" />
+          <ScalarProperty Name="sophieudathang" ColumnName="sophieudathang" />
+          <ScalarProperty Name="chondiengiai" ColumnName="chondiengiai" />
+          <ScalarProperty Name="phantramchietkhau" ColumnName="phantramchietkhau" />
+          <ScalarProperty Name="sotienchietkhau" ColumnName="sotienchietkhau" />
+          <ScalarProperty Name="solo" ColumnName="solo" />
+          <ScalarProperty Name="handung" ColumnName="handung" />
+          <ScalarProperty Name="SoPSGoc" ColumnName="SoPSGoc" />
+          <ScalarProperty Name="nhanban" ColumnName="nhanban" />
+          <ScalarProperty Name="NgayImport" ColumnName="NgayImport" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="ChungTu2">
       <EntityTypeMapping TypeName="DatablankModel.ChungTu2">
         <MappingFragment StoreEntitySet="ChungTu2">
@@ -331,7 +391,6 @@
     <EntitySetMapping Name="CTTaiSans">
       <EntityTypeMapping TypeName="DatablankModel.CTTaiSan">
         <MappingFragment StoreEntitySet="CTTaiSan">
-          <ScalarProperty Name="taisanIdCu" ColumnName="taisanIdCu" />
           <ScalarProperty Name="MaSo" ColumnName="MaSo" />
           <ScalarProperty Name="MaCTKT" ColumnName="MaCTKT" />
           <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
@@ -403,7 +462,6 @@
     <EntitySetMapping Name="DVTVattus">
       <EntityTypeMapping TypeName="DatablankModel.DVTVattu">
         <MappingFragment StoreEntitySet="DVTVattu">
-          <ScalarProperty Name="MadvtvattuCu" ColumnName="MadvtvattuCu" />
           <ScalarProperty Name="MaSo" ColumnName="MaSo" />
           <ScalarProperty Name="MaVattu" ColumnName="MaVattu" />
           <ScalarProperty Name="DonVi" ColumnName="DonVi" />
@@ -415,14 +473,6 @@
     <EntitySetMapping Name="HeThongTKs">
       <EntityTypeMapping TypeName="DatablankModel.HeThongTK">
         <MappingFragment StoreEntitySet="HeThongTK">
-          <ScalarProperty Name="PSCLK2024" ColumnName="PSCLK2024" />
-          <ScalarProperty Name="PSNLK2024" ColumnName="PSNLK2024" />
-          <ScalarProperty Name="PSCLK2017" ColumnName="PSCLK2017" />
-          <ScalarProperty Name="PSNLK2017" ColumnName="PSNLK2017" />
-          <ScalarProperty Name="PSCLK2016" ColumnName="PSCLK2016" />
-          <ScalarProperty Name="PSNLK2016" ColumnName="PSNLK2016" />
-          <ScalarProperty Name="PSCLK2015" ColumnName="PSCLK2015" />
-          <ScalarProperty Name="PSNLK2015" ColumnName="PSNLK2015" />
           <ScalarProperty Name="MaSo" ColumnName="MaSo" />
           <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
           <ScalarProperty Name="Cap" ColumnName="Cap" />
@@ -862,7 +912,6 @@
     <EntitySetMapping Name="PhanLoaiVattus">
       <EntityTypeMapping TypeName="DatablankModel.PhanLoaiVattu">
         <MappingFragment StoreEntitySet="PhanLoaiVattu">
-          <ScalarProperty Name="MaPhanLoaiCu" ColumnName="MaPhanLoaiCu" />
           <ScalarProperty Name="MaSo" ColumnName="MaSo" />
           <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
           <ScalarProperty Name="TenPhanLoai" ColumnName="TenPhanLoai" />
@@ -1041,7 +1090,6 @@
     <EntitySetMapping Name="TaiSans">
       <EntityTypeMapping TypeName="DatablankModel.TaiSan">
         <MappingFragment StoreEntitySet="TaiSan">
-          <ScalarProperty Name="taisanIdCu" ColumnName="taisanIdCu" />
           <ScalarProperty Name="MaSo" ColumnName="MaSo" />
           <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
           <ScalarProperty Name="Ten" ColumnName="Ten" />
@@ -1363,7 +1411,6 @@
     <EntitySetMapping Name="ThongSoes">
       <EntityTypeMapping TypeName="DatablankModel.ThongSo">
         <MappingFragment StoreEntitySet="ThongSo">
-          <ScalarProperty Name="taisanIdCu" ColumnName="taisanIdCu" />
           <ScalarProperty Name="MaSo" ColumnName="MaSo" />
           <ScalarProperty Name="MaTS" ColumnName="MaTS" />
           <ScalarProperty Name="Thang" ColumnName="Thang" />
@@ -1744,63 +1791,52 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ChungTus">
-      <EntityTypeMapping TypeName="DatablankModel.ChungTu">
-        <MappingFragment StoreEntitySet="ChungTu">
-          <ScalarProperty Name="NgayImport" ColumnName="NgayImport" />
-          <ScalarProperty Name="SoPSGoc" ColumnName="SoPSGoc" />
-          <ScalarProperty Name="nhanban" ColumnName="nhanban" />
-          <ScalarProperty Name="handung" ColumnName="handung" />
-          <ScalarProperty Name="solo" ColumnName="solo" />
-          <ScalarProperty Name="sotienchietkhau" ColumnName="sotienchietkhau" />
-          <ScalarProperty Name="phantramchietkhau" ColumnName="phantramchietkhau" />
-          <ScalarProperty Name="chondiengiai" ColumnName="chondiengiai" />
-          <ScalarProperty Name="sophieudathang" ColumnName="sophieudathang" />
-          <ScalarProperty Name="hinhthucthanhtoan" ColumnName="hinhthucthanhtoan" />
-          <ScalarProperty Name="Nguoimuahang" ColumnName="Nguoimuahang" />
-          <ScalarProperty Name="LoaiHoaDon" ColumnName="LoaiHoaDon" />
-          <ScalarProperty Name="MauSoHD" ColumnName="MauSoHD" />
-          <ScalarProperty Name="XuLy" ColumnName="XuLy" />
-          <ScalarProperty Name="MaDT3" ColumnName="MaDT3" />
-          <ScalarProperty Name="MaDT2" ColumnName="MaDT2" />
-          <ScalarProperty Name="MaDT1" ColumnName="MaDT1" />
-          <ScalarProperty Name="CK" ColumnName="CK" />
-          <ScalarProperty Name="TLCK" ColumnName="TLCK" />
-          <ScalarProperty Name="T1" ColumnName="T1" />
-          <ScalarProperty Name="SH1" ColumnName="SH1" />
-          <ScalarProperty Name="HanTT" ColumnName="HanTT" />
-          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
-          <ScalarProperty Name="TyGia" ColumnName="TyGia" />
-          <ScalarProperty Name="DienGiaiE" ColumnName="DienGiaiE" />
-          <ScalarProperty Name="User_ID" ColumnName="User_ID" />
-          <ScalarProperty Name="DVT" ColumnName="DVT" />
-          <ScalarProperty Name="MaTP" ColumnName="MaTP" />
-          <ScalarProperty Name="MaKHC" ColumnName="MaKHC" />
-          <ScalarProperty Name="CTGS" ColumnName="CTGS" />
-          <ScalarProperty Name="MaKH" ColumnName="MaKH" />
-          <ScalarProperty Name="MaDT" ColumnName="MaDT" />
-          <ScalarProperty Name="SoXuat" ColumnName="SoXuat" />
-          <ScalarProperty Name="CT_ID" ColumnName="CT_ID" />
-          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
-          <ScalarProperty Name="MaVattu" ColumnName="MaVattu" />
-          <ScalarProperty Name="MaTKTCCo" ColumnName="MaTKTCCo" />
-          <ScalarProperty Name="MaTKTCNo" ColumnName="MaTKTCNo" />
-          <ScalarProperty Name="SoPS2Co" ColumnName="SoPS2Co" />
-          <ScalarProperty Name="SoPS2No" ColumnName="SoPS2No" />
-          <ScalarProperty Name="SoPS" ColumnName="SoPS" />
-          <ScalarProperty Name="MaTKCo" ColumnName="MaTKCo" />
-          <ScalarProperty Name="MaTKNo" ColumnName="MaTKNo" />
-          <ScalarProperty Name="MaNguon" ColumnName="MaNguon" />
-          <ScalarProperty Name="MaKho" ColumnName="MaKho" />
-          <ScalarProperty Name="DienGiai" ColumnName="DienGiai" />
-          <ScalarProperty Name="NgayTL" ColumnName="NgayTL" />
-          <ScalarProperty Name="NgayGS" ColumnName="NgayGS" />
-          <ScalarProperty Name="NgayCT" ColumnName="NgayCT" />
+    <EntitySetMapping Name="QNhatkies">
+      <EntityTypeMapping TypeName="DatablankModel.QNhatky">
+        <MappingFragment StoreEntitySet="QNhatky">
+          <ScalarProperty Name="KyHieu" ColumnName="KyHieu" />
+          <ScalarProperty Name="SoHD" ColumnName="SoHD" />
+          <ScalarProperty Name="NgayPH" ColumnName="NgayPH" />
+          <ScalarProperty Name="MatHang" ColumnName="MatHang" />
+          <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+          <ScalarProperty Name="ThanhTien" ColumnName="ThanhTien" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="MST" ColumnName="MST" />
           <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
-          <ScalarProperty Name="ThangCT" ColumnName="ThangCT" />
-          <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+          <ScalarProperty Name="SoPS" ColumnName="SoPS" />
+          <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+          <ScalarProperty Name="TyLe" ColumnName="TyLe" />
+          <ScalarProperty Name="HTTT" ColumnName="HTTT" />
+          <ScalarProperty Name="MauSo" ColumnName="MauSo" />
           <ScalarProperty Name="MaCT" ColumnName="MaCT" />
           <ScalarProperty Name="MaSo" ColumnName="MaSo" />
+          <ScalarProperty Name="KCT" ColumnName="KCT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QTheKhoes">
+      <EntityTypeMapping TypeName="DatablankModel.QTheKho">
+        <MappingFragment StoreEntitySet="QTheKho">
+          <ScalarProperty Name="MaNT" ColumnName="MaNT" />
+          <ScalarProperty Name="KyHieu" ColumnName="KyHieu" />
+          <ScalarProperty Name="DKNo" ColumnName="DKNo" />
+          <ScalarProperty Name="DKCo" ColumnName="DKCo" />
+          <ScalarProperty Name="DKNT" ColumnName="DKNT" />
+          <ScalarProperty Name="CKNo" ColumnName="CKNo" />
+          <ScalarProperty Name="CKCo" ColumnName="CKCo" />
+          <ScalarProperty Name="CKNT" ColumnName="CKNT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Socais">
+      <EntityTypeMapping TypeName="DatablankModel.Socai">
+        <MappingFragment StoreEntitySet="Socai">
+          <ScalarProperty Name="SoHieuTK" ColumnName="SoHieuTK" />
+          <ScalarProperty Name="NoDk" ColumnName="NoDk" />
+          <ScalarProperty Name="Kieu" ColumnName="Kieu" />
+          <ScalarProperty Name="TenTk" ColumnName="TenTk" />
+          <ScalarProperty Name="NoLK" ColumnName="NoLK" />
+          <ScalarProperty Name="CoLK" ColumnName="CoLK" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

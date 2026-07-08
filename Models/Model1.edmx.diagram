@@ -4,13 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bcf13e396c664cc8a81b30997594010d" Name="Diagram1">
+      <Diagram DiagramId="9ffb46f57743480a84b996a79d9f488c" Name="Diagram1">
         <EntityTypeShape EntityType="DatablankModel.BaoCaoCP" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.BaoCaoCP2" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.BARCODE" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.BKNhomP" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.CDT" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.cdts48" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.ChungTu" Width="1.5" PointX="6.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.ChungTu2" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.ChungTuLQ" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.ChungTuLQP" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
@@ -78,7 +79,9 @@
         <EntityTypeShape EntityType="DatablankModel.Vattu" Width="1.5" PointX="26.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.VTDauNam" Width="1.5" PointX="26.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatablankModel.DanhSachVatTu" Width="1.5" PointX="26.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatablankModel.ChungTu" Width="1.5" PointX="23.375" PointY="26.75" />
+        <EntityTypeShape EntityType="DatablankModel.QNhatky" Width="1.5" PointX="26.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.QTheKho" Width="1.5" PointX="26.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatablankModel.Socai" Width="1.5" PointX="22.75" PointY="26.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

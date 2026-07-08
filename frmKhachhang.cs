@@ -15,6 +15,7 @@ using System.IO;
 using static SaovietTax.frmKhachhang;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace SaovietTax
 {
@@ -117,7 +118,7 @@ namespace SaovietTax
         private void frmKhachhang_Load(object sender, EventArgs e)
         {
             // gridView1.OptionsFind.AlwaysVisible = true; // Luôn hiển thị ô tìm kiếm
-            connectionString = "Server=pc43\\SQLEXPRESS;Database=thanhhuongbendinh;User Id=sa;Password=123456;";
+            connectionString = ConfigurationManager.ConnectionStrings["SqlConn"].ConnectionString;
             string query = @"SELECT * FROM PhanLoaiKhachHang ORDER BY TenPhanLoai";
             var dt = ExecuteQuery(query, null);
             if (dt != null && dt.Rows.Count > 0)

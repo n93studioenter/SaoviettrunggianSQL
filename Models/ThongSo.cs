@@ -32,6 +32,5 @@ namespace SaovietTax.Models
         public Nullable<int> MaDTQL { get; set; }
         public Nullable<int> MaDTSD { get; set; }
         public Nullable<int> MaTTSD { get; set; }
-        public Nullable<double> taisanIdCu { get; set; }
     }
 }

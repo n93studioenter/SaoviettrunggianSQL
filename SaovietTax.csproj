@@ -479,6 +479,12 @@
     <Compile Include="frmTaikhoan.Designer.cs">
       <DependentUpon>frmTaikhoan.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmThongkeImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmThongkeImport.Designer.cs">
+      <DependentUpon>frmThongkeImport.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmWebbrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -648,6 +654,12 @@
     <Compile Include="Models\PhieuNX.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QNhatky.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QTheKho.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\QuocGia.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -655,6 +667,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SHchungtu.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Socai.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SoDuKhachHang.cs">
@@ -889,6 +904,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmTaikhoan.resx">
       <DependentUpon>frmTaikhoan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmThongkeImport.resx">
+      <DependentUpon>frmThongkeImport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmWebbrowser.resx">
       <DependentUpon>frmWebbrowser.cs</DependentUpon>

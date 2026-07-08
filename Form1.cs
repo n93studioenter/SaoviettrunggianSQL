@@ -29180,7 +29180,13 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 }
             }
         }
-
+        public class ImportResult
+        {
+            public string SoHD { get; set; }
+            public int Status { get; set; }
+            public string Error { get; set; }
+        }
+        public List<ImportResult> lstImportResult = new List<ImportResult>();
         private void btnimport_Click(object sender, EventArgs e)
         {
             if (chkDauvao.Checked)
@@ -29858,7 +29864,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 {
                     double TT = item.TgTCThue;
                     double TTDetail = item.fileImportDetails.Sum(m => m.TTien);
-                    if (TT != TTDetail)
+                    if (TT != TTDetail && TT!=0)
                     {
                         XtraMessageBox.Show($"Hoá đơn {item.SHDon} chưa cân bằng, vui lòng kiểm tra lại trước khi import vào phần mềm ");
                         return false;
@@ -29876,7 +29882,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
         {
             if (!XukyValorant())
                 return;
-            var lstkh = db.KhachHangs;
+            var lstkh = db.KhachHangs.ToList();
 
             int maxct = db.ChungTus.Max(m => m.MaCT) ?? 0;
             int makho = db.KhoHangs.Max(m => m.MaSo);
@@ -29884,7 +29890,16 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             var httk = db.HeThongTKs
              .Select(t => new { t.SoHieu, t.MaSo })
              .ToList();
-            var vattu = db.Vattus;
+            List<SaovietTax.Models.Vattu> vattu = new List<Vattu>();
+            try
+            {
+                vattu = db.Vattus.ToList();
+            } 
+            catch(Exception ex)
+            { 
+                XtraMessageBox.Show(ex.Message);
+                return;
+            }
             var tonkholist = db.TonKhoes;
             var lstim = db.tbimports;
             if (chkDaura.Checked)
@@ -29894,7 +29909,10 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                     if (item.Checked)
                     {
                         SaovietTax.Models.KhachHang getKH = lstkh.Where(m => m.MST == item.Mst).FirstOrDefault();
-                         
+                        if (getKH == null)
+                        {
+                            getKH = lstkh.Where(m => m.SoHieu == item.Mst).FirstOrDefault();
+                        }
                         using (var transaction = db.Database.BeginTransaction())
                         {
                             try
@@ -29965,7 +29983,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                     //Dòng GV
                                     var ctgv = new SaovietTax.Models.ChungTu();
                                     //500000822
-                                    ctgv.CT_ID = double.Parse("500000" + ct.MaSo.ToString());
+                                    ctgv.CT_ID = 500000000 + ct.MaSo;
                                     ctgv.MaCT = maxct + 1;
                                     ctgv.MaLoai = 2;
                                     ctgv.ThangCT = short.Parse(item.NLap.Month.ToString());
@@ -30156,8 +30174,15 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                 db.SaveChanges();
                                 int maxms = db.ChungTus.Max(m => m.MaSo);
                                 SaovietTax.Models.HoaDon hd = new SaovietTax.Models.HoaDon();
-                                hd.MaSo = maxms-1;
-                                hd.Loai = 1;
+                                if (item.TgTCThue2 == null || item.TgTCThue2==0)
+                                {
+                                    hd.MaSo = maxms;
+                                }
+                                else
+                                {
+                                    hd.MaSo = maxms-1;
+                                }
+                                    hd.Loai = 1;
                                 // hd.MaKhachHang = lstkh.Where(m => m.MST == item.Mst || m.Ten==item.Ten).FirstOrDefault().MaSo;
                                 hd.MaKhachHang = getKH!=null? getKH.MaSo:0;
                                 hd.KyHieu = item.KHHDon;
@@ -30226,13 +30251,22 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                     tbi.Status = 1;
                                     db.SaveChanges();
                                 }
-                                transaction.Commit();
-
+                                 transaction.Commit();
+                                ImportResult importResult = new ImportResult();
+                                importResult.SoHD = item.SHDon;
+                                importResult.Status = 1;
+                                importResult.Error = "";
+                                lstImportResult.Add(importResult);
                             }
                             catch (Exception ex)
                             { 
                                 transaction.Rollback();
-                                XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
+                                ImportResult importResult = new ImportResult();
+                                importResult.SoHD = item.SHDon;
+                                importResult.Status = -1;
+                                importResult.Error = ex.Message;
+                                lstImportResult.Add(importResult);
+                                //XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
                             }
                         } 
 
@@ -30247,6 +30281,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                     {
                         //Lấy thông tin khách hàng
                         SaovietTax.Models.KhachHang getKH = lstkh.Where(m => m.MST == item.Mst).FirstOrDefault();
+
                         //Trường hợp tổng hợp
                         if (item.TKNo.Contains("64"))
                         {
@@ -30479,11 +30514,22 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                         db.SaveChanges();
                                     }
                                     transaction.Commit();
+                                    ImportResult importResult = new ImportResult();
+                                    importResult.SoHD = item.SHDon;
+                                    importResult.Status = 1;
+                                    importResult.Error = "";
+                                    lstImportResult.Add(importResult);
                                 }
                                 catch (Exception ex)
                                 {
                                     transaction.Rollback();
-                                    XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
+                                    transaction.Rollback();
+                                    ImportResult importResult = new ImportResult();
+                                    importResult.SoHD = item.SHDon;
+                                    importResult.Status = -1;
+                                    importResult.Error = ex.Message;
+                                    lstImportResult.Add(importResult);
+                                    // XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
                                 }
                             }
 
@@ -30702,8 +30748,17 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                     db.SaveChanges();
                                     int maxms = db.ChungTus.Max(m => m.MaSo);
                                     SaovietTax.Models.HoaDon hd = new SaovietTax.Models.HoaDon();
-                                    hd.MaSo = maxms - 1;
-                                    hd.Loai = -1;
+                                    if (item.TgTCThue2 != null && item.TgTCThue2 != 0)
+                                    {
+                                        hd.MaSo = maxms - 1;
+                                    }
+                                    else
+                                    {
+                                        hd.MaSo = maxms ;
+
+                                    }
+
+                                        hd.Loai = -1;
                                     // hd.MaKhachHang = lstkh.Where(m => m.MST == item.Mst || m.Ten==item.Ten).FirstOrDefault().MaSo;
                                     hd.MaKhachHang = getKH.MaSo;
                                     hd.KyHieu = item.KHHDon;
@@ -30774,16 +30829,27 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                         db.SaveChanges();
                                     }
                                     transaction.Commit();
+                                    ImportResult importResult = new ImportResult();
+                                    importResult.SoHD = item.SHDon;
+                                    importResult.Status = 1;
+                                    importResult.Error = "";
+                                    lstImportResult.Add(importResult);
 
                                 }
                                 catch (Exception ex)
                                 {
                                     transaction.Rollback();
-                                    XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
+                                    ImportResult importResult = new ImportResult();
+                                    importResult.SoHD = item.SHDon;
+                                    importResult.Status = -1;
+                                    importResult.Error = ex.Message;
+                                    lstImportResult.Add(importResult);
+                                    // XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
                                 }
                             }
 
                         }
+
                     }
                     catch (Exception ex)
                     {
@@ -30791,8 +30857,11 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                     }
                 }
             }
-
-            this.Close();
+            frmThongkeImport frmThongkeImport = new frmThongkeImport();
+            frmThongkeImport.frmmain = this;
+            frmThongkeImport.ShowDialog();
+            if (lstImportResult.Count(m => m.Status == -1) == 0)
+                this.Close();
         }
         private void InsertVB6new2()
         { 

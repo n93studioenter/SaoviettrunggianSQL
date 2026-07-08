@@ -65,8 +65,8 @@ namespace SaovietTax.Models
         public string sotienchietkhau { get; set; }
         public string solo { get; set; }
         public Nullable<System.DateTime> handung { get; set; }
-        public Nullable<double> nhanban { get; set; }
         public Nullable<double> SoPSGoc { get; set; }
+        public Nullable<double> nhanban { get; set; }
         public Nullable<System.DateTime> NgayImport { get; set; }
     }
 }

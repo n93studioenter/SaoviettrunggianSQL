@@ -31,6 +31,7 @@ namespace SaovietTax.Models
         public virtual DbSet<BKNhomP> BKNhomPS { get; set; }
         public virtual DbSet<CDT> CDTS { get; set; }
         public virtual DbSet<cdts48> cdts48 { get; set; }
+        public virtual DbSet<ChungTu> ChungTus { get; set; }
         public virtual DbSet<ChungTu2> ChungTu2 { get; set; }
         public virtual DbSet<ChungTuLQ> ChungTuLQs { get; set; }
         public virtual DbSet<ChungTuLQP> ChungTuLQPs { get; set; }
@@ -98,6 +99,8 @@ namespace SaovietTax.Models
         public virtual DbSet<Vattu> Vattus { get; set; }
         public virtual DbSet<VTDauNam> VTDauNams { get; set; }
         public virtual DbSet<DanhSachVatTu> DanhSachVatTus { get; set; }
-        public virtual DbSet<ChungTu> ChungTus { get; set; }
+        public virtual DbSet<QNhatky> QNhatkies { get; set; }
+        public virtual DbSet<QTheKho> QTheKhoes { get; set; }
+        public virtual DbSet<Socai> Socais { get; set; }
     }
 }

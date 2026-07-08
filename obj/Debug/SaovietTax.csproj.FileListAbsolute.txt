@@ -923,3 +923,4 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.applicat
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.csproj.Up2Date
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.exe
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.pdb
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.frmThongkeImport.resources

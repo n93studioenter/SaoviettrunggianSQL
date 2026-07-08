@@ -172,13 +172,5 @@ namespace SaovietTax.Models
         public Nullable<double> PSCLK2023 { get; set; }
         public Nullable<double> PSNLK2025 { get; set; }
         public Nullable<double> PSCLK2025 { get; set; }
-        public Nullable<double> PSNLK2015 { get; set; }
-        public Nullable<double> PSCLK2015 { get; set; }
-        public Nullable<double> PSNLK2016 { get; set; }
-        public Nullable<double> PSCLK2016 { get; set; }
-        public Nullable<double> PSNLK2017 { get; set; }
-        public Nullable<double> PSCLK2017 { get; set; }
-        public Nullable<double> PSNLK2024 { get; set; }
-        public Nullable<double> PSCLK2024 { get; set; }
     }
 }

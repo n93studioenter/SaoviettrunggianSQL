@@ -33,6 +33,5 @@ namespace SaovietTax.Models
         public Nullable<double> CL_CNK { get; set; }
         public Nullable<double> CL_TD { get; set; }
         public string DienGiaiE { get; set; }
-        public Nullable<double> taisanIdCu { get; set; }
     }
 }

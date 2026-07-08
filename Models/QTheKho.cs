@@ -12,12 +12,15 @@ namespace SaovietTax.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DVTVattu
+    public partial class QTheKho
     {
-        public int MaSo { get; set; }
-        public Nullable<int> MaVattu { get; set; }
-        public string DonVi { get; set; }
-        public Nullable<double> TyLeQD { get; set; }
-        public Nullable<double> GiaBan { get; set; }
+        public Nullable<int> MaNT { get; set; }
+        public string KyHieu { get; set; }
+        public int DKNo { get; set; }
+        public int DKCo { get; set; }
+        public Nullable<double> DKNT { get; set; }
+        public int CKNo { get; set; }
+        public int CKCo { get; set; }
+        public Nullable<double> CKNT { get; set; }
     }
 }

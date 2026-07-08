@@ -30,6 +30,5 @@ namespace SaovietTax.Models
         public Nullable<short> NamKH { get; set; }
         public string SHCT { get; set; }
         public Nullable<System.DateTime> NCT { get; set; }
-        public Nullable<double> taisanIdCu { get; set; }
     }
 }

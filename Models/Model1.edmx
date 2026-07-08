@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DatablankModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DatablankModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BaoCaoCP">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -60,6 +60,20 @@
           <Property Name="Ten" Type="nvarchar" MaxLength="50" />
           <Property Name="GiaBan" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.BinhQuan' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="BinhQuan">
+          <Property Name="PhanLoai" Type="smallint" />
+          <Property Name="KhauHao" Type="smallint" />
+          <Property Name="HT_NS" Type="float" />
+          <Property Name="HT_TBS" Type="float" />
+          <Property Name="HT_CNK" Type="float" />
+          <Property Name="HT_TD" Type="float" />
+          <Property Name="LK_NS" Type="float" />
+          <Property Name="LK_TBS" Type="float" />
+          <Property Name="LK_CNK" Type="float" />
+          <Property Name="LK_TD" Type="float" />
+        </EntityType>-->
         <EntityType Name="BKNhomPS">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -185,8 +199,8 @@
           <Property Name="sotienchietkhau" Type="nvarchar" MaxLength="255" />
           <Property Name="solo" Type="nvarchar" MaxLength="255" />
           <Property Name="handung" Type="datetime2" Precision="0" />
-          <Property Name="nhanban" Type="float" />
           <Property Name="SoPSGoc" Type="float" />
+          <Property Name="nhanban" Type="float" />
           <Property Name="NgayImport" Type="datetime2" Precision="0" />
         </EntityType>
         <EntityType Name="ChungTu2">
@@ -399,7 +413,6 @@
           <Property Name="CL_CNK" Type="float" />
           <Property Name="CL_TD" Type="float" />
           <Property Name="DienGiaiE" Type="nvarchar" MaxLength="100" />
-          <Property Name="taisanIdCu" Type="float" />
         </EntityType>
         <EntityType Name="DCPTung">
           <Key>
@@ -452,7 +465,6 @@
           <Property Name="DonVi" Type="nvarchar" MaxLength="20" />
           <Property Name="TyLeQD" Type="float" />
           <Property Name="GiaBan" Type="float" />
-          <Property Name="MadvtvattuCu" Type="float" />
         </EntityType>
         <EntityType Name="HeThongTK">
           <Key>
@@ -599,15 +611,9 @@
           <Property Name="PSCLK2012" Type="float" />
           <Property Name="PSNLK2013" Type="float" />
           <Property Name="PSCLK2013" Type="float" />
-          <Property Name="THEMMOI" Type="nvarchar" MaxLength="255" />
           <Property Name="PSNLK2014" Type="float" />
           <Property Name="PSCLK2014" Type="float" />
-          <Property Name="PSNLK2015" Type="float" />
-          <Property Name="PSCLK2015" Type="float" />
-          <Property Name="PSNLK2016" Type="float" />
-          <Property Name="PSCLK2016" Type="float" />
-          <Property Name="PSNLK2017" Type="float" />
-          <Property Name="PSCLK2017" Type="float" />
+          <Property Name="THEMMOI" Type="nvarchar" MaxLength="255" />
           <Property Name="PSNLK2018" Type="float" />
           <Property Name="PSCLK2018" Type="float" />
           <Property Name="PSNLK2019" Type="float" />
@@ -620,8 +626,6 @@
           <Property Name="PSCLK2022" Type="float" />
           <Property Name="PSNLK2023" Type="float" />
           <Property Name="PSCLK2023" Type="float" />
-          <Property Name="PSNLK2024" Type="float" />
-          <Property Name="PSCLK2024" Type="float" />
           <Property Name="PSNLK2025" Type="float" />
           <Property Name="PSCLK2025" Type="float" />
         </EntityType>
@@ -652,11 +656,11 @@
           <Property Name="pathInvoice" Type="nvarchar" MaxLength="255" />
           <Property Name="Ghichuhd" Type="nvarchar" MaxLength="255" />
           <Property Name="IdNhap" Type="nvarchar" MaxLength="255" />
-          <Property Name="IdTemplate" Type="nvarchar" MaxLength="255" />
           <Property Name="StatusPH" Type="nvarchar" MaxLength="255" />
+          <Property Name="IdTemplate" Type="nvarchar" MaxLength="255" />
           <Property Name="TendoHDid" Type="nvarchar" MaxLength="255" />
-          <Property Name="has_e_invoice" Type="float" />
           <Property Name="TendoHDState" Type="nvarchar" MaxLength="255" />
+          <Property Name="has_e_invoice" Type="float" />
         </EntityType>
         <EntityType Name="HoaDonP">
           <Key>
@@ -785,6 +789,39 @@
           <Property Name="MaTK" Type="int" />
           <Property Name="Cap" Type="smallint" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.KQKDCT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="KQKDCT">
+          <Property Name="Ma" Type="int" />
+          <Property Name="MaSo" Type="int" />
+          <Property Name="Ten" Type="nvarchar" MaxLength="60" />
+          <Property Name="TKNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="TKCo" Type="nvarchar" MaxLength="20" />
+          <Property Name="DauNam" Type="float" />
+          <Property Name="KyTruoc" Type="float" />
+          <Property Name="KyNay" Type="float" />
+          <Property Name="TongHop" Type="smallint" />
+          <Property Name="MaSoCha" Type="int" />
+          <Property Name="Dau" Type="smallint" />
+          <Property Name="TenE" Type="nvarchar" MaxLength="60" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.kqkdt' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="kqkdt">
+          <Property Name="Ma" Type="int" />
+          <Property Name="MaSo" Type="int" />
+          <Property Name="Ten" Type="nvarchar" MaxLength="60" />
+          <Property Name="SHTKNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="SHTKCo" Type="nvarchar" MaxLength="20" />
+          <Property Name="DauNam" Type="float" />
+          <Property Name="KyTruoc" Type="float" />
+          <Property Name="KyNay" Type="float" />
+          <Property Name="TongHop" Type="smallint" />
+          <Property Name="MaSoCha" Type="int" />
+          <Property Name="TenE" Type="nvarchar" MaxLength="60" />
+          <Property Name="MaTK" Type="int" />
+          <Property Name="Cap" Type="smallint" />
+        </EntityType>-->
         <EntityType Name="LaiSuat">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -795,6 +832,97 @@
           <Property Name="LS" Type="float" />
           <Property Name="MaKH" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.LCTT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="LCTT">
+          <Property Name="Ma" Type="int" />
+          <Property Name="MaSo" Type="int" />
+          <Property Name="Ten" Type="nvarchar" MaxLength="60" />
+          <Property Name="TKNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="TKCo" Type="nvarchar" MaxLength="20" />
+          <Property Name="DauNam" Type="float" />
+          <Property Name="KyTruoc" Type="float" />
+          <Property Name="KyNay" Type="float" />
+          <Property Name="TongHop" Type="smallint" />
+          <Property Name="MaSoCha" Type="int" />
+          <Property Name="Dau" Type="smallint" />
+          <Property Name="TenE" Type="nvarchar" MaxLength="60" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.License' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="License">
+          <Property Name="TenCty" Type="nvarchar" MaxLength="150" />
+          <Property Name="TenCn" Type="nvarchar" MaxLength="50" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" />
+          <Property Name="Tel" Type="nvarchar" MaxLength="50" />
+          <Property Name="FAX" Type="nvarchar" MaxLength="200" />
+          <Property Name="TaiKhoanVN" Type="nvarchar" MaxLength="200" />
+          <Property Name="TaiKhoanNT" Type="nvarchar" MaxLength="50" />
+          <Property Name="TenCty_ID" Type="int" />
+          <Property Name="TenCn_ID" Type="int" />
+          <Property Name="Thang" Type="smallint" />
+          <Property Name="NamTC" Type="smallint" />
+          <Property Name="Tag" Type="nvarchar" MaxLength="12" />
+          <Property Name="RptOrder" Type="smallint" />
+          <Property Name="OutCost" Type="smallint" />
+          <Property Name="FixedOutCost" Type="smallint" />
+          <Property Name="STDetail" Type="smallint" />
+          <Property Name="FADetail" Type="smallint" />
+          <Property Name="HDV" Type="smallint" />
+          <Property Name="MaSoThue" Type="nvarchar" MaxLength="20" />
+          <Property Name="TKVattu" Type="nvarchar" MaxLength="20" />
+          <Property Name="VATV" Type="nvarchar" MaxLength="20" />
+          <Property Name="VATR" Type="nvarchar" MaxLength="20" />
+          <Property Name="GiaHT" Type="smallint" />
+          <Property Name="NgayDauThang" Type="smallint" />
+          <Property Name="FontName" Type="nvarchar" MaxLength="30" />
+          <Property Name="FontSize" Type="smallint" />
+          <Property Name="SoKT" Type="smallint" />
+          <Property Name="Email" Type="nvarchar" MaxLength="30" />
+          <Property Name="EmailDB" Type="nvarchar" MaxLength="30" />
+          <Property Name="SMTP" Type="nvarchar" MaxLength="30" />
+          <Property Name="Quan" Type="nvarchar" MaxLength="30" />
+          <Property Name="ThanhPho" Type="nvarchar" MaxLength="30" />
+          <Property Name="CTGS_GV" Type="int" />
+          <Property Name="App1Path" Type="nvarchar" MaxLength="50" />
+          <Property Name="MV" Type="smallint" />
+          <Property Name="LoaiTien" Type="int" />
+          <Property Name="TyGia" Type="float" />
+          <Property Name="MKUP" Type="int" />
+          <Property Name="MST_ID" Type="int" />
+          <Property Name="Flag1" Type="int" />
+          <Property Name="Lock0" Type="smallint" />
+          <Property Name="Lock1" Type="smallint" />
+          <Property Name="Lock2" Type="smallint" />
+          <Property Name="Lock3" Type="smallint" />
+          <Property Name="Lock4" Type="smallint" />
+          <Property Name="Lock5" Type="smallint" />
+          <Property Name="Lock6" Type="smallint" />
+          <Property Name="Lock7" Type="smallint" />
+          <Property Name="Lock8" Type="smallint" />
+          <Property Name="Lock9" Type="smallint" />
+          <Property Name="Lock10" Type="smallint" />
+          <Property Name="Lock11" Type="smallint" />
+          <Property Name="Lock12" Type="smallint" />
+          <Property Name="Checkdate" Type="nvarchar" MaxLength="50" />
+          <Property Name="LicenseActive" Type="int" />
+          <Property Name="CheckLicense" Type="nvarchar" MaxLength="50" />
+          <Property Name="tenhoadon" Type="nvarchar" MaxLength="255" />
+          <Property Name="Lock13" Type="nvarchar" MaxLength="200" />
+          <Property Name="CMP" Type="nvarchar" MaxLength="255" />
+          <Property Name="CMG" Type="float" />
+          <Property Name="nam" Type="float" />
+          <Property Name="namCode" Type="float" />
+          <Property Name="sodong" Type="float" />
+          <Property Name="sodongId" Type="float" />
+          <Property Name="sofax" Type="nvarchar" MaxLength="200" />
+          <Property Name="banthuoc" Type="float" />
+          <Property Name="CCCD" Type="nvarchar" MaxLength="255" />
+          <Property Name="AutoNK" Type="float" />
+          <Property Name="col711" Type="nvarchar" MaxLength="255" />
+          <Property Name="col711ra" Type="nvarchar" MaxLength="255" />
+          <Property Name="skiperror" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
         <EntityType Name="LoaiChungTu">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -815,6 +943,12 @@
           <Property Name="CapTren" Type="float" />
           <Property Name="Cap" Type="smallint" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.NamTC' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="NamTC">
+          <Property Name="Nam" Type="smallint" />
+          <Property Name="Path" Type="nvarchar" MaxLength="50" />
+        </EntityType>-->
         <EntityType Name="NguonNhapXuat">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -849,6 +983,31 @@
           <Property Name="TaiKhoan" Type="nvarchar" MaxLength="50" />
           <Property Name="GhiChu" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.Paste Errors' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Paste Errors">
+          <Property Name="M· sè" Type="smallint" />
+          <Property Name="TS/NV" Type="smallint" />
+          <Property Name="DiÔn gi¶i" Type="nvarchar" MaxLength="255" />
+          <Property Name="MaTK1" Type="int" />
+          <Property Name="MaTK2" Type="int" />
+          <Property Name="MaTK3" Type="int" />
+          <Property Name="§Çu n¨m" Type="float" />
+          <Property Name="Cuèi kú" Type="float" />
+          <Property Name="Nhãm cha" Type="smallint" />
+          <Property Name="Chi tiÕt" Type="smallint" />
+          <Property Name="DienGiaiE" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK1" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK2" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK3" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK4" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK5" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK6" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK7" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK8" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK9" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShTK10" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
         <EntityType Name="PhanLoai154">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -895,10 +1054,9 @@
           <Property Name="Cap" Type="smallint" />
           <Property Name="MaTK" Type="int" />
           <Property Name="PLCha" Type="smallint" />
-          <Property Name="MaPhanLoaiCu" Type="float" />
-          <Property Name="TKNo" Type="nvarchar" MaxLength="255" />
           <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
           <Property Name="GhiChu" Type="nvarchar" MaxLength="255" />
+          <Property Name="TKNo" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="PhieuNX">
           <Key>
@@ -1037,6 +1195,33 @@
           <Property Name="DuCo_12" Type="float" />
           <Property Name="DuNT_12" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.SoLoThuoc' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="SoLoThuoc">
+          <Property Name="MaVatTu" Type="float" />
+          <Property Name="SoLo" Type="nvarchar" MaxLength="255" />
+          <Property Name="HanDung" Type="datetime2" Precision="0" />
+          <Property Name="SoLuong" Type="float" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.SoLoThuoc1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="SoLoThuoc1">
+          <Property Name="MaVatTu" Type="float" />
+          <Property Name="SoLo" Type="nvarchar" MaxLength="255" />
+          <Property Name="HanDung" Type="datetime2" Precision="0" />
+          <Property Name="SoLuong" Type="float" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.Sqlinfo' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Sqlinfo">
+          <Property Name="SqlIp" Type="nvarchar" MaxLength="200" />
+          <Property Name="SqlDatabase" Type="nvarchar" MaxLength="200" />
+          <Property Name="SqlUsername" Type="nvarchar" MaxLength="200" />
+          <Property Name="SqlPassword" Type="nvarchar" MaxLength="200" />
+          <Property Name="SqlReportname" Type="nvarchar" MaxLength="200" />
+          <Property Name="tondauky" Type="float" />
+          <Property Name="tiendauky" Type="float" />
+        </EntityType>-->
         <EntityType Name="tableHoadonvao">
           <Key>
             <PropertyRef Name="ID" />
@@ -1075,8 +1260,13 @@
           <Property Name="NamKH" Type="smallint" />
           <Property Name="SHCT" Type="nvarchar" MaxLength="20" />
           <Property Name="NCT" Type="datetime2" Precision="0" />
-          <Property Name="taisanIdCu" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbCpu' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbCpu">
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="PcName" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
         <EntityType Name="tbDinhdanhNganhang">
           <Key>
             <PropertyRef Name="ID" />
@@ -1084,8 +1274,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Noidung" Type="nvarchar" MaxLength="255" />
           <Property Name="TK" Type="nvarchar" MaxLength="255" />
-          <Property Name="TK2" Type="nvarchar" MaxLength="255" />
           <Property Name="SoHieu" Type="nvarchar" MaxLength="255" />
+          <Property Name="TK2" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="tbDinhdanhtaikhoan">
           <Key>
@@ -1167,18 +1357,18 @@
           <Property Name="TongTien" Type="float" />
           <Property Name="Vat" Type="float" />
           <Property Name="SohieuTP" Type="nvarchar" MaxLength="255" />
-          <Property Name="TPhi" Type="float" />
-          <Property Name="TgTCThue" Type="float" />
-          <Property Name="TgTThue" Type="float" />
-          <Property Name="Path" Type="nvarchar" MaxLength="255" />
-          <Property Name="Type" Type="nvarchar" MaxLength="255" />
-          <Property Name="IsHaschild" Type="nvarchar" MaxLength="255" />
-          <Property Name="InvoiceType" Type="nvarchar" MaxLength="255" />
           <Property Name="TVat3" Type="float" />
           <Property Name="TVat2" Type="float" />
           <Property Name="TVat" Type="float" />
           <Property Name="Vat3" Type="nvarchar" MaxLength="255" />
           <Property Name="Vat2" Type="nvarchar" MaxLength="255" />
+          <Property Name="InvoiceType" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsHaschild" Type="nvarchar" MaxLength="255" />
+          <Property Name="Path" Type="nvarchar" MaxLength="255" />
+          <Property Name="Type" Type="nvarchar" MaxLength="255" />
+          <Property Name="TPhi" Type="float" />
+          <Property Name="TgTCThue" Type="float" />
+          <Property Name="TgTThue" Type="float" />
           <Property Name="TgTCThue1" Type="float" />
           <Property Name="TgTCThue2" Type="float" />
           <Property Name="TgTCThue3" Type="float" />
@@ -1205,12 +1395,40 @@
           <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
           <Property Name="TTien" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Percent" Type="nvarchar" MaxLength="255" />
-          <Property Name="IsMacdinh" Type="float" />
           <Property Name="Tchat" Type="float" />
+          <Property Name="IsMacdinh" Type="float" />
           <Property Name="SoPSGoc" Type="float" />
           <Property Name="VAT" Type="float" />
           <Property Name="TTien_New" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbInvoiceInfo' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbInvoiceInfo">
+          <Property Name="Url" Type="nvarchar" MaxLength="255" />
+          <Property Name="Username" Type="nvarchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbInvoiceTemplate' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbInvoiceTemplate">
+          <Property Name="ID" Type="nvarchar" MaxLength="255" />
+          <Property Name="Code" Type="nvarchar" MaxLength="255" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="KHHD" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbLicensekey' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbLicensekey">
+          <Property Name="Type" Type="nvarchar" MaxLength="255" />
+          <Property Name="Year" Type="nvarchar" MaxLength="255" />
+          <Property Name="Totals" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbLogin' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbLogin">
+          <Property Name="Username" Type="nvarchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
         <EntityType Name="tbMatdinhghichu">
           <Key>
             <PropertyRef Name="ID" />
@@ -1219,6 +1437,33 @@
           <Property Name="TK" Type="nvarchar" MaxLength="255" />
           <Property Name="Noidung" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbNganhang' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbNganhang">
+          <Property Name="ID2" Type="int" />
+          <Property Name="ID" Type="float" />
+          <Property Name="ID1" Type="float" />
+          <Property Name="SHDon" Type="nvarchar" MaxLength="255" />
+          <Property Name="NgayGD" Type="nvarchar" MaxLength="255" />
+          <Property Name="DienGiai" Type="nvarchar" MaxLength="255" />
+          <Property Name="TongTien" Type="float" />
+          <Property Name="TKNo" Type="float" />
+          <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
+          <Property Name="Checked" Type="float" />
+          <Property Name="MaKH" Type="nvarchar" MaxLength="255" />
+          <Property Name="Status" Type="float" />
+          <Property Name="TongTien2" Type="float" />
+          <Property Name="TenKH" Type="nvarchar" MaxLength="255" />
+          <Property Name="SoDu" Type="float" />
+          <Property Name="Key" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbNganhang$_ImportErrors' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbNganhang$_ImportErrors">
+          <Property Name="Error" Type="nvarchar" MaxLength="255" />
+          <Property Name="Field" Type="nvarchar" MaxLength="255" />
+          <Property Name="Row" Type="int" />
+        </EntityType>-->
         <EntityType Name="tbNguyenLieuThanhPham">
           <Key>
             <PropertyRef Name="ID" />
@@ -1282,6 +1527,28 @@
           <Property Name="GT1" Type="float" />
           <Property Name="GT2" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbRegister' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbRegister">
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Hoadonpath" Type="nvarchar" MaxLength="255" />
+          <Property Name="Dbpath" Type="nvarchar" MaxLength="255" />
+          <Property Name="Username" Type="nvarchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+          <Property Name="tokken" Type="nvarchar" MaxLength="255" />
+          <Property Name="col1" Type="nvarchar" MaxLength="255" />
+          <Property Name="col2" Type="nvarchar" MaxLength="255" />
+          <Property Name="tk154" Type="nvarchar" MaxLength="255" />
+          <Property Name="TimeTokken" Type="datetime2" Precision="0" />
+          <Property Name="taitd" Type="nvarchar" MaxLength="255" />
+          <Property Name="tk155" Type="nvarchar" MaxLength="255" />
+          <Property Name="Printername" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.tbResponse' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbResponse">
+          <Property Name="Status" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
         <EntityType Name="tbThongTinToKhai">
           <Key>
             <PropertyRef Name="ID" />
@@ -1381,7 +1648,6 @@
           <Property Name="MaDTQL" Type="int" />
           <Property Name="MaDTSD" Type="int" />
           <Property Name="MaTTSD" Type="int" />
-          <Property Name="taisanIdCu" Type="float" />
         </EntityType>
         <EntityType Name="THUE">
           <Key>
@@ -1408,6 +1674,43 @@
           <Property Name="MaSo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ten" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.ToKhaiThue' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="ToKhaiThue">
+          <Property Name="N11" Type="float" />
+          <Property Name="N12" Type="float" />
+          <Property Name="N13" Type="float" />
+          <Property Name="N14" Type="float" />
+          <Property Name="N15" Type="float" />
+          <Property Name="N16" Type="float" />
+          <Property Name="N17" Type="float" />
+          <Property Name="N18" Type="float" />
+          <Property Name="N19" Type="float" />
+          <Property Name="N20" Type="float" />
+          <Property Name="N21" Type="float" />
+          <Property Name="N22" Type="float" />
+          <Property Name="N23" Type="float" />
+          <Property Name="N24" Type="float" />
+          <Property Name="N25" Type="float" />
+          <Property Name="N26" Type="float" />
+          <Property Name="N27" Type="float" />
+          <Property Name="N28" Type="float" />
+          <Property Name="N29" Type="float" />
+          <Property Name="N30" Type="float" />
+          <Property Name="N31" Type="float" />
+          <Property Name="N32" Type="float" />
+          <Property Name="N33" Type="float" />
+          <Property Name="N34" Type="float" />
+          <Property Name="N35" Type="float" />
+          <Property Name="N36" Type="float" />
+          <Property Name="N37" Type="float" />
+          <Property Name="N38" Type="float" />
+          <Property Name="N39" Type="float" />
+          <Property Name="N40" Type="float" />
+          <Property Name="N41" Type="float" />
+          <Property Name="N42" Type="float" />
+          <Property Name="N43" Type="float" />
+        </EntityType>-->
         <EntityType Name="TonKho">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -1658,6 +1961,12 @@
           <Property Name="KPB" Type="smallint" />
           <Property Name="SanLuong" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.User2' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="User2">
+          <Property Name="User" Type="int" />
+          <Property Name="CTGS" Type="int" />
+        </EntityType>-->
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -1673,6 +1982,19 @@
           <Property Name="IsReister" Type="float" />
           <Property Name="MacAddress" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.VAT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="VAT">
+          <Property Name="Ma" Type="int" />
+          <Property Name="MaSo" Type="nvarchar" MaxLength="255" />
+          <Property Name="DienGiai" Type="nvarchar" MaxLength="80" />
+          <Property Name="TKNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="TKCo" Type="nvarchar" MaxLength="255" />
+          <Property Name="KyNay" Type="float" />
+          <Property Name="LuyKe" Type="float" />
+          <Property Name="TongHop" Type="smallint" />
+          <Property Name="DienGiaiE" Type="nvarchar" MaxLength="80" />
+        </EntityType>-->
         <EntityType Name="Vattu">
           <Key>
             <PropertyRef Name="MaSo" />
@@ -1722,7 +2044,7 @@
           <Property Name="SoXuat" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Datablank.dbo.DanhSachVatTu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DanhSachVatTu">
           <Key>
             <PropertyRef Name="mavattu" />
@@ -1736,6 +2058,155 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="soluongxuat" Type="float" />
           <Property Name="conlai" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.MienTru' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="MienTru">
+          <Property Name="MaCT" Type="int" />
+          <Property Name="TPS" Type="float" />
+          <Property Name="tylechietkhau" Type="float" />
+          <Property Name="chietkhau" Type="float" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.NhatKy' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="NhatKy">
+          <Property Name="MaCT" Type="int" />
+          <Property Name="TPS" Type="float" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.QCdt' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="QCdt">
+          <Property Name="MaTkCo" Type="int" />
+          <Property Name="Co_1" Type="float" />
+          <Property Name="NTCo_1" Type="float" />
+          <Property Name="Co_2" Type="float" />
+          <Property Name="NTCo_2" Type="float" />
+          <Property Name="Co_3" Type="float" />
+          <Property Name="NTCo_3" Type="float" />
+          <Property Name="Co_4" Type="float" />
+          <Property Name="NTCo_4" Type="float" />
+          <Property Name="Co_5" Type="float" />
+          <Property Name="NTCo_5" Type="float" />
+          <Property Name="Co_6" Type="float" />
+          <Property Name="NTCo_6" Type="float" />
+          <Property Name="Co_7" Type="float" />
+          <Property Name="NTCo_7" Type="float" />
+          <Property Name="Co_8" Type="float" />
+          <Property Name="NTCo_8" Type="float" />
+          <Property Name="Co_9" Type="float" />
+          <Property Name="NTCo_9" Type="float" />
+          <Property Name="Co_10" Type="float" />
+          <Property Name="NTCo_10" Type="float" />
+          <Property Name="Co_11" Type="float" />
+          <Property Name="NTCo_11" Type="float" />
+          <Property Name="Co_12" Type="float" />
+          <Property Name="NTCo_12" Type="float" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Datablank.dbo.QNhatky' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="QNhatky">
+          <Key>
+            <PropertyRef Name="MaSo" />
+          </Key>
+          <Property Name="KyHieu" Type="nvarchar" MaxLength="20" />
+          <Property Name="SoHD" Type="nvarchar" MaxLength="20" />
+          <Property Name="NgayPH" Type="datetime2" Precision="0" />
+          <Property Name="MatHang" Type="nvarchar" MaxLength="255" />
+          <Property Name="SoLuong" Type="float" />
+          <Property Name="ThanhTien" Type="float" />
+          <Property Name="Ten" Type="nvarchar" MaxLength="255" />
+          <Property Name="MST" Type="nvarchar" MaxLength="20" />
+          <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+          <Property Name="SoPS" Type="float" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" />
+          <Property Name="TyLe" Type="smallint" />
+          <Property Name="HTTT" Type="nvarchar" MaxLength="20" />
+          <Property Name="MauSo" Type="nvarchar" MaxLength="20" />
+          <Property Name="MaCT" Type="int" />
+          <Property Name="MaSo" Type="int" Nullable="false" />
+          <Property Name="KCT" Type="smallint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.QSocai' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="QSocai">
+          <Property Name="MaCT" Type="int" />
+          <Property Name="ThangCT" Type="smallint" />
+          <Property Name="SoHieu" Type="nvarchar" MaxLength="20" />
+          <Property Name="NgayCT" Type="datetime2" Precision="0" />
+          <Property Name="NgayGS" Type="datetime2" Precision="0" />
+          <Property Name="DienGiai" Type="nvarchar" MaxLength="255" />
+          <Property Name="SoPS" Type="float" />
+          <Property Name="GhiChu" Type="nvarchar" MaxLength="20" />
+          <Property Name="SoHieu1" Type="nvarchar" MaxLength="20" />
+          <Property Name="SoHieu2" Type="nvarchar" MaxLength="20" />
+          <Property Name="MaTKTCNo" Type="int" />
+          <Property Name="MaTKTCCo" Type="int" />
+          <Property Name="SH1" Type="nvarchar" MaxLength="51" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Datablank.dbo.QTheKho' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="QTheKho">
+          <Key>
+            <PropertyRef Name="DKNo" />
+            <PropertyRef Name="DKCo" />
+            <PropertyRef Name="CKNo" />
+            <PropertyRef Name="CKCo" />
+          </Key>
+          <Property Name="MaNT" Type="int" />
+          <Property Name="KyHieu" Type="nvarchar" MaxLength="20" />
+          <Property Name="DKNo" Type="int" Nullable="false" />
+          <Property Name="DKCo" Type="int" Nullable="false" />
+          <Property Name="DKNT" Type="float" />
+          <Property Name="CKNo" Type="int" Nullable="false" />
+          <Property Name="CKCo" Type="int" Nullable="false" />
+          <Property Name="CKNT" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Datablank.dbo.Socai' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Socai">
+          <Key>
+            <PropertyRef Name="SoHieuTK" />
+            <PropertyRef Name="NoDk" />
+            <PropertyRef Name="Kieu" />
+            <PropertyRef Name="TenTk" />
+            <PropertyRef Name="NoLK" />
+            <PropertyRef Name="CoLK" />
+          </Key>
+          <Property Name="SoHieuTK" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="NoDk" Type="int" Nullable="false" />
+          <Property Name="Kieu" Type="int" Nullable="false" />
+          <Property Name="TenTk" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="NoLK" Type="int" Nullable="false" />
+          <Property Name="CoLK" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.TongGiaTri' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="TongGiaTri">
+          <Property Name="TNG_NS" Type="float" />
+          <Property Name="TNG_TBS" Type="float" />
+          <Property Name="TNG_CNK" Type="float" />
+          <Property Name="TNG_TD" Type="float" />
+          <Property Name="TCL_NS" Type="float" />
+          <Property Name="TCL_TBS" Type="float" />
+          <Property Name="TCL_CNK" Type="float" />
+          <Property Name="TCL_TD" Type="float" />
+          <Property Name="MaTS" Type="int" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.VatTuNhap' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="VatTuNhap">
+          <Property Name="mavattu" Type="float" />
+          <Property Name="solo" Type="nvarchar" MaxLength="255" />
+          <Property Name="handung" Type="datetime2" Precision="0" />
+          <Property Name="soluong" Type="float" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Datablank.dbo.VatTuXuat' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="VatTuXuat">
+          <Property Name="mavattu" Type="int" />
+          <Property Name="solo" Type="nvarchar" MaxLength="255" />
+          <Property Name="handung" Type="datetime2" Precision="0" />
+          <Property Name="soluong" Type="float" />
+        </EntityType>-->
         <EntityContainer Name="DatablankModelStoreContainer">
           <EntitySet Name="BaoCaoCP" EntityType="Self.BaoCaoCP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaoCaoCP2" EntityType="Self.BaoCaoCP2" Schema="dbo" store:Type="Tables" />
@@ -1822,8 +2293,52 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
     [DanhSachVatTu].[conlai] AS [conlai]
     FROM [dbo].[DanhSachVatTu] AS [DanhSachVatTu]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="QNhatky" EntityType="Self.QNhatky" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [QNhatky].[KyHieu] AS [KyHieu], 
+    [QNhatky].[SoHD] AS [SoHD], 
+    [QNhatky].[NgayPH] AS [NgayPH], 
+    [QNhatky].[MatHang] AS [MatHang], 
+    [QNhatky].[SoLuong] AS [SoLuong], 
+    [QNhatky].[ThanhTien] AS [ThanhTien], 
+    [QNhatky].[Ten] AS [Ten], 
+    [QNhatky].[MST] AS [MST], 
+    [QNhatky].[SoHieu] AS [SoHieu], 
+    [QNhatky].[SoPS] AS [SoPS], 
+    [QNhatky].[DiaChi] AS [DiaChi], 
+    [QNhatky].[TyLe] AS [TyLe], 
+    [QNhatky].[HTTT] AS [HTTT], 
+    [QNhatky].[MauSo] AS [MauSo], 
+    [QNhatky].[MaCT] AS [MaCT], 
+    [QNhatky].[MaSo] AS [MaSo], 
+    [QNhatky].[KCT] AS [KCT]
+    FROM [dbo].[QNhatky] AS [QNhatky]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="QTheKho" EntityType="Self.QTheKho" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [QTheKho].[MaNT] AS [MaNT], 
+    [QTheKho].[KyHieu] AS [KyHieu], 
+    [QTheKho].[DKNo] AS [DKNo], 
+    [QTheKho].[DKCo] AS [DKCo], 
+    [QTheKho].[DKNT] AS [DKNT], 
+    [QTheKho].[CKNo] AS [CKNo], 
+    [QTheKho].[CKCo] AS [CKCo], 
+    [QTheKho].[CKNT] AS [CKNT]
+    FROM [dbo].[QTheKho] AS [QTheKho]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Socai" EntityType="Self.Socai" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Socai].[SoHieuTK] AS [SoHieuTK], 
+    [Socai].[NoDk] AS [NoDk], 
+    [Socai].[Kieu] AS [Kieu], 
+    [Socai].[TenTk] AS [TenTk], 
+    [Socai].[NoLK] AS [NoLK], 
+    [Socai].[CoLK] AS [CoLK]
+    FROM [dbo].[Socai] AS [Socai]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatablankModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1951,6 +2466,65 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="shtk8" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="shtk9" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="shtk10" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ChungTu">
+          <Key>
+            <PropertyRef Name="MaSo" />
+          </Key>
+          <Property Name="MaSo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaCT" Type="Int32" />
+          <Property Name="MaLoai" Type="Int16" />
+          <Property Name="ThangCT" Type="Int16" />
+          <Property Name="SoHieu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NgayCT" Type="DateTime" Precision="0" />
+          <Property Name="NgayGS" Type="DateTime" Precision="0" />
+          <Property Name="NgayTL" Type="DateTime" Precision="0" />
+          <Property Name="DienGiai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MaKho" Type="Int32" />
+          <Property Name="MaNguon" Type="Int32" />
+          <Property Name="MaTKNo" Type="Int32" />
+          <Property Name="MaTKCo" Type="Int32" />
+          <Property Name="SoPS" Type="Double" />
+          <Property Name="SoPS2No" Type="Double" />
+          <Property Name="SoPS2Co" Type="Double" />
+          <Property Name="MaTKTCNo" Type="Int32" />
+          <Property Name="MaTKTCCo" Type="Int32" />
+          <Property Name="MaVattu" Type="Int32" />
+          <Property Name="GhiChu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CT_ID" Type="Double" />
+          <Property Name="SoXuat" Type="Double" />
+          <Property Name="MaDT" Type="Int32" />
+          <Property Name="MaKH" Type="Int32" />
+          <Property Name="CTGS" Type="Int32" />
+          <Property Name="MaKHC" Type="Int32" />
+          <Property Name="MaTP" Type="Int32" />
+          <Property Name="DVT" Type="Int16" />
+          <Property Name="User_ID" Type="Int32" />
+          <Property Name="DienGiaiE" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TyGia" Type="Double" />
+          <Property Name="MaNV" Type="Int32" />
+          <Property Name="HanTT" Type="Int16" />
+          <Property Name="SH1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="T1" Type="Int16" />
+          <Property Name="TLCK" Type="Double" />
+          <Property Name="CK" Type="Double" />
+          <Property Name="MaDT1" Type="Int32" />
+          <Property Name="MaDT2" Type="Int32" />
+          <Property Name="MaDT3" Type="Int32" />
+          <Property Name="XuLy" Type="Int16" />
+          <Property Name="MauSoHD" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LoaiHoaDon" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Nguoimuahang" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="hinhthucthanhtoan" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="sophieudathang" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="chondiengiai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="phantramchietkhau" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="sotienchietkhau" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="solo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="handung" Type="DateTime" Precision="0" />
+          <Property Name="SoPSGoc" Type="Double" />
+          <Property Name="nhanban" Type="Double" />
+          <Property Name="NgayImport" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ChungTu2">
           <Key>
@@ -2162,7 +2736,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="CL_CNK" Type="Double" />
           <Property Name="CL_TD" Type="Double" />
           <Property Name="DienGiaiE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="taisanIdCu" Type="Double" />
         </EntityType>
         <EntityType Name="DCPTung">
           <Key>
@@ -2215,7 +2788,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="DonVi" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="TyLeQD" Type="Double" />
           <Property Name="GiaBan" Type="Double" />
-          <Property Name="MadvtvattuCu" Type="Double" />
         </EntityType>
         <EntityType Name="HeThongTK">
           <Key>
@@ -2379,14 +2951,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="PSCLK2023" Type="Double" />
           <Property Name="PSNLK2025" Type="Double" />
           <Property Name="PSCLK2025" Type="Double" />
-          <Property Name="PSNLK2015" Type="Double" />
-          <Property Name="PSCLK2015" Type="Double" />
-          <Property Name="PSNLK2016" Type="Double" />
-          <Property Name="PSCLK2016" Type="Double" />
-          <Property Name="PSNLK2017" Type="Double" />
-          <Property Name="PSCLK2017" Type="Double" />
-          <Property Name="PSNLK2024" Type="Double" />
-          <Property Name="PSCLK2024" Type="Double" />
         </EntityType>
         <EntityType Name="HoaDon">
           <Key>
@@ -2661,7 +3225,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="TKCo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="GhiChu" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="TKNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="MaPhanLoaiCu" Type="Double" />
         </EntityType>
         <EntityType Name="PhieuNX">
           <Key>
@@ -2838,7 +3401,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="NamKH" Type="Int16" />
           <Property Name="SHCT" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="NCT" Type="DateTime" Precision="0" />
-          <Property Name="taisanIdCu" Type="Double" />
         </EntityType>
         <EntityType Name="tbDinhdanhNganhang">
           <Key>
@@ -3144,7 +3706,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="MaDTQL" Type="Int32" />
           <Property Name="MaDTSD" Type="Int32" />
           <Property Name="MaTTSD" Type="Int32" />
-          <Property Name="taisanIdCu" Type="Double" />
         </EntityType>
         <EntityType Name="THUE">
           <Key>
@@ -3497,6 +4058,60 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <Property Name="soluongxuat" Type="Double" />
           <Property Name="conlai" Type="Double" />
         </EntityType>
+        <EntityType Name="QNhatky">
+          <Key>
+            <PropertyRef Name="MaSo" />
+          </Key>
+          <Property Name="KyHieu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SoHD" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NgayPH" Type="DateTime" Precision="0" />
+          <Property Name="MatHang" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SoLuong" Type="Double" />
+          <Property Name="ThanhTien" Type="Double" />
+          <Property Name="Ten" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MST" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SoHieu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SoPS" Type="Double" />
+          <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TyLe" Type="Int16" />
+          <Property Name="HTTT" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MauSo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MaCT" Type="Int32" />
+          <Property Name="MaSo" Type="Int32" Nullable="false" />
+          <Property Name="KCT" Type="Int16" />
+        </EntityType>
+        <EntityType Name="QTheKho">
+          <Key>
+            <PropertyRef Name="DKNo" />
+            <PropertyRef Name="DKCo" />
+            <PropertyRef Name="CKNo" />
+            <PropertyRef Name="CKCo" />
+          </Key>
+          <Property Name="MaNT" Type="Int32" />
+          <Property Name="KyHieu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DKNo" Type="Int32" Nullable="false" />
+          <Property Name="DKCo" Type="Int32" Nullable="false" />
+          <Property Name="DKNT" Type="Double" />
+          <Property Name="CKNo" Type="Int32" Nullable="false" />
+          <Property Name="CKCo" Type="Int32" Nullable="false" />
+          <Property Name="CKNT" Type="Double" />
+        </EntityType>
+        <EntityType Name="Socai">
+          <Key>
+            <PropertyRef Name="SoHieuTK" />
+            <PropertyRef Name="NoDk" />
+            <PropertyRef Name="Kieu" />
+            <PropertyRef Name="TenTk" />
+            <PropertyRef Name="NoLK" />
+            <PropertyRef Name="CoLK" />
+          </Key>
+          <Property Name="SoHieuTK" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NoDk" Type="Int32" Nullable="false" />
+          <Property Name="Kieu" Type="Int32" Nullable="false" />
+          <Property Name="TenTk" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NoLK" Type="Int32" Nullable="false" />
+          <Property Name="CoLK" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="DatablankEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BaoCaoCPs" EntityType="Self.BaoCaoCP" />
           <EntitySet Name="BaoCaoCP2" EntityType="Self.BaoCaoCP2" />
@@ -3504,6 +4119,7 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <EntitySet Name="BKNhomPS" EntityType="Self.BKNhomP" />
           <EntitySet Name="CDTS" EntityType="Self.CDT" />
           <EntitySet Name="cdts48" EntityType="Self.cdts48" />
+          <EntitySet Name="ChungTus" EntityType="Self.ChungTu" />
           <EntitySet Name="ChungTu2" EntityType="Self.ChungTu2" />
           <EntitySet Name="ChungTuLQs" EntityType="Self.ChungTuLQ" />
           <EntitySet Name="ChungTuLQPs" EntityType="Self.ChungTuLQP" />
@@ -3571,67 +4187,10 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <EntitySet Name="Vattus" EntityType="Self.Vattu" />
           <EntitySet Name="VTDauNams" EntityType="Self.VTDauNam" />
           <EntitySet Name="DanhSachVatTus" EntityType="Self.DanhSachVatTu" />
-          <EntitySet Name="ChungTus" EntityType="DatablankModel.ChungTu" />
+          <EntitySet Name="QNhatkies" EntityType="Self.QNhatky" />
+          <EntitySet Name="QTheKhoes" EntityType="Self.QTheKho" />
+          <EntitySet Name="Socais" EntityType="Self.Socai" />
         </EntityContainer>
-        <EntityType Name="ChungTu">
-          <Key>
-            <PropertyRef Name="MaSo" />
-          </Key>
-          <Property Name="MaSo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MaCT" Type="Int32" />
-          <Property Name="MaLoai" Type="Int16" />
-          <Property Name="ThangCT" Type="Int16" />
-          <Property Name="SoHieu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="NgayCT" Type="DateTime" Precision="0" />
-          <Property Name="NgayGS" Type="DateTime" Precision="0" />
-          <Property Name="NgayTL" Type="DateTime" Precision="0" />
-          <Property Name="DienGiai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="MaKho" Type="Int32" />
-          <Property Name="MaNguon" Type="Int32" />
-          <Property Name="MaTKNo" Type="Int32" />
-          <Property Name="MaTKCo" Type="Int32" />
-          <Property Name="SoPS" Type="Double" />
-          <Property Name="SoPS2No" Type="Double" />
-          <Property Name="SoPS2Co" Type="Double" />
-          <Property Name="MaTKTCNo" Type="Int32" />
-          <Property Name="MaTKTCCo" Type="Int32" />
-          <Property Name="MaVattu" Type="Int32" />
-          <Property Name="GhiChu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CT_ID" Type="Double" />
-          <Property Name="SoXuat" Type="Double" />
-          <Property Name="MaDT" Type="Int32" />
-          <Property Name="MaKH" Type="Int32" />
-          <Property Name="CTGS" Type="Int32" />
-          <Property Name="MaKHC" Type="Int32" />
-          <Property Name="MaTP" Type="Int32" />
-          <Property Name="DVT" Type="Int16" />
-          <Property Name="User_ID" Type="Int32" />
-          <Property Name="DienGiaiE" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="TyGia" Type="Double" />
-          <Property Name="MaNV" Type="Int32" />
-          <Property Name="HanTT" Type="Int16" />
-          <Property Name="SH1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="T1" Type="Int16" />
-          <Property Name="TLCK" Type="Double" />
-          <Property Name="CK" Type="Double" />
-          <Property Name="MaDT1" Type="Int32" />
-          <Property Name="MaDT2" Type="Int32" />
-          <Property Name="MaDT3" Type="Int32" />
-          <Property Name="XuLy" Type="Int16" />
-          <Property Name="MauSoHD" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LoaiHoaDon" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Nguoimuahang" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="hinhthucthanhtoan" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="sophieudathang" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="chondiengiai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="phantramchietkhau" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="sotienchietkhau" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="solo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="handung" Type="DateTime" Precision="0" />
-          <Property Name="nhanban" Type="Double" />
-          <Property Name="SoPSGoc" Type="Double" />
-          <Property Name="NgayImport" Type="DateTime" Precision="0" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3766,6 +4325,66 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
                 <ScalarProperty Name="shtk8" ColumnName="shtk8" />
                 <ScalarProperty Name="shtk9" ColumnName="shtk9" />
                 <ScalarProperty Name="shtk10" ColumnName="shtk10" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChungTus">
+            <EntityTypeMapping TypeName="DatablankModel.ChungTu">
+              <MappingFragment StoreEntitySet="ChungTu">
+                <ScalarProperty Name="MaSo" ColumnName="MaSo" />
+                <ScalarProperty Name="MaCT" ColumnName="MaCT" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="ThangCT" ColumnName="ThangCT" />
+                <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
+                <ScalarProperty Name="NgayCT" ColumnName="NgayCT" />
+                <ScalarProperty Name="NgayGS" ColumnName="NgayGS" />
+                <ScalarProperty Name="NgayTL" ColumnName="NgayTL" />
+                <ScalarProperty Name="DienGiai" ColumnName="DienGiai" />
+                <ScalarProperty Name="MaKho" ColumnName="MaKho" />
+                <ScalarProperty Name="MaNguon" ColumnName="MaNguon" />
+                <ScalarProperty Name="MaTKNo" ColumnName="MaTKNo" />
+                <ScalarProperty Name="MaTKCo" ColumnName="MaTKCo" />
+                <ScalarProperty Name="SoPS" ColumnName="SoPS" />
+                <ScalarProperty Name="SoPS2No" ColumnName="SoPS2No" />
+                <ScalarProperty Name="SoPS2Co" ColumnName="SoPS2Co" />
+                <ScalarProperty Name="MaTKTCNo" ColumnName="MaTKTCNo" />
+                <ScalarProperty Name="MaTKTCCo" ColumnName="MaTKTCCo" />
+                <ScalarProperty Name="MaVattu" ColumnName="MaVattu" />
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="CT_ID" ColumnName="CT_ID" />
+                <ScalarProperty Name="SoXuat" ColumnName="SoXuat" />
+                <ScalarProperty Name="MaDT" ColumnName="MaDT" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="CTGS" ColumnName="CTGS" />
+                <ScalarProperty Name="MaKHC" ColumnName="MaKHC" />
+                <ScalarProperty Name="MaTP" ColumnName="MaTP" />
+                <ScalarProperty Name="DVT" ColumnName="DVT" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="DienGiaiE" ColumnName="DienGiaiE" />
+                <ScalarProperty Name="TyGia" ColumnName="TyGia" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="HanTT" ColumnName="HanTT" />
+                <ScalarProperty Name="SH1" ColumnName="SH1" />
+                <ScalarProperty Name="T1" ColumnName="T1" />
+                <ScalarProperty Name="TLCK" ColumnName="TLCK" />
+                <ScalarProperty Name="CK" ColumnName="CK" />
+                <ScalarProperty Name="MaDT1" ColumnName="MaDT1" />
+                <ScalarProperty Name="MaDT2" ColumnName="MaDT2" />
+                <ScalarProperty Name="MaDT3" ColumnName="MaDT3" />
+                <ScalarProperty Name="XuLy" ColumnName="XuLy" />
+                <ScalarProperty Name="MauSoHD" ColumnName="MauSoHD" />
+                <ScalarProperty Name="LoaiHoaDon" ColumnName="LoaiHoaDon" />
+                <ScalarProperty Name="Nguoimuahang" ColumnName="Nguoimuahang" />
+                <ScalarProperty Name="hinhthucthanhtoan" ColumnName="hinhthucthanhtoan" />
+                <ScalarProperty Name="sophieudathang" ColumnName="sophieudathang" />
+                <ScalarProperty Name="chondiengiai" ColumnName="chondiengiai" />
+                <ScalarProperty Name="phantramchietkhau" ColumnName="phantramchietkhau" />
+                <ScalarProperty Name="sotienchietkhau" ColumnName="sotienchietkhau" />
+                <ScalarProperty Name="solo" ColumnName="solo" />
+                <ScalarProperty Name="handung" ColumnName="handung" />
+                <ScalarProperty Name="SoPSGoc" ColumnName="SoPSGoc" />
+                <ScalarProperty Name="nhanban" ColumnName="nhanban" />
+                <ScalarProperty Name="NgayImport" ColumnName="NgayImport" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3968,7 +4587,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <EntitySetMapping Name="CTTaiSans">
             <EntityTypeMapping TypeName="DatablankModel.CTTaiSan">
               <MappingFragment StoreEntitySet="CTTaiSan">
-                <ScalarProperty Name="taisanIdCu" ColumnName="taisanIdCu" />
                 <ScalarProperty Name="MaSo" ColumnName="MaSo" />
                 <ScalarProperty Name="MaCTKT" ColumnName="MaCTKT" />
                 <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
@@ -4040,7 +4658,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <EntitySetMapping Name="DVTVattus">
             <EntityTypeMapping TypeName="DatablankModel.DVTVattu">
               <MappingFragment StoreEntitySet="DVTVattu">
-                <ScalarProperty Name="MadvtvattuCu" ColumnName="MadvtvattuCu" />
                 <ScalarProperty Name="MaSo" ColumnName="MaSo" />
                 <ScalarProperty Name="MaVattu" ColumnName="MaVattu" />
                 <ScalarProperty Name="DonVi" ColumnName="DonVi" />
@@ -4052,14 +4669,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <EntitySetMapping Name="HeThongTKs">
             <EntityTypeMapping TypeName="DatablankModel.HeThongTK">
               <MappingFragment StoreEntitySet="HeThongTK">
-                <ScalarProperty Name="PSCLK2024" ColumnName="PSCLK2024" />
-                <ScalarProperty Name="PSNLK2024" ColumnName="PSNLK2024" />
-                <ScalarProperty Name="PSCLK2017" ColumnName="PSCLK2017" />
-                <ScalarProperty Name="PSNLK2017" ColumnName="PSNLK2017" />
-                <ScalarProperty Name="PSCLK2016" ColumnName="PSCLK2016" />
-                <ScalarProperty Name="PSNLK2016" ColumnName="PSNLK2016" />
-                <ScalarProperty Name="PSCLK2015" ColumnName="PSCLK2015" />
-                <ScalarProperty Name="PSNLK2015" ColumnName="PSNLK2015" />
                 <ScalarProperty Name="MaSo" ColumnName="MaSo" />
                 <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
                 <ScalarProperty Name="Cap" ColumnName="Cap" />
@@ -4499,7 +5108,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <EntitySetMapping Name="PhanLoaiVattus">
             <EntityTypeMapping TypeName="DatablankModel.PhanLoaiVattu">
               <MappingFragment StoreEntitySet="PhanLoaiVattu">
-                <ScalarProperty Name="MaPhanLoaiCu" ColumnName="MaPhanLoaiCu" />
                 <ScalarProperty Name="MaSo" ColumnName="MaSo" />
                 <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
                 <ScalarProperty Name="TenPhanLoai" ColumnName="TenPhanLoai" />
@@ -4678,7 +5286,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <EntitySetMapping Name="TaiSans">
             <EntityTypeMapping TypeName="DatablankModel.TaiSan">
               <MappingFragment StoreEntitySet="TaiSan">
-                <ScalarProperty Name="taisanIdCu" ColumnName="taisanIdCu" />
                 <ScalarProperty Name="MaSo" ColumnName="MaSo" />
                 <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
                 <ScalarProperty Name="Ten" ColumnName="Ten" />
@@ -5000,7 +5607,6 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
           <EntitySetMapping Name="ThongSoes">
             <EntityTypeMapping TypeName="DatablankModel.ThongSo">
               <MappingFragment StoreEntitySet="ThongSo">
-                <ScalarProperty Name="taisanIdCu" ColumnName="taisanIdCu" />
                 <ScalarProperty Name="MaSo" ColumnName="MaSo" />
                 <ScalarProperty Name="MaTS" ColumnName="MaTS" />
                 <ScalarProperty Name="Thang" ColumnName="Thang" />
@@ -5381,63 +5987,52 @@ warning 6002: The table/view 'HQUYEN2026.dbo.DanhSachVatTu' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ChungTus">
-            <EntityTypeMapping TypeName="DatablankModel.ChungTu">
-              <MappingFragment StoreEntitySet="ChungTu">
-                <ScalarProperty Name="NgayImport" ColumnName="NgayImport" />
-                <ScalarProperty Name="SoPSGoc" ColumnName="SoPSGoc" />
-                <ScalarProperty Name="nhanban" ColumnName="nhanban" />
-                <ScalarProperty Name="handung" ColumnName="handung" />
-                <ScalarProperty Name="solo" ColumnName="solo" />
-                <ScalarProperty Name="sotienchietkhau" ColumnName="sotienchietkhau" />
-                <ScalarProperty Name="phantramchietkhau" ColumnName="phantramchietkhau" />
-                <ScalarProperty Name="chondiengiai" ColumnName="chondiengiai" />
-                <ScalarProperty Name="sophieudathang" ColumnName="sophieudathang" />
-                <ScalarProperty Name="hinhthucthanhtoan" ColumnName="hinhthucthanhtoan" />
-                <ScalarProperty Name="Nguoimuahang" ColumnName="Nguoimuahang" />
-                <ScalarProperty Name="LoaiHoaDon" ColumnName="LoaiHoaDon" />
-                <ScalarProperty Name="MauSoHD" ColumnName="MauSoHD" />
-                <ScalarProperty Name="XuLy" ColumnName="XuLy" />
-                <ScalarProperty Name="MaDT3" ColumnName="MaDT3" />
-                <ScalarProperty Name="MaDT2" ColumnName="MaDT2" />
-                <ScalarProperty Name="MaDT1" ColumnName="MaDT1" />
-                <ScalarProperty Name="CK" ColumnName="CK" />
-                <ScalarProperty Name="TLCK" ColumnName="TLCK" />
-                <ScalarProperty Name="T1" ColumnName="T1" />
-                <ScalarProperty Name="SH1" ColumnName="SH1" />
-                <ScalarProperty Name="HanTT" ColumnName="HanTT" />
-                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
-                <ScalarProperty Name="TyGia" ColumnName="TyGia" />
-                <ScalarProperty Name="DienGiaiE" ColumnName="DienGiaiE" />
-                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
-                <ScalarProperty Name="DVT" ColumnName="DVT" />
-                <ScalarProperty Name="MaTP" ColumnName="MaTP" />
-                <ScalarProperty Name="MaKHC" ColumnName="MaKHC" />
-                <ScalarProperty Name="CTGS" ColumnName="CTGS" />
-                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
-                <ScalarProperty Name="MaDT" ColumnName="MaDT" />
-                <ScalarProperty Name="SoXuat" ColumnName="SoXuat" />
-                <ScalarProperty Name="CT_ID" ColumnName="CT_ID" />
-                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
-                <ScalarProperty Name="MaVattu" ColumnName="MaVattu" />
-                <ScalarProperty Name="MaTKTCCo" ColumnName="MaTKTCCo" />
-                <ScalarProperty Name="MaTKTCNo" ColumnName="MaTKTCNo" />
-                <ScalarProperty Name="SoPS2Co" ColumnName="SoPS2Co" />
-                <ScalarProperty Name="SoPS2No" ColumnName="SoPS2No" />
-                <ScalarProperty Name="SoPS" ColumnName="SoPS" />
-                <ScalarProperty Name="MaTKCo" ColumnName="MaTKCo" />
-                <ScalarProperty Name="MaTKNo" ColumnName="MaTKNo" />
-                <ScalarProperty Name="MaNguon" ColumnName="MaNguon" />
-                <ScalarProperty Name="MaKho" ColumnName="MaKho" />
-                <ScalarProperty Name="DienGiai" ColumnName="DienGiai" />
-                <ScalarProperty Name="NgayTL" ColumnName="NgayTL" />
-                <ScalarProperty Name="NgayGS" ColumnName="NgayGS" />
-                <ScalarProperty Name="NgayCT" ColumnName="NgayCT" />
+          <EntitySetMapping Name="QNhatkies">
+            <EntityTypeMapping TypeName="DatablankModel.QNhatky">
+              <MappingFragment StoreEntitySet="QNhatky">
+                <ScalarProperty Name="KyHieu" ColumnName="KyHieu" />
+                <ScalarProperty Name="SoHD" ColumnName="SoHD" />
+                <ScalarProperty Name="NgayPH" ColumnName="NgayPH" />
+                <ScalarProperty Name="MatHang" ColumnName="MatHang" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="ThanhTien" ColumnName="ThanhTien" />
+                <ScalarProperty Name="Ten" ColumnName="Ten" />
+                <ScalarProperty Name="MST" ColumnName="MST" />
                 <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
-                <ScalarProperty Name="ThangCT" ColumnName="ThangCT" />
-                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="SoPS" ColumnName="SoPS" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="TyLe" ColumnName="TyLe" />
+                <ScalarProperty Name="HTTT" ColumnName="HTTT" />
+                <ScalarProperty Name="MauSo" ColumnName="MauSo" />
                 <ScalarProperty Name="MaCT" ColumnName="MaCT" />
                 <ScalarProperty Name="MaSo" ColumnName="MaSo" />
+                <ScalarProperty Name="KCT" ColumnName="KCT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QTheKhoes">
+            <EntityTypeMapping TypeName="DatablankModel.QTheKho">
+              <MappingFragment StoreEntitySet="QTheKho">
+                <ScalarProperty Name="MaNT" ColumnName="MaNT" />
+                <ScalarProperty Name="KyHieu" ColumnName="KyHieu" />
+                <ScalarProperty Name="DKNo" ColumnName="DKNo" />
+                <ScalarProperty Name="DKCo" ColumnName="DKCo" />
+                <ScalarProperty Name="DKNT" ColumnName="DKNT" />
+                <ScalarProperty Name="CKNo" ColumnName="CKNo" />
+                <ScalarProperty Name="CKCo" ColumnName="CKCo" />
+                <ScalarProperty Name="CKNT" ColumnName="CKNT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Socais">
+            <EntityTypeMapping TypeName="DatablankModel.Socai">
+              <MappingFragment StoreEntitySet="Socai">
+                <ScalarProperty Name="SoHieuTK" ColumnName="SoHieuTK" />
+                <ScalarProperty Name="NoDk" ColumnName="NoDk" />
+                <ScalarProperty Name="Kieu" ColumnName="Kieu" />
+                <ScalarProperty Name="TenTk" ColumnName="TenTk" />
+                <ScalarProperty Name="NoLK" ColumnName="NoLK" />
+                <ScalarProperty Name="CoLK" ColumnName="CoLK" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
