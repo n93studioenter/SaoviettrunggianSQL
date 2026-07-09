@@ -137,7 +137,7 @@
     <Property Name="NgayCT" Type="DateTime" Precision="0" />
     <Property Name="NgayGS" Type="DateTime" Precision="0" />
     <Property Name="NgayTL" Type="DateTime" Precision="0" />
-    <Property Name="DienGiai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DienGiai" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="MaKho" Type="Int32" />
     <Property Name="MaNguon" Type="Int32" />
     <Property Name="MaTKNo" Type="Int32" />
@@ -620,7 +620,7 @@
     <Property Name="KyHieu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="SoHD" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="NgayPH" Type="DateTime" Precision="0" />
-    <Property Name="MatHang" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="MatHang" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="SoLuong" Type="Double" />
     <Property Name="ThanhTien" Type="Double" />
     <Property Name="TyLe" Type="Int16" />
@@ -1139,8 +1139,8 @@
     <Property Name="SHDon" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="KHHDon" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="NLap" Type="DateTime" Precision="0" />
-    <Property Name="Ten" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Noidung" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Ten" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Noidung" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="TKCo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="TKNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="TkThue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -1662,7 +1662,7 @@
     <Property Name="MaSo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="MaPhanLoai" Type="Int32" />
     <Property Name="SoHieu" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="TenVattu" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="TenVattu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="DonVi" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="TonMin" Type="Double" />
     <Property Name="TonMax" Type="Double" />
@@ -1671,7 +1671,7 @@
     <Property Name="dvt2" Type="Int16" />
     <Property Name="DonVi2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="TyLeQD" Type="Single" />
-    <Property Name="GhiChu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GhiChu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="VAT" Type="Int16" />
     <Property Name="GiaBan1" Type="Double" />
     <Property Name="GiaBan2" Type="Double" />

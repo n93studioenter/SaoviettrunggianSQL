@@ -3030,7 +3030,7 @@
             // 
             // simpleButton12
             // 
-            this.simpleButton12.Location = new System.Drawing.Point(479, 11);
+            this.simpleButton12.Location = new System.Drawing.Point(547, 11);
             this.simpleButton12.Name = "simpleButton12";
             this.simpleButton12.Size = new System.Drawing.Size(94, 29);
             this.simpleButton12.TabIndex = 11;
@@ -3040,7 +3040,7 @@
             // 
             // simpleButton13
             // 
-            this.simpleButton13.Location = new System.Drawing.Point(474, 5);
+            this.simpleButton13.Location = new System.Drawing.Point(533, 9);
             this.simpleButton13.Name = "simpleButton13";
             this.simpleButton13.Size = new System.Drawing.Size(94, 29);
             this.simpleButton13.TabIndex = 25;
@@ -3051,7 +3051,7 @@
             // chkTudong
             // 
             this.chkTudong.EditValue = true;
-            this.chkTudong.Location = new System.Drawing.Point(479, 18);
+            this.chkTudong.Location = new System.Drawing.Point(549, 23);
             this.chkTudong.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.chkTudong.Name = "chkTudong";
             this.chkTudong.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
@@ -3070,7 +3070,7 @@
             // 
             this.chkHienthimau.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHienthimau.EditValue = true;
-            this.chkHienthimau.Location = new System.Drawing.Point(513, 16);
+            this.chkHienthimau.Location = new System.Drawing.Point(549, 16);
             this.chkHienthimau.Name = "chkHienthimau";
             this.chkHienthimau.Properties.Caption = "Hiển thị màu";
             this.chkHienthimau.Size = new System.Drawing.Size(94, 20);
@@ -3082,7 +3082,7 @@
             // 
             this.btnExportExcelVao.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExportExcelVao.ImageOptions.Image = global::SaovietTax.Properties.Resources.exporttoxlsx_16x16;
-            this.btnExportExcelVao.Location = new System.Drawing.Point(479, 11);
+            this.btnExportExcelVao.Location = new System.Drawing.Point(534, 11);
             this.btnExportExcelVao.Name = "btnExportExcelVao";
             this.btnExportExcelVao.Size = new System.Drawing.Size(116, 29);
             this.btnExportExcelVao.TabIndex = 12;
@@ -3103,7 +3103,7 @@
             // btnXoaDSRa
             // 
             this.btnXoaDSRa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnXoaDSRa.Location = new System.Drawing.Point(479, 21);
+            this.btnXoaDSRa.Location = new System.Drawing.Point(519, 21);
             this.btnXoaDSRa.Name = "btnXoaDSRa";
             this.btnXoaDSRa.Size = new System.Drawing.Size(65, 26);
             this.btnXoaDSRa.TabIndex = 12;
@@ -3128,7 +3128,7 @@
             // btnXoaDSVao
             // 
             this.btnXoaDSVao.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnXoaDSVao.Location = new System.Drawing.Point(474, 16);
+            this.btnXoaDSVao.Location = new System.Drawing.Point(519, 12);
             this.btnXoaDSVao.Name = "btnXoaDSVao";
             this.btnXoaDSVao.Size = new System.Drawing.Size(64, 28);
             this.btnXoaDSVao.TabIndex = 11;
@@ -3139,7 +3139,7 @@
             // lblThongbaos
             // 
             this.lblThongbaos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblThongbaos.Location = new System.Drawing.Point(491, 24);
+            this.lblThongbaos.Location = new System.Drawing.Point(533, 29);
             this.lblThongbaos.Name = "lblThongbaos";
             this.lblThongbaos.Size = new System.Drawing.Size(75, 16);
             this.lblThongbaos.TabIndex = 18;
@@ -3150,7 +3150,7 @@
             // 
             this.simpleButton7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.simpleButton7.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton7.ImageOptions.Image")));
-            this.simpleButton7.Location = new System.Drawing.Point(491, 7);
+            this.simpleButton7.Location = new System.Drawing.Point(519, 9);
             this.simpleButton7.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.simpleButton7.Name = "simpleButton7";
             this.simpleButton7.Size = new System.Drawing.Size(51, 33);
@@ -3210,7 +3210,7 @@
             // btnTaicoquanthue
             // 
             this.btnTaicoquanthue.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnTaicoquanthue.ImageOptions.Image")));
-            this.btnTaicoquanthue.Location = new System.Drawing.Point(244, 11);
+            this.btnTaicoquanthue.Location = new System.Drawing.Point(241, 10);
             this.btnTaicoquanthue.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnTaicoquanthue.Name = "btnTaicoquanthue";
             this.btnTaicoquanthue.Size = new System.Drawing.Size(228, 35);

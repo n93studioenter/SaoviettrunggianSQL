@@ -95,6 +95,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Data.Entity.Validation;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Data.SQLite;
@@ -10416,7 +10417,7 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
                     UseProxy = false
                 };
 
-                _client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(10) };
+                _client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(3) };
 
                 _client.DefaultRequestHeaders.Clear();
                 _client.DefaultRequestHeaders.ConnectionClose = false; // Keep-Alive
@@ -10482,7 +10483,7 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
                 int retryCount = 0;
 
                 var sw = Stopwatch.StartNew();
-
+               // _client.Timeout = TimeSpan.FromSeconds(3); // ← THÊM DÒNG NÀY
                 while (retryCount < maxRetries)
                 {
                     try
@@ -10492,11 +10493,10 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
                         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
                         // Thêm các header khác nếu cần
 
-                        HttpResponseMessage response = null; // Thay vì = new HttpResponseMessage();
-                         
-
+                        HttpResponseMessage response = null; // Thay vì = new HttpResponseMessage(); 
                         try
                         {
+                             
                             response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false); // QUAN TRỌNG: Không capture UI context 
                             response.EnsureSuccessStatusCode();
                             using (var stream = await response.Content.ReadAsStreamAsync())
@@ -29863,8 +29863,9 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 foreach (var item in lstImportVao.Where(m => m.Checked))
                 {
                     double TT = item.TgTCThue;
+                    double TT2 = item.TgTCThue1;
                     double TTDetail = item.fileImportDetails.Sum(m => m.TTien);
-                    if (TT != TTDetail && TT!=0)
+                    if (TT != TTDetail && TT!=0 && TT2!=TTDetail && TT2!=0)
                     {
                         XtraMessageBox.Show($"Hoá đơn {item.SHDon} chưa cân bằng, vui lòng kiểm tra lại trước khi import vào phần mềm ");
                         return false;
@@ -29878,11 +29879,22 @@ private static readonly Dictionary<string, string[]> BrandAliases =
 
             return true;
         }
+        
         private void InsertVB6()
         {
             if (!XukyValorant())
                 return;
-            var lstkh = db.KhachHangs.ToList();
+            List<SaovietTax.Models.KhachHang> lstkh = new List<Models.KhachHang>();
+            try
+            {
+                lstkh = db.KhachHangs.ToList();
+            }
+            catch(Exception ex)
+            {
+                string fullErrorMessage = GetFullExceptionMessage(ex);
+                XtraMessageBox.Show(fullErrorMessage);
+                return;
+            }
 
             int maxct = db.ChungTus.Max(m => m.MaCT) ?? 0;
             int makho = db.KhoHangs.Max(m => m.MaSo);
@@ -30259,14 +30271,15 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                 lstImportResult.Add(importResult);
                             }
                             catch (Exception ex)
-                            { 
+                            {
+                                string fullErrorMessage = GetFullExceptionMessage(ex);
+
+                                ImportResult importResults = new ImportResult();
+                                importResults.SoHD = item.SHDon;
+                                importResults.Status = -1;
+                                importResults.Error = fullErrorMessage;
+                                lstImportResult.Add(importResults);
                                 transaction.Rollback();
-                                ImportResult importResult = new ImportResult();
-                                importResult.SoHD = item.SHDon;
-                                importResult.Status = -1;
-                                importResult.Error = ex.Message;
-                                lstImportResult.Add(importResult);
-                                //XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
                             }
                         } 
 
@@ -30496,14 +30509,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                         hd.TyGia = 0;
                                         hd.HDBL = 0;
                                         db.HoaDons.Add(hd);
-                                        try
-                                        {
-                                            db.SaveChanges();
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            XtraMessageBox.Show(ex.Message);
-                                        }
+                                        db.SaveChanges();
                                     }
 
                                     //Cập nhật tbimport
@@ -30522,13 +30528,15 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                 }
                                 catch (Exception ex)
                                 {
-                                    transaction.Rollback();
-                                    transaction.Rollback();
-                                    ImportResult importResult = new ImportResult();
-                                    importResult.SoHD = item.SHDon;
-                                    importResult.Status = -1;
-                                    importResult.Error = ex.Message;
-                                    lstImportResult.Add(importResult);
+                                    string fullErrorMessage = GetFullExceptionMessage(ex);
+
+                                    ImportResult importResults = new ImportResult();
+                                    importResults.SoHD = item.SHDon;
+                                    importResults.Status = -1;
+                                    importResults.Error = fullErrorMessage;
+                                    lstImportResult.Add(importResults);
+                                    transaction.Rollback(); 
+                                  
                                     // XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
                                 }
                             }
@@ -30571,7 +30579,8 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                         sl = dt.Soluong;
                                         ct.MaTKTCNo = tkno;
                                         ct.MaTKTCCo = tkco;
-                                        ct.MaVattu = vattu.Where(m => m.SoHieu == dt.SoHieu).FirstOrDefault().MaSo;
+                                        var getvt = vattu.Where(m => m.SoHieu == dt.SoHieu).FirstOrDefault();
+                                        ct.MaVattu = getvt!=null ? getvt.MaSo:0;
                                         mavattu = ct.MaVattu.Value;
                                         ct.CT_ID = 0;
                                         ct.MaDT = 1;
@@ -30838,13 +30847,43 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                 }
                                 catch (Exception ex)
                                 {
+                                    string fullErrorMessage = "";
+
+                                    // Kiểm tra loại exception để biết lấy từ đâu
+                                    if (ex is DbEntityValidationException)
+                                    {
+                                        // Lấy từ EntityValidationErrors
+                                        var dbEx = (DbEntityValidationException)ex;
+                                        // Xử lý... 
+                                        fullErrorMessage= dbEx.EntityValidationErrors.FirstOrDefault().ValidationErrors.FirstOrDefault().ErrorMessage;
+                                       
+                                    }
+                                    else if (ex is ValidationException)
+                                    {
+                                        // Lấy từ Errors
+                                        var valEx = (ValidationException)ex;
+                                        fullErrorMessage = valEx.Message;
+                                        // Xử lý...
+                                    }
+                                    else if (ex is SqlException)
+                                    {
+                                        // Lấy từ Message hoặc Errors
+                                        var sqlEx = (SqlException)ex;
+                                        fullErrorMessage = sqlEx.Message;
+                                        // Xử lý...
+                                    }
+                                    else
+                                    {
+                                        fullErrorMessage = GetFullExceptionMessage(ex);
+                                    }
+
+                                   
+                                    ImportResult importResults = new ImportResult();
+                                    importResults.SoHD = item.SHDon;
+                                    importResults.Status = -1;
+                                    importResults.Error = fullErrorMessage;
+                                    lstImportResult.Add(importResults);
                                     transaction.Rollback();
-                                    ImportResult importResult = new ImportResult();
-                                    importResult.SoHD = item.SHDon;
-                                    importResult.Status = -1;
-                                    importResult.Error = ex.Message;
-                                    lstImportResult.Add(importResult);
-                                    // XtraMessageBox.Show($"Lỗi hoá đơn số {item.SHDon}  {ex.Message} ");
                                 }
                             }
 
@@ -30862,6 +30901,20 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             frmThongkeImport.ShowDialog();
             if (lstImportResult.Count(m => m.Status == -1) == 0)
                 this.Close();
+        }
+        private string GetFullExceptionMessage(Exception ex)
+        {
+            if (ex == null) return "";
+
+            string message = ex.Message;
+
+            // Nếu có Inner Exception, lấy thêm
+            if (ex.InnerException != null)
+            {
+                message += " | Inner: " + GetFullExceptionMessage(ex.InnerException);
+            }
+
+            return message;
         }
         private void InsertVB6new2()
         { 
