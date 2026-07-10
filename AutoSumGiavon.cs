@@ -811,51 +811,50 @@ namespace SaovietTax
         private DataTable TinhGiaVonTatCaVatTu_SQL(SqlConnection conn, SqlTransaction tran, int tuThang, int denThang)
         {
             string sql = @"
-        WITH NhapXuat AS (
-            SELECT
-                MaVattu,
-                ThangCT,
-                SUM(CASE WHEN MaLoai = 1 THEN SoPS2No ELSE 0 END) AS SLNhap,
-                SUM(CASE WHEN MaLoai = 1 THEN SoPS ELSE 0 END) AS TienNhap,
-                SUM(CASE WHEN MaLoai = 8 THEN SoPS2Co ELSE 0 END) AS SLXuat
-            FROM ChungTu
-            WHERE MaVattu > 0 AND ThangCT <= @denThang
-            GROUP BY MaVattu, ThangCT
-        ),
-        TonLuyKe AS (
-            SELECT
-                MaVattu,
-                ThangCT,
-                SLNhap,
-                TienNhap,
-                SLXuat,
-                -- Tồn đầu tháng = Tổng nhập - Tổng xuất của các tháng trước
-                ISNULL(SUM(SLNhap) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) 
-                    - ISNULL(SUM(SLXuat) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) AS TonDauSL,
-                ISNULL(SUM(TienNhap) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) 
-                    - ISNULL(SUM(SLXuat) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) * 
-                      (ISNULL(SUM(TienNhap) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) / 
-                       NULLIF(ISNULL(SUM(SLNhap) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0), 0))
-                    , 0) AS TonDauTien
-            FROM NhapXuat
-        )
-        SELECT
-            MaVattu,
-            ThangCT,
-            ROUND(
-                CASE WHEN (TonDauSL + SLNhap) > 0
-                     THEN (TonDauTien + TienNhap) / (TonDauSL + SLNhap)
-                     ELSE 0 
-                END, 0
-            ) AS GiaVon,
-            TonDauSL,
-            TonDauTien,
-            SLNhap,
-            TienNhap,
-            SLXuat
-        FROM TonLuyKe
-        WHERE ThangCT BETWEEN @tuThang AND @denThang
-        ORDER BY MaVattu, ThangCT";
+WITH NhapXuat AS (
+    SELECT
+        MaVattu,
+        ThangCT,
+        SUM(CASE WHEN MaLoai = 1 THEN SoPS2No ELSE 0 END) AS SLNhap,
+        SUM(CASE WHEN MaLoai = 1 THEN SoPS ELSE 0 END) AS TienNhap,
+        SUM(CASE WHEN MaLoai = 8 THEN SoPS2Co ELSE 0 END) AS SLXuat
+    FROM ChungTu
+    WHERE MaVattu > 0 AND ThangCT <= @denThang
+    GROUP BY MaVattu, ThangCT
+),
+TonLuyKe AS (
+    SELECT
+        MaVattu,
+        ThangCT,
+        SLNhap,
+        TienNhap,
+        SLXuat,
+        ISNULL(SUM(SLNhap) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) 
+            - ISNULL(SUM(SLXuat) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) AS TonDauSL,
+        ISNULL(SUM(TienNhap) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) 
+            - ISNULL(SUM(SLXuat) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) * 
+              (ISNULL(SUM(TienNhap) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) / 
+               NULLIF(ISNULL(SUM(SLNhap) OVER (PARTITION BY MaVattu ORDER BY ThangCT ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0), 0))
+            , 0) AS TonDauTien
+    FROM NhapXuat
+)
+SELECT
+    MaVattu,
+    ThangCT,
+    ROUND(
+        CASE WHEN (TonDauSL + SLNhap) > 0
+             THEN (TonDauTien + TienNhap) / (TonDauSL + SLNhap)
+             ELSE 0 
+        END, 2  -- ⭐ CHỈ SỬA CHỖ NÀY: 0 -> 2
+    ) AS GiaVon,
+    TonDauSL,
+    TonDauTien,
+    SLNhap,
+    TienNhap,
+    SLXuat
+FROM TonLuyKe
+WHERE ThangCT BETWEEN @tuThang AND @denThang
+ORDER BY MaVattu, ThangCT";
 
             DataTable dt = new DataTable();
             using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
