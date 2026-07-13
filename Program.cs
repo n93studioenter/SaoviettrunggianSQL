@@ -135,7 +135,7 @@ namespace SaovietTax {
                         case "10": Application.Run(new FrmReports()); break;
                         case "11": Application.Run(new AutoSumTonkho()); break;
                         case "12": Application.Run(new AutoSumHTTK()); break;
-                        case "13": Application.Run(new AutoSumGiavon()); break;
+                        case "13": Application.Run(new vb6Tinhgiavon()); break;
                     }
                 }
             }
