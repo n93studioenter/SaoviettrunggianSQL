@@ -3210,7 +3210,7 @@
             // btnTaicoquanthue
             // 
             this.btnTaicoquanthue.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnTaicoquanthue.ImageOptions.Image")));
-            this.btnTaicoquanthue.Location = new System.Drawing.Point(241, 10);
+            this.btnTaicoquanthue.Location = new System.Drawing.Point(380, 13);
             this.btnTaicoquanthue.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnTaicoquanthue.Name = "btnTaicoquanthue";
             this.btnTaicoquanthue.Size = new System.Drawing.Size(228, 35);

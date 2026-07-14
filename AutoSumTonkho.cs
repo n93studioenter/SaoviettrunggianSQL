@@ -60,8 +60,7 @@ namespace SaovietTax
                     ChuanHoaTonKho();
 
                     // 2. Reset dữ liệu nhập xuất
-                    ResetTonKho();
-
+                    ResetTonKho(); 
                     // 3. Cập nhật số phát sinh nhập
                     CapNhatNhap();
 
@@ -141,6 +140,8 @@ namespace SaovietTax
                         , Luong_Nhap_{i} = 0
                         , Luong_Xuat_{i} = 0
                         , Tien_Nhap_{i} = 0
+                        , Luong_{i} = 0
+                        , Tien_{i} = 0
                         , Tien_Xuat_{i} = 0";
 
                     if (_pGiaUSD > 0)

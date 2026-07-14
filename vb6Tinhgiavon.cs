@@ -82,11 +82,8 @@ namespace SaovietTax
             comboBoxEdit2.SelectedIndex = DateTime.Now.Month - 1;
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+        public void TinhGiaVon(int tuThang, int denThang)
         {
-            int tuThang = Convert.ToInt32(comboBoxEdit1.EditValue);
-            int denThang = Convert.ToInt32(comboBoxEdit2.EditValue);
-
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -263,7 +260,7 @@ namespace SaovietTax
                                 .ToList();
 
                             // ===== BƯỚC 1: Insert từng cặp hàng hóa + giá vốn (1 dòng hàng → 1 dòng giá vốn) =====
-                            bool istang=false; 
+                            bool istang = false;
                             foreach (DataRow hh in getlistHang)
                             {
                                 int oldMaCT = SafeGetInt(hh, "MaCT");
@@ -298,7 +295,7 @@ namespace SaovietTax
                                         maxMaCT++;
                                         istang = true;
                                     }
-                                 
+
                                     InsertGiaVon(conn, transaction, hh, maxMaCT, tienGiaVon, newMaSoHang);
                                     Console.WriteLine($"Insert giá vốn: MaCT={maxMaCT}, CT_ID=500000000+{newMaSoHang}={500000000 + newMaSoHang}");
                                 }
@@ -355,6 +352,12 @@ namespace SaovietTax
             {
                 XtraMessageBox.Show($"Lỗi kết nối: {ex.Message}");
             }
+        }
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            int tuThang = Convert.ToInt32(comboBoxEdit1.EditValue);
+            int denThang = Convert.ToInt32(comboBoxEdit2.EditValue);
+            TinhGiaVon(tuThang,denThang);
         }
         private void InsertGiaVon(SqlConnection conn, SqlTransaction trans, DataRow hh, int maCT, double tienGiaVon, int maSoHang)
         {

@@ -137,6 +137,7 @@ using Windows.Media.Protection.PlayReady;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using static DevExpress.Data.Helpers.ExpressiveSortInfo;
+//using static DevExpress.Data.Mask.Internal.MaskSettings<T>;
 using static DevExpress.Xpo.Helpers.CannotLoadObjectsHelper;
 using static DevExpress.XtraRichEdit.Forms.Design.BorderShadingUserControl;
 using static iText.IO.Codec.TiffWriter;
@@ -151,6 +152,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static Tensorflow.CollectionDef.Types;
 using Color = System.Drawing.Color;
 using DataTable = System.Data.DataTable;
+using DateTime = System.DateTime;
 using Font = System.Drawing.Font;
 using Formatting = Newtonsoft.Json.Formatting;
 using GridView = DevExpress.XtraGrid.Views.Grid.GridView;
@@ -168,6 +170,7 @@ using Size = DocumentFormat.OpenXml.Drawing.Charts.Size;
 using TbImportDetail = SaovietTax.Database.TbImportDetail;
 using TextEdit = DevExpress.XtraEditors.TextEdit;
 using Timer = System.Windows.Forms.Timer;
+using TimeSpan = System.TimeSpan;
 using ToolTip = System.Windows.Forms.ToolTip;
 using XmlElement = System.Xml.XmlElement;
 using XmlNode = System.Xml.XmlNode;
@@ -4275,19 +4278,7 @@ namespace SaovietTax
             }
 
         }
-        public double FindSimilar(string a, string b)
-        {
-            if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(b))
-            {
-                return 0; // Trả về 0% nếu một trong hai chuỗi rỗng
-            }
-
-            int distance = LevenshteinDistance(a, b);
-            int maxLength = Math.Max(a.Length, b.Length);
-
-            return (1.0 - (double)distance / maxLength) * 100; // Tính phần trăm tương đồng
-        }
-
+     
         private int LevenshteinDistance(string a, string b)
         {
             var matrix = new int[a.Length + 1, b.Length + 1];
@@ -11823,7 +11814,25 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
 
                 if (Directory.Exists(monthFolder))
                 {
-                    var filesInMonth = Directory.GetFiles(monthFolder, "*.xml", SearchOption.TopDirectoryOnly);
+                    var filesInMonth = Directory.GetFiles(monthFolder, "*.xml", SearchOption.TopDirectoryOnly)
+                    .Where(file =>
+                    {
+                        string fileName = Path.GetFileNameWithoutExtension(file);
+
+                        if (fileName.Length < 8)
+                            return false;
+
+                        if (!DateTime.TryParseExact(
+                                fileName.Substring(0, 8),
+                                "yyyyMMdd",
+                                CultureInfo.InvariantCulture,
+                                DateTimeStyles.None,
+                                out DateTime ngay))
+                            return false;
+
+                        return ngay >= dtTungay.DateTime.Date && ngay <= dtDenngay.DateTime.Date;
+                    })
+                    .ToList();
                     allFiles.AddRange(filesInMonth);
                 }
             }
@@ -22076,7 +22085,484 @@ private static readonly Dictionary<string, string[]> BrandAliases =
 
         // Thêm lock object cho thread safety nếu dùng đa luồng
         private readonly object _cacheLock = new object();
+
+        private List<KeyValuePair<string, VatTuInfo>> GetFilteredCandidates(
+    string key,
+    TbImportDetail detail)
+
+        {
+            List<KeyValuePair<string, VatTuInfo>> candidates = null;
+
+
+            return candidates;
+
+        }
+        Regex regex = new Regex(@"(\d+(g|ml|L|kg)|x\d+|(\d+\s*cái))", RegexOptions.IgnoreCase);
+
+        // Khởi tạo index 1 lần duy nhất khi load dữ liệu
+        private Dictionary<string, HashSet<string>> _keywordIndex; // keyword -> list key
+        private Dictionary<string, HashSet<string>> _quyCachIndex; // quyCach -> list key
+        private bool _isIndexBuilt = false;
+
+        private void BuildIndexes()
+        {
+            if (_isIndexBuilt) return;
+
+            _keywordIndex = new Dictionary<string, HashSet<string>>();
+            _quyCachIndex = new Dictionary<string, HashSet<string>>();
+
+            foreach (var kvp in _optimizedVatTu)
+            {
+                // Index theo từ khóa (chỉ lấy từ dài >= 3 ký tự)
+                var words = kvp.Value.TenChuan.Split(new[] { ' ', '-', ',', ';', '/' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Where(w => w.Length >= 3);
+
+                foreach (var word in words)
+                {
+                    if (!_keywordIndex.ContainsKey(word))
+                        _keywordIndex[word] = new HashSet<string>();
+                    _keywordIndex[word].Add(kvp.Key);
+                }
+
+                // Index theo quy cách
+                if (!string.IsNullOrEmpty(kvp.Value.QuyCach))
+                {
+                    if (!_quyCachIndex.ContainsKey(kvp.Value.QuyCach))
+                        _quyCachIndex[kvp.Value.QuyCach] = new HashSet<string>();
+                    _quyCachIndex[kvp.Value.QuyCach].Add(kvp.Key);
+                }
+            }
+
+            _isIndexBuilt = true;
+        }
+        // Thêm Dictionary chứa các từ đồng nghĩa
+        private Dictionary<string, string> _synonymDictionary;
+
+        // Khởi tạo từ đồng nghĩa
+        private void InitializeSynonymDictionary()
+        {
+            _synonymDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            AddSynonymIfNeeded("sài gòn", "saigon");
+            AddSynonymIfNeeded("sai gon", "saigon");
+            AddSynonymIfNeeded("sài gòn", "saigon");
+
+            // ✅ GIỮ LẠI: Thương hiệu
+            AddSynonymIfNeeded("cocacola", "coca cola");
+            AddSynonymIfNeeded("cô ca", "coca cola");
+            AddSynonymIfNeeded("cô ca cô la", "coca cola");
+            AddSynonymIfNeeded("pesi", "pepsi");
+            AddSynonymIfNeeded("redbull", "red bull");
+        }
+        private void AddSynonymIfNeeded(string original, string normalized)
+        {
+            if (string.IsNullOrEmpty(original) || string.IsNullOrEmpty(normalized))
+                return;
+
+            if (!_synonymDictionary.ContainsKey(original.ToLower()))
+            {
+                _synonymDictionary[original.ToLower()] = normalized.ToLower();
+            }
+        }
+        // Hàm chuẩn hóa tên để tăng độ chính xác
+        private string NormalizeNameForSearch(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            // 1. Chuẩn hóa dấu tiếng Việt (nếu có hàm Helpers.NormalizeVietnameseString)
+            string result = Helpers.NormalizeVietnameseString(input);
+
+            // 2. Chuyển về chữ thường
+            result = result.ToLower().Trim();
+
+            // 3. Thay thế các từ đồng nghĩa
+            if (_synonymDictionary != null)
+            {
+                foreach (var synonym in _synonymDictionary)
+                {
+                    // Thay thế từ khóa
+                    if (result.Contains(synonym.Key))
+                    {
+                        result = result.Replace(synonym.Key, synonym.Value);
+                    }
+                }
+            }
+
+            // 4. Xóa các ký tự đặc biệt thừa
+            result = Regex.Replace(result, @"[^\w\s]", " ");
+
+            // 5. Xóa khoảng trắng thừa
+            result = Regex.Replace(result, @"\s+", " ").Trim();
+
+            return result;
+        }
+
+        // Hàm mở rộng: Thêm từ đồng nghĩa động
+        public void AddSynonym(string original, string normalized)
+        {
+            if (_synonymDictionary == null)
+                _synonymDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            if (!_synonymDictionary.ContainsKey(original.ToLower()))
+            {
+                _synonymDictionary[original.ToLower()] = normalized.ToLower();
+            }
+        }
+
+        // Hàm mở rộng: Thêm nhiều từ đồng nghĩa cùng lúc
+        public void AddSynonyms(Dictionary<string, string> synonyms)
+        {
+            if (_synonymDictionary == null)
+                _synonymDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var item in synonyms)
+            {
+                if (!_synonymDictionary.ContainsKey(item.Key.ToLower()))
+                {
+                    _synonymDictionary[item.Key.ToLower()] = item.Value.ToLower();
+                }
+            }
+        }
         private void Xulysohieuvattu(TbImportDetail tbImportDetail)
+        {
+            if (tbImportDetail == null || string.IsNullOrEmpty(tbImportDetail.Ten))
+                return;
+
+            if (!_isIndexBuilt) BuildIndexes();
+            if (_synonymDictionary == null) InitializeSynonymDictionary();
+
+            string originalTen = tbImportDetail.Ten?.Trim() ?? "";
+            string normalizedTen = NormalizeNameForSearch(originalTen);
+            string quyCach = regex.Match(normalizedTen).Value;
+            string donViTinh = tbImportDetail.DVT?.Trim()?.ToLower() ?? "";
+
+            Console.WriteLine($"🔍 Đang tìm: {normalizedTen}");
+            Console.WriteLine($"   Quy cách: '{quyCach}'");
+
+            double minPercent = 70;
+
+            // ========== 1. TÌM CHÍNH XÁC ==========
+            var exactMatch = _optimizedVatTu
+                .FirstOrDefault(kvp =>
+                    (NormalizeNameForSearch(kvp.Value.TenChuan) == normalizedTen ||
+                     NormalizeNameForSearch(kvp.Value.TenPhuChuan) == normalizedTen) &&
+                    (string.IsNullOrEmpty(quyCach) || kvp.Value.QuyCach == quyCach));
+
+            if (!exactMatch.Equals(default(KeyValuePair<string, (string, string, string, string, double, double)>)))
+            {
+                tbImportDetail.SoHieu = exactMatch.Key;
+                tbImportDetail.Percent = 100;
+                tbImportDetail.DVT = exactMatch.Value.DonVi;
+                Console.WriteLine($"✅ Tìm chính xác: {exactMatch.Value.TenChuan}");
+                return;
+            }
+
+            // ========== 2. TÁCH TỪ KHÓA ==========
+            var words = normalizedTen.Split(new[] { ' ', '-', ',', ';', '/' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(w => w.Length >= 3)
+                .ToList();
+
+            Console.WriteLine($"   Từ khóa: {string.Join(", ", words)}");
+
+            var phrases = new List<string>();
+            for (int i = 0; i < words.Count - 1; i++)
+            {
+                string phrase = words[i] + " " + words[i + 1];
+                if (phrase.Length >= 5)
+                {
+                    phrases.Add(phrase);
+                }
+            }
+
+            Console.WriteLine($"   Cụm từ: {string.Join(", ", phrases)}");
+
+            // ========== 3. SÀNG LỌC ỨNG VIÊN ==========
+            var candidateKeys = new HashSet<string>();
+
+            foreach (var word in words)
+            {
+                if (_keywordIndex != null && _keywordIndex.ContainsKey(word))
+                {
+                    foreach (var key in _keywordIndex[word])
+                    {
+                        candidateKeys.Add(key);
+                    }
+                }
+            }
+
+            foreach (var phrase in phrases)
+            {
+                if (_keywordIndex != null && _keywordIndex.ContainsKey(phrase))
+                {
+                    foreach (var key in _keywordIndex[phrase])
+                    {
+                        candidateKeys.Add(key);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(quyCach) && _quyCachIndex != null && _quyCachIndex.ContainsKey(quyCach))
+            {
+                foreach (var key in _quyCachIndex[quyCach])
+                {
+                    candidateKeys.Add(key);
+                }
+            }
+
+            Console.WriteLine($"   Số ứng viên tìm được: {candidateKeys.Count}");
+
+            if (!candidateKeys.Any())
+            {
+                int count = 0;
+                foreach (var kvp in _optimizedVatTu)
+                {
+                    if (count >= 100) break;
+                    count++;
+                    candidateKeys.Add(kvp.Key);
+                }
+                Console.WriteLine($"   Fallback: lấy 100 item đầu tiên");
+            }
+
+            // ========== 4. TÍNH ĐIỂM ==========
+            var results = new List<(string Key, double Percent, string TenChuan, string QuyCach, string DonVi, int MatchCount)>();
+
+            foreach (var key in candidateKeys)
+            {
+                if (_optimizedVatTu.TryGetValue(key, out var vatTu))
+                {
+                    string tenChuanHoa = NormalizeNameForSearch(vatTu.TenChuan);
+                    string tenKhongNgoac = ExtractMainName(tenChuanHoa);
+                    string tenHoaDonKhongNgoac = ExtractMainName(normalizedTen);
+
+                    // So sánh tên không ngoặc
+                    int tokenScoreNoBracket = Fuzz.TokenSetRatio(tenKhongNgoac, tenHoaDonKhongNgoac);
+                    int partialScoreNoBracket = Fuzz.PartialRatio(tenKhongNgoac, tenHoaDonKhongNgoac);
+                    double percentNoBracket = Math.Max(tokenScoreNoBracket, partialScoreNoBracket);
+
+                    // So sánh tên đầy đủ
+                    int tokenScore = Fuzz.TokenSetRatio(tenChuanHoa, normalizedTen);
+                    int partialScore = Fuzz.PartialRatio(tenChuanHoa, normalizedTen);
+                    double percent = Math.Max(tokenScore, partialScore);
+
+                    // Lấy điểm cao nhất
+                    double finalPercent = Math.Max(percent, percentNoBracket);
+
+                    // Đếm số từ khóa khớp
+                    int matchCount = 0;
+                    foreach (var word in words)
+                    {
+                        if (tenChuanHoa.Contains(word) || tenKhongNgoac.Contains(word))
+                            matchCount++;
+                    }
+
+                    finalPercent += matchCount * 5;
+
+                    // So sánh quy cách
+                    string quyCachTrongKho = vatTu.QuyCach?.ToLower()?.Trim() ?? "";
+                    if (!string.IsNullOrEmpty(quyCach) && !string.IsNullOrEmpty(quyCachTrongKho))
+                    {
+                        if (quyCachTrongKho == quyCach || quyCachTrongKho.Contains(quyCach))
+                        {
+                            finalPercent += 20;
+                        }
+                    }
+
+                    // ========== GIỚI HẠN ĐIỂM ==========
+                    // Kiểm tra xem có phải đang khớp qua tên không ngoặc không
+                    bool isMatchByNoBracket = percentNoBracket > 80 && percentNoBracket > percent;
+
+                    if (isMatchByNoBracket)
+                    {
+                        // Nếu khớp qua tên không ngoặc (thiếu thông tin trong ngoặc)
+                        // Giới hạn tối đa 90%
+                        if (finalPercent > 90)
+                        {
+                            finalPercent = 90;
+                        }
+                    }
+                    else if (percent > 80)
+                    {
+                        // Nếu khớp qua tên đầy đủ nhưng không chính xác 100%
+                        // Giới hạn tối đa 95%
+                        if (finalPercent > 95)
+                        {
+                            finalPercent = 95;
+                        }
+                    }
+
+                    // Debug
+                    if (vatTu.TenChuan.Contains("Tiger") || vatTu.TenChuan.Contains("tiger"))
+                    {
+                        Console.WriteLine($"   Kiểm tra: {vatTu.TenChuan}");
+                        Console.WriteLine($"      Điểm: {finalPercent}%");
+                        Console.WriteLine($"      Không ngoặc: {percentNoBracket}%");
+                        Console.WriteLine($"      Từ khớp: {matchCount}");
+                        Console.WriteLine($"      Quy cách: '{quyCachTrongKho}'");
+                        Console.WriteLine($"      Khớp không ngoặc: {isMatchByNoBracket}");
+                    }
+
+                    if (finalPercent >= minPercent)
+                    {
+                        results.Add((key, Math.Min(finalPercent, 100), vatTu.TenChuan, vatTu.QuyCach, vatTu.DonVi, matchCount));
+                    }
+                }
+            }
+
+            // ========== 5. CHỌN KẾT QUẢ ==========
+            if (results.Any())
+            {
+                var sorted = results
+                    .OrderByDescending(x => x.MatchCount)
+                    .ThenByDescending(x => x.Percent)
+                    .ToList();
+
+                var best = sorted.First();
+                tbImportDetail.SoHieu = best.Key;
+                tbImportDetail.Percent = best.Percent;
+                tbImportDetail.DVT = best.DonVi;
+
+                Console.WriteLine($"✅ Tìm thấy: {best.TenChuan}");
+                Console.WriteLine($"   Độ tương đồng: {best.Percent}%");
+                Console.WriteLine($"   Quy cách: {best.QuyCach}");
+
+                if (sorted.Count > 1)
+                {
+                    Console.WriteLine($"   📋 Các kết quả khác:");
+                    foreach (var item in sorted.Skip(1).Take(3))
+                    {
+                        Console.WriteLine($"      - {item.TenChuan} (Điểm: {item.Percent}%)");
+                    }
+                }
+            }
+            else
+            {
+                // ========== 6. FALLBACK ==========
+                Console.WriteLine($"⚠️ Không tìm thấy ở ngưỡng {minPercent}%, thử tìm tất cả...");
+
+                var allResults = new List<(string Key, double Percent, string TenChuan, string QuyCach, string DonVi, int MatchCount)>();
+
+                foreach (var kvp in _optimizedVatTu)
+                {
+                    string tenChuanHoa = NormalizeNameForSearch(kvp.Value.TenChuan);
+                    string tenKhongNgoac = ExtractMainName(tenChuanHoa);
+                    string tenHoaDonKhongNgoac = ExtractMainName(normalizedTen);
+
+                    int tokenScoreNoBracket = Fuzz.TokenSetRatio(tenKhongNgoac, tenHoaDonKhongNgoac);
+                    int partialScoreNoBracket = Fuzz.PartialRatio(tenKhongNgoac, tenHoaDonKhongNgoac);
+                    double percentNoBracket = Math.Max(tokenScoreNoBracket, partialScoreNoBracket);
+
+                    int tokenScore = Fuzz.TokenSetRatio(tenChuanHoa, normalizedTen);
+                    int partialScore = Fuzz.PartialRatio(tenChuanHoa, normalizedTen);
+                    double percent = Math.Max(tokenScore, partialScore);
+
+                    double finalPercent = Math.Max(percent, percentNoBracket);
+
+                    int matchCount = 0;
+                    foreach (var word in words)
+                    {
+                        if (tenChuanHoa.Contains(word) || tenKhongNgoac.Contains(word))
+                            matchCount++;
+                    }
+
+                    finalPercent += matchCount * 5;
+
+                    // Fallback: giới hạn tối đa 85%
+                    bool isMatchByNoBracket = percentNoBracket > 80 && percentNoBracket > percent;
+                    if (isMatchByNoBracket)
+                    {
+                        if (finalPercent > 85)
+                        {
+                            finalPercent = 85;
+                        }
+                    }
+                    else
+                    {
+                        if (finalPercent > 90)
+                        {
+                            finalPercent = 90;
+                        }
+                    }
+
+                    if (finalPercent > 50)
+                    {
+                        allResults.Add((kvp.Key, Math.Min(finalPercent, 100), kvp.Value.TenChuan, kvp.Value.QuyCach, kvp.Value.DonVi, matchCount));
+                    }
+                }
+
+                if (allResults.Any())
+                {
+                    var sorted = allResults
+                        .OrderByDescending(x => x.MatchCount)
+                        .ThenByDescending(x => x.Percent)
+                        .ToList();
+
+                    var best = sorted.First();
+                    tbImportDetail.SoHieu = best.Key;
+                    tbImportDetail.Percent = best.Percent;
+                    tbImportDetail.DVT = best.DonVi;
+
+                    Console.WriteLine($"✅ Fallback tìm thấy: {best.TenChuan}");
+                    Console.WriteLine($"   Độ tương đồng: {best.Percent}%");
+                    Console.WriteLine($"   Quy cách: {best.QuyCach}");
+                }
+                else
+                {
+                    tbImportDetail.SoHieu = "KHONG_TIM_THAY";
+                    tbImportDetail.Percent = 0;
+                    Console.WriteLine($"❌ Không tìm thấy vật tư cho: {normalizedTen}");
+                }
+            }
+        }
+        // Hàm bỏ ngoặc
+        private string ExtractMainName(string fullName)
+        {
+            if (string.IsNullOrEmpty(fullName)) return fullName;
+
+            // Bỏ phần trong ngoặc đơn, ngoặc vuông, ngoặc nhọn
+            string result = Regex.Replace(fullName, @"\(.*?\)", "").Trim();
+            result = Regex.Replace(result, @"\[.*?\]", "").Trim();
+            result = Regex.Replace(result, @"\{.*?\}", "").Trim();
+
+            // Xóa khoảng trắng thừa
+            result = Regex.Replace(result, @"\s+", " ").Trim();
+
+            return result;
+        }
+        // Hàm tính độ tương đồng phần trăm
+        private double CalculateSimilarityPercent(string str1, string str2)
+        {
+            if (string.IsNullOrEmpty(str1) || string.IsNullOrEmpty(str2))
+                return 0;
+
+            // Chuyển về chữ thường để so sánh
+            str1 = str1.ToLower();
+            str2 = str2.ToLower();
+
+            // Nếu chuỗi giống nhau hoàn toàn
+            if (str1 == str2)
+                return 100;
+
+            // Nếu chuỗi chứa nhau
+            if (str1.Contains(str2) || str2.Contains(str1))
+            {
+                int shorter = Math.Min(str1.Length, str2.Length);
+                int longer = Math.Max(str1.Length, str2.Length);
+                return Math.Min((double)shorter / longer * 100, 100);
+            }
+
+            // Tính Levenshtein distance
+            int distance = LevenshteinDistance(str1, str2);
+            int maxLen = Math.Max(str1.Length, str2.Length);
+
+            // Chuyển đổi thành phần trăm (0-100)
+            double similarity = (1.0 - (double)distance / maxLen) * 100;
+            return Math.Round(similarity, 2);
+        }
+
+        // Hàm Levenshtein Distance
+      
+        private void XulysohieuvattuOld(TbImportDetail tbImportDetail)
         {
             string originalTen = tbImportDetail.Ten?.Trim() ?? "";
 
@@ -23033,8 +23519,8 @@ private static readonly Dictionary<string, string[]> BrandAliases =
 
                         }
                         string pathravao = "HDVao";
-                        string filename = $"{mstnb}_{getSohd}_{getSHHD}.zip";
-                        string filenameCheck = $"{mstnb}_{getSohd}_{getSHHD}.xml";
+                        string filename = $"{getdate.ToString("yyyyMMdd")}_{mstnb}_{getSohd}_{getSHHD}.zip";
+                        string filenameCheck = $"{getdate.ToString("yyyyMMdd")}_{mstnb}_{getSohd}_{getSHHD}.xml";
                         string path = Path.Combine(savedPath, pathYear ,pathravao, dtTungay.DateTime.Month.ToString(), filename);
                         string pathcheck = Path.Combine(savedPath, pathYear, pathravao, dtTungay.DateTime.Month.ToString(), filenameCheck);
                         string folderpath= Path.Combine(savedPath, pathYear, pathravao, dtTungay.DateTime.Month.ToString());
@@ -25366,8 +25852,8 @@ private static readonly Dictionary<string, string[]> BrandAliases =
 
                         }
                         string pathravao = "HDRa";
-                        string filename = $"{mstcongty}_{getsohoadon}_{getSHHD}.zip";
-                        string filenameCheck = $"{mstcongty}_{getsohoadon}_{getSHHD}.html";
+                        string filename = $"{getdate.ToString("yyyyMMdd")}_{mstcongty}_{getsohoadon}_{getSHHD}.zip";
+                        string filenameCheck = $"{getdate.ToString("yyyyMMdd")}{mstcongty}_{getsohoadon}_{getSHHD}.html";
                         string path = Path.Combine(savedPath, pathYear, pathravao, dtTungay.DateTime.Month.ToString(), filename);
                         string pathcheck = Path.Combine(savedPath, pathYear, pathravao, dtTungay.DateTime.Month.ToString(), filenameCheck);
 
