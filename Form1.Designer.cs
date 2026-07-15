@@ -248,29 +248,13 @@
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.panelControl6 = new DevExpress.XtraEditors.PanelControl();
             this.chkUutiensoluong = new DevExpress.XtraEditors.CheckEdit();
-            this.simpleButton15 = new DevExpress.XtraEditors.SimpleButton();
-            this.labelControl24 = new DevExpress.XtraEditors.LabelControl();
             this.txtTylechonHH = new DevExpress.XtraEditors.TextEdit();
             this.txtDVTMacdinh = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl24 = new DevExpress.XtraEditors.LabelControl();
             this.chkDVTMacdinh = new DevExpress.XtraEditors.CheckEdit();
-            this.simpleButton12 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton13 = new DevExpress.XtraEditors.SimpleButton();
-            this.chkTudong = new DevExpress.XtraEditors.CheckEdit();
-            this.chkHienthimau = new DevExpress.XtraEditors.CheckEdit();
-            this.btnExportExcelVao = new DevExpress.XtraEditors.SimpleButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnXoaDSRa = new DevExpress.XtraEditors.SimpleButton();
             this.lblDpPath = new DevExpress.XtraEditors.LabelControl();
-            this.btnXoaDSVao = new DevExpress.XtraEditors.SimpleButton();
-            this.lblThongbaos = new DevExpress.XtraEditors.LabelControl();
-            this.simpleButton7 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.btnKTTen = new DevExpress.XtraEditors.SimpleButton();
-            this.btnLichsuimport = new DevExpress.XtraEditors.SimpleButton();
-            this.DocfilePDF = new DevExpress.XtraEditors.SimpleButton();
-            this.btnTaicoquanthue = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
-            this.lblThongbao = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panleLeft = new DevExpress.XtraEditors.PanelControl();
             this.btnSetting = new DevExpress.XtraEditors.SimpleButton();
@@ -397,8 +381,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtTylechonHH.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDVTMacdinh.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDVTMacdinh.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkTudong.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkHienthimau.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panleLeft)).BeginInit();
@@ -2946,32 +2928,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelControl6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelControl6.Controls.Add(this.chkUutiensoluong);
-            this.panelControl6.Controls.Add(this.simpleButton15);
-            this.panelControl6.Controls.Add(this.labelControl24);
             this.panelControl6.Controls.Add(this.txtTylechonHH);
             this.panelControl6.Controls.Add(this.txtDVTMacdinh);
+            this.panelControl6.Controls.Add(this.labelControl24);
             this.panelControl6.Controls.Add(this.chkDVTMacdinh);
-            this.panelControl6.Controls.Add(this.simpleButton12);
-            this.panelControl6.Controls.Add(this.simpleButton13);
-            this.panelControl6.Controls.Add(this.chkTudong);
-            this.panelControl6.Controls.Add(this.chkHienthimau);
-            this.panelControl6.Controls.Add(this.btnExportExcelVao);
             this.panelControl6.Controls.Add(this.pictureBox1);
-            this.panelControl6.Controls.Add(this.btnXoaDSRa);
             this.panelControl6.Controls.Add(this.lblDpPath);
-            this.panelControl6.Controls.Add(this.btnXoaDSVao);
-            this.panelControl6.Controls.Add(this.lblThongbaos);
-            this.panelControl6.Controls.Add(this.simpleButton7);
-            this.panelControl6.Controls.Add(this.simpleButton1);
             this.panelControl6.Controls.Add(this.btnKTTen);
-            this.panelControl6.Controls.Add(this.btnLichsuimport);
-            this.panelControl6.Controls.Add(this.DocfilePDF);
-            this.panelControl6.Controls.Add(this.btnTaicoquanthue);
-            this.panelControl6.Controls.Add(this.simpleButton2);
-            this.panelControl6.Controls.Add(this.lblThongbao);
             this.panelControl6.Location = new System.Drawing.Point(3, 666);
             this.panelControl6.Name = "panelControl6";
-            this.panelControl6.Size = new System.Drawing.Size(1657, 59);
+            this.panelControl6.Size = new System.Drawing.Size(1647, 61);
             this.panelControl6.TabIndex = 20;
             // 
             // chkUutiensoluong
@@ -2983,30 +2949,11 @@
             this.chkUutiensoluong.Size = new System.Drawing.Size(134, 20);
             this.chkUutiensoluong.TabIndex = 31;
             // 
-            // simpleButton15
-            // 
-            this.simpleButton15.ImageOptions.Image = global::SaovietTax.Properties.Resources.filterbyseries_pie_16x16;
-            this.simpleButton15.Location = new System.Drawing.Point(751, 15);
-            this.simpleButton15.Name = "simpleButton15";
-            this.simpleButton15.Size = new System.Drawing.Size(182, 29);
-            this.simpleButton15.TabIndex = 30;
-            this.simpleButton15.Text = "Bô lọc tìm sản phẩm";
-            this.simpleButton15.Visible = false;
-            // 
-            // labelControl24
-            // 
-            this.labelControl24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl24.Location = new System.Drawing.Point(961, 25);
-            this.labelControl24.Name = "labelControl24";
-            this.labelControl24.Size = new System.Drawing.Size(79, 16);
-            this.labelControl24.TabIndex = 29;
-            this.labelControl24.Text = "Tỷ lệ chọn HH";
-            // 
             // txtTylechonHH
             // 
             this.txtTylechonHH.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtTylechonHH.EditValue = "90";
-            this.txtTylechonHH.Location = new System.Drawing.Point(1046, 22);
+            this.txtTylechonHH.Location = new System.Drawing.Point(1047, 18);
             this.txtTylechonHH.Name = "txtTylechonHH";
             this.txtTylechonHH.Size = new System.Drawing.Size(44, 23);
             this.txtTylechonHH.TabIndex = 28;
@@ -3014,81 +2961,28 @@
             // txtDVTMacdinh
             // 
             this.txtDVTMacdinh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDVTMacdinh.Location = new System.Drawing.Point(1428, 22);
+            this.txtDVTMacdinh.Location = new System.Drawing.Point(1418, 24);
             this.txtDVTMacdinh.Name = "txtDVTMacdinh";
             this.txtDVTMacdinh.Size = new System.Drawing.Size(83, 23);
             this.txtDVTMacdinh.TabIndex = 27;
             // 
+            // labelControl24
+            // 
+            this.labelControl24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl24.Location = new System.Drawing.Point(949, 20);
+            this.labelControl24.Name = "labelControl24";
+            this.labelControl24.Size = new System.Drawing.Size(79, 16);
+            this.labelControl24.TabIndex = 29;
+            this.labelControl24.Text = "Tỷ lệ chọn HH";
+            // 
             // chkDVTMacdinh
             // 
             this.chkDVTMacdinh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkDVTMacdinh.Location = new System.Drawing.Point(1236, 25);
+            this.chkDVTMacdinh.Location = new System.Drawing.Point(1236, 26);
             this.chkDVTMacdinh.Name = "chkDVTMacdinh";
             this.chkDVTMacdinh.Properties.Caption = "Đơn vị tính mặc định";
             this.chkDVTMacdinh.Size = new System.Drawing.Size(160, 20);
             this.chkDVTMacdinh.TabIndex = 26;
-            // 
-            // simpleButton12
-            // 
-            this.simpleButton12.Location = new System.Drawing.Point(547, 11);
-            this.simpleButton12.Name = "simpleButton12";
-            this.simpleButton12.Size = new System.Drawing.Size(94, 29);
-            this.simpleButton12.TabIndex = 11;
-            this.simpleButton12.Text = "Cập nhật";
-            this.simpleButton12.Visible = false;
-            this.simpleButton12.Click += new System.EventHandler(this.simpleButton12_Click);
-            // 
-            // simpleButton13
-            // 
-            this.simpleButton13.Location = new System.Drawing.Point(533, 9);
-            this.simpleButton13.Name = "simpleButton13";
-            this.simpleButton13.Size = new System.Drawing.Size(94, 29);
-            this.simpleButton13.TabIndex = 25;
-            this.simpleButton13.Text = "simpleButton13";
-            this.simpleButton13.Visible = false;
-            this.simpleButton13.Click += new System.EventHandler(this.simpleButton13_Click_1);
-            // 
-            // chkTudong
-            // 
-            this.chkTudong.EditValue = true;
-            this.chkTudong.Location = new System.Drawing.Point(549, 23);
-            this.chkTudong.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.chkTudong.Name = "chkTudong";
-            this.chkTudong.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
-            this.chkTudong.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
-            this.chkTudong.Properties.Appearance.Options.UseFont = true;
-            this.chkTudong.Properties.Appearance.Options.UseForeColor = true;
-            this.chkTudong.Properties.Caption = "Tải tự động sau khi khởi động máy";
-            this.chkTudong.Properties.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgCheckBox1;
-            this.chkTudong.Properties.CheckBoxOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.chkTudong.Size = new System.Drawing.Size(158, 22);
-            this.chkTudong.TabIndex = 24;
-            this.chkTudong.Visible = false;
-            this.chkTudong.CheckedChanged += new System.EventHandler(this.chkTudong_CheckedChanged);
-            // 
-            // chkHienthimau
-            // 
-            this.chkHienthimau.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkHienthimau.EditValue = true;
-            this.chkHienthimau.Location = new System.Drawing.Point(549, 16);
-            this.chkHienthimau.Name = "chkHienthimau";
-            this.chkHienthimau.Properties.Caption = "Hiển thị màu";
-            this.chkHienthimau.Size = new System.Drawing.Size(94, 20);
-            this.chkHienthimau.TabIndex = 2;
-            this.chkHienthimau.Visible = false;
-            this.chkHienthimau.CheckedChanged += new System.EventHandler(this.chkHienthimau_CheckedChanged);
-            // 
-            // btnExportExcelVao
-            // 
-            this.btnExportExcelVao.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportExcelVao.ImageOptions.Image = global::SaovietTax.Properties.Resources.exporttoxlsx_16x16;
-            this.btnExportExcelVao.Location = new System.Drawing.Point(534, 11);
-            this.btnExportExcelVao.Name = "btnExportExcelVao";
-            this.btnExportExcelVao.Size = new System.Drawing.Size(116, 29);
-            this.btnExportExcelVao.TabIndex = 12;
-            this.btnExportExcelVao.Text = "Export Excel";
-            this.btnExportExcelVao.Visible = false;
-            this.btnExportExcelVao.Click += new System.EventHandler(this.btnExportExcelVao_Click);
             // 
             // pictureBox1
             // 
@@ -3100,17 +2994,6 @@
             this.pictureBox1.TabIndex = 20;
             this.pictureBox1.TabStop = false;
             // 
-            // btnXoaDSRa
-            // 
-            this.btnXoaDSRa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnXoaDSRa.Location = new System.Drawing.Point(519, 21);
-            this.btnXoaDSRa.Name = "btnXoaDSRa";
-            this.btnXoaDSRa.Size = new System.Drawing.Size(65, 26);
-            this.btnXoaDSRa.TabIndex = 12;
-            this.btnXoaDSRa.Text = "Xoá";
-            this.btnXoaDSRa.Visible = false;
-            this.btnXoaDSRa.Click += new System.EventHandler(this.btnXoaDSRa_Click);
-            // 
             // lblDpPath
             // 
             this.lblDpPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -3118,129 +3001,23 @@
             this.lblDpPath.Appearance.ForeColor = System.Drawing.Color.Purple;
             this.lblDpPath.Appearance.Options.UseFont = true;
             this.lblDpPath.Appearance.Options.UseForeColor = true;
-            this.lblDpPath.Location = new System.Drawing.Point(76, 21);
+            this.lblDpPath.Location = new System.Drawing.Point(76, 23);
             this.lblDpPath.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.lblDpPath.Name = "lblDpPath";
             this.lblDpPath.Size = new System.Drawing.Size(146, 17);
             this.lblDpPath.TabIndex = 7;
             this.lblDpPath.Text = "Đường dẫn Database";
-            // 
-            // btnXoaDSVao
-            // 
-            this.btnXoaDSVao.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnXoaDSVao.Location = new System.Drawing.Point(519, 12);
-            this.btnXoaDSVao.Name = "btnXoaDSVao";
-            this.btnXoaDSVao.Size = new System.Drawing.Size(64, 28);
-            this.btnXoaDSVao.TabIndex = 11;
-            this.btnXoaDSVao.Text = "Xoá";
-            this.btnXoaDSVao.Visible = false;
-            this.btnXoaDSVao.Click += new System.EventHandler(this.btnXoaDSVao_Click);
-            // 
-            // lblThongbaos
-            // 
-            this.lblThongbaos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblThongbaos.Location = new System.Drawing.Point(533, 29);
-            this.lblThongbaos.Name = "lblThongbaos";
-            this.lblThongbaos.Size = new System.Drawing.Size(75, 16);
-            this.lblThongbaos.TabIndex = 18;
-            this.lblThongbaos.Text = "labelControl2";
-            this.lblThongbaos.Visible = false;
-            // 
-            // simpleButton7
-            // 
-            this.simpleButton7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.simpleButton7.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton7.ImageOptions.Image")));
-            this.simpleButton7.Location = new System.Drawing.Point(519, 9);
-            this.simpleButton7.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.simpleButton7.Name = "simpleButton7";
-            this.simpleButton7.Size = new System.Drawing.Size(51, 33);
-            this.simpleButton7.TabIndex = 13;
-            this.simpleButton7.Visible = false;
-            this.simpleButton7.Click += new System.EventHandler(this.simpleButton7_Click);
-            // 
-            // simpleButton1
-            // 
-            this.simpleButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.simpleButton1.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton1.ImageOptions.Image")));
-            this.simpleButton1.Location = new System.Drawing.Point(503, 9);
-            this.simpleButton1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(35, 31);
-            this.simpleButton1.TabIndex = 10;
-            this.simpleButton1.Visible = false;
-            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
+            this.lblDpPath.Visible = false;
             // 
             // btnKTTen
             // 
             this.btnKTTen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnKTTen.Location = new System.Drawing.Point(1556, 18);
+            this.btnKTTen.Location = new System.Drawing.Point(1546, 20);
             this.btnKTTen.Name = "btnKTTen";
             this.btnKTTen.Size = new System.Drawing.Size(91, 29);
             this.btnKTTen.TabIndex = 7;
             this.btnKTTen.Text = "Dò hoá đơn";
             this.btnKTTen.Click += new System.EventHandler(this.btnKTTen_Click);
-            // 
-            // btnLichsuimport
-            // 
-            this.btnLichsuimport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLichsuimport.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnLichsuimport.ImageOptions.Image")));
-            this.btnLichsuimport.Location = new System.Drawing.Point(479, 13);
-            this.btnLichsuimport.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnLichsuimport.Name = "btnLichsuimport";
-            this.btnLichsuimport.Size = new System.Drawing.Size(148, 33);
-            this.btnLichsuimport.TabIndex = 14;
-            this.btnLichsuimport.Text = "Lịch sử import";
-            this.btnLichsuimport.Visible = false;
-            this.btnLichsuimport.Click += new System.EventHandler(this.btnLichsuimport_Click);
-            // 
-            // DocfilePDF
-            // 
-            this.DocfilePDF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DocfilePDF.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("DocfilePDF.ImageOptions.Image")));
-            this.DocfilePDF.Location = new System.Drawing.Point(479, 11);
-            this.DocfilePDF.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.DocfilePDF.Name = "DocfilePDF";
-            this.DocfilePDF.Size = new System.Drawing.Size(179, 33);
-            this.DocfilePDF.TabIndex = 16;
-            this.DocfilePDF.Text = "Đọc file PDF";
-            this.DocfilePDF.Visible = false;
-            this.DocfilePDF.Click += new System.EventHandler(this.DocfilePDF_Click);
-            // 
-            // btnTaicoquanthue
-            // 
-            this.btnTaicoquanthue.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnTaicoquanthue.ImageOptions.Image")));
-            this.btnTaicoquanthue.Location = new System.Drawing.Point(380, 13);
-            this.btnTaicoquanthue.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnTaicoquanthue.Name = "btnTaicoquanthue";
-            this.btnTaicoquanthue.Size = new System.Drawing.Size(228, 35);
-            this.btnTaicoquanthue.TabIndex = 0;
-            this.btnTaicoquanthue.Text = "Tải dữ liệu từ cơ quan thuế";
-            this.btnTaicoquanthue.Visible = false;
-            this.btnTaicoquanthue.Click += new System.EventHandler(this.btnTaicoquanthue_Click);
-            // 
-            // simpleButton2
-            // 
-            this.simpleButton2.Location = new System.Drawing.Point(479, 10);
-            this.simpleButton2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.simpleButton2.Name = "simpleButton2";
-            this.simpleButton2.Size = new System.Drawing.Size(111, 33);
-            this.simpleButton2.TabIndex = 12;
-            this.simpleButton2.Text = "simpleButton2";
-            this.simpleButton2.Visible = false;
-            this.simpleButton2.Click += new System.EventHandler(this.simpleButton2_Click_1);
-            // 
-            // lblThongbao
-            // 
-            this.lblThongbao.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblThongbao.AutoSize = true;
-            this.lblThongbao.Location = new System.Drawing.Point(488, 22);
-            this.lblThongbao.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblThongbao.Name = "lblThongbao";
-            this.lblThongbao.Size = new System.Drawing.Size(41, 16);
-            this.lblThongbao.TabIndex = 11;
-            this.lblThongbao.Text = "label3";
-            this.lblThongbao.Visible = false;
             // 
             // flowLayoutPanel1
             // 
@@ -3342,6 +3119,7 @@
             // 
             // dtTungay
             // 
+            this.dtTungay.AllowDrop = true;
             this.dtTungay.EditValue = null;
             this.dtTungay.Location = new System.Drawing.Point(125, 65);
             this.dtTungay.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -3943,8 +3721,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtTylechonHH.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDVTMacdinh.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDVTMacdinh.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkTudong.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkHienthimau.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panleLeft)).EndInit();
@@ -4000,7 +3776,6 @@
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraTab.XtraTabControl xtraTabControl2;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
-        private DevExpress.XtraEditors.SimpleButton btnXoaDSVao;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblSofiles;
         private DevExpress.XtraGrid.GridControl gridControl1;
@@ -4038,7 +3813,6 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
         private DevExpress.XtraEditors.SimpleButton btnReadPDF;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage4;
-        private DevExpress.XtraEditors.SimpleButton btnXoaDSRa;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblSofiles2;
         private DevExpress.XtraGrid.GridControl gridControl2;
@@ -4163,15 +3937,7 @@
         private DevExpress.XtraEditors.PanelControl panelControl6;
         private System.Windows.Forms.PictureBox pictureBox1;
         private DevExpress.XtraEditors.LabelControl lblDpPath;
-        private DevExpress.XtraEditors.LabelControl lblThongbaos;
-        private DevExpress.XtraEditors.SimpleButton simpleButton7;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private DevExpress.XtraEditors.SimpleButton btnKTTen;
-        private DevExpress.XtraEditors.SimpleButton btnLichsuimport;
-        private DevExpress.XtraEditors.SimpleButton DocfilePDF;
-        private DevExpress.XtraEditors.SimpleButton btnTaicoquanthue;
-        private DevExpress.XtraEditors.SimpleButton simpleButton2;
-        private System.Windows.Forms.Label lblThongbao;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private DevExpress.XtraEditors.PanelControl panleLeft;
         private DevExpress.XtraEditors.DateEdit dtDenngay;
@@ -4210,12 +3976,10 @@
         private DevExpress.XtraWaitForm.ProgressPanel progressPanel3;
         private DevExpress.XtraEditors.PictureEdit pictureEdit1;
         private DevExpress.XtraEditors.PanelControl panelControl2;
-        private DevExpress.XtraEditors.SimpleButton btnExportExcelVao;
         private DevExpress.XtraGrid.Columns.GridColumn colNgayTaoVao;
         private DevExpress.XtraGrid.Columns.GridColumn colNgaytaoRa;
         private DevExpress.XtraEditors.LabelControl labelControl15;
         private DevExpress.XtraEditors.ComboBoxEdit comboBoxEdit5;
-        private DevExpress.XtraEditors.CheckEdit chkHienthimau;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage6;
         private DevExpress.XtraEditors.PanelControl panelControl3;
         private DevExpress.XtraEditors.SimpleButton simpleButton10;
@@ -4226,7 +3990,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.PrintDialog printDialog1;
         private System.Windows.Forms.Timer timer2;
-        private DevExpress.XtraEditors.SimpleButton simpleButton12;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn22;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage7;
         private DevExpress.XtraGrid.GridControl gridControl7;
@@ -4259,9 +4022,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn34;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn35;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn36;
-        private DevExpress.XtraEditors.CheckEdit chkTudong;
         private System.Windows.Forms.RadioButton radioButton1;
-        private DevExpress.XtraEditors.SimpleButton simpleButton13;
         private DevExpress.XtraEditors.SimpleButton simpleButton14;
         private DevExpress.XtraEditors.SimpleButton btnPdf24;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn37;
@@ -4275,7 +4036,6 @@
         private DevExpress.XtraEditors.SimpleButton btnSetting;
         private DevExpress.XtraEditors.LabelControl labelControl24;
         private DevExpress.XtraEditors.TextEdit txtTylechonHH;
-        private DevExpress.XtraEditors.SimpleButton simpleButton15;
         private DevExpress.XtraEditors.CheckEdit chkUutiensoluong;
     }
 }

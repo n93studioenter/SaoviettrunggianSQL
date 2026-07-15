@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
+using Tensorflow;
 
 namespace SaovietTax
 {
@@ -82,7 +83,7 @@ namespace SaovietTax
             comboBoxEdit2.SelectedIndex = DateTime.Now.Month - 1;
         }
 
-        public void TinhGiaVon(int tuThang, int denThang)
+        public void TinhGiaVon(int tuThang, int denThang,List<frmMain.FileImport> loai)
         {
             try
             {
@@ -93,6 +94,8 @@ namespace SaovietTax
 
                     try
                     {
+                        
+
                         progressPanel1.Caption = "Đang lấy dữ liệu...";
                         Application.DoEvents();
 
@@ -103,6 +106,21 @@ namespace SaovietTax
                         DataTable dtDauRa = GetDataTable(conn, transaction,
                             "SELECT * FROM ChungTu WHERE MaLoai = 8");
 
+                        DataTable dtFiltered = dtDauRa.Clone();
+                        foreach (DataRow row in dtDauRa.Rows)
+                        {
+                            string soHieu = row["SoHieu"].ToString();
+                            DateTime dtHieu = DateTime.Parse(row["NgayCT"].ToString()); 
+                            // Kiểm tra trong list
+                            foreach (var item in loai.Where(m=>m.Checked))
+                            {
+                                if (item.SHDon == soHieu && item.NLap.Date== dtHieu.Date) // Điều kiện NLap > 0
+                                {
+                                    dtFiltered.ImportRow(row); 
+                                }
+                            }
+                        }
+                        dtDauRa = dtFiltered;
                         DataTable dtHoaDon = GetDataTable(conn, transaction,
                             "SELECT * FROM HoaDon");
 
@@ -142,7 +160,7 @@ namespace SaovietTax
                             DataRow tonKhoRow = GetTonKhoRow(conn, transaction, maVatTu);
                             if (tonKhoRow == null) continue;
 
-                            for (int i = 1; i <= denThang; i++)
+                            for (int i = 1; i <= 12; i++)
                             {
                                 try
                                 {
@@ -304,29 +322,26 @@ namespace SaovietTax
                             // ===== BƯỚC 2: Insert thuế =====
                             foreach (DataRow item in getlistThue)
                             {
-                                if (oldMaSo == 0)
-                                {
-                                    oldMaSo = SafeGetInt(item, "MaSo");
-                                }
+                                oldMaSo = SafeGetInt(item, "MaSo");
 
                                 int oldMaCT = SafeGetInt(item, "MaCT");
                                 newMaSo = InsertChungTuReturnMaSo(conn, transaction, item, oldMaCT);
                                 Console.WriteLine($"Insert thuế: MaCT={oldMaCT}, MaSo mới={newMaSo}");
-                            }
-
-                            // ===== BƯỚC 3: Insert hóa đơn =====
-                            if (newMaSo > 0 && !insertedMaSo.Contains(newMaSo))
-                            {
-                                var hd = lstBakhd.FirstOrDefault(m => SafeGetInt(m, "MaSo") == oldMaSo);
-
-                                if (hd != null)
+                                // ===== BƯỚC 3: Insert hóa đơn =====
+                                if (newMaSo > 0 && !insertedMaSo.Contains(newMaSo))
                                 {
-                                    InsertHoaDon(conn, transaction, hd, newMaSo);
-                                    insertedMaSo.Add(newMaSo);
-                                    Console.WriteLine($"Insert hóa đơn: MaSo={newMaSo}");
+                                    var hd = lstBakhd.FirstOrDefault(m => SafeGetInt(m, "MaSo") == oldMaSo);
+
+                                    if (hd != null)
+                                    {
+                                        InsertHoaDon(conn, transaction, hd, newMaSo);
+                                        insertedMaSo.Add(newMaSo);
+                                        Console.WriteLine($"Insert hóa đơn: MaSo={newMaSo}");
+                                    }
                                 }
                             }
 
+                           
                             progressPanel1.Caption = $"Đang xử lý hóa đơn {group.Key.SoHieu} - {stt}/{groupChungtu.Count}";
                             Application.DoEvents();
                             stt++;
@@ -357,7 +372,7 @@ namespace SaovietTax
         {
             int tuThang = Convert.ToInt32(comboBoxEdit1.EditValue);
             int denThang = Convert.ToInt32(comboBoxEdit2.EditValue);
-            TinhGiaVon(tuThang,denThang);
+            TinhGiaVon(tuThang,denThang,null);
         }
         private void InsertGiaVon(SqlConnection conn, SqlTransaction trans, DataRow hh, int maCT, double tienGiaVon, int maSoHang)
         {

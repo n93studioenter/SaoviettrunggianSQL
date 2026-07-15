@@ -16,10 +16,14 @@ namespace SaovietTax
 
         private string _connectionString;
 
-        private void AutoSumHTTK_Load(object sender, EventArgs e)
+        public void TinhHTTK()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["SqlConn"].ConnectionString;
             CapNhatHeThongTK();
+        }
+        private void AutoSumHTTK_Load(object sender, EventArgs e)
+        {
+            TinhHTTK();
         }
         private void ResetLoai3(SqlConnection conn, SqlTransaction tran)
         {

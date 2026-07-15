@@ -3382,7 +3382,6 @@ namespace SaovietTax
                 try
                 {
                     connection.Open();
-                    lblThongbaos.Text = "Kết nối data thành công";
                     Application.DoEvents();
                     string query = "SELECT * FROM License";
 
@@ -3794,7 +3793,6 @@ namespace SaovietTax
 
                     Console.WriteLine($"Bảng '{tableNamedetail}' đã tồn tại.");
                 }
-                lblThongbaos.Text = "Kiem tra table thành công";
                 Application.DoEvents();
             }
 
@@ -4370,7 +4368,6 @@ namespace SaovietTax
                 string query = @"INSERT INTO tbDinhdanhNganhang (Noidung, TK) VALUES ('phi quan ly tai khoan', '635')";
                 ExecuteQueryResult(query);
             }
-            lblThongbaos.Text = "Seeding data thanh cong";
 
             //Tạo data mật định tài khoản
             tbDinhDanhtaikhoan = LoadDinhDanhTaiKhoan();
@@ -5166,7 +5163,6 @@ namespace SaovietTax
 
             is5111 = (mstcongty == "3502469834");
 
-            lblThongbaos.Text = "Kết nối database thành công";
         }
         private async Task LoadLicenseInfoSQL()
         {
@@ -5200,7 +5196,6 @@ namespace SaovietTax
 
             is5111 = (mstcongty == "3502469834");
 
-            lblThongbaos.Text = "Kết nối database thành công";
         }
         private void InitDBSQL()
         {
@@ -6452,18 +6447,18 @@ Chỉ trả lời: CÓ hoặc KHÔNG
                 int screenWidth = Screen.PrimaryScreen.Bounds.Width;
 
                 // Tính 10% chiều rộng màn hình
-                btnKTTen.Width = (int)(screenWidth * 07);
-                btnKTTen.Location = new Point(screenWidth - btnKTTen.Width-30, btnKTTen.Location.Y);
-                txtDVTMacdinh.Width= (int)(screenWidth * 05);
-                txtDVTMacdinh.Location = new Point(screenWidth - txtDVTMacdinh.Width - btnKTTen.Width- 30, txtDVTMacdinh.Location.Y);
-                chkDVTMacdinh.Width= (int)(screenWidth * 08); 
-                chkDVTMacdinh.Location= new Point(screenWidth - chkDVTMacdinh.Width - txtDVTMacdinh.Width - btnKTTen.Width - 50, chkDVTMacdinh.Location.Y);
-                chkUutiensoluong.Location= new Point(chkDVTMacdinh.Location.X - chkUutiensoluong.Width - 20, chkUutiensoluong.Location.Y);
-                txtTylechonHH.Location= new Point(chkUutiensoluong.Location.X - txtTylechonHH.Width - 20, txtTylechonHH.Location.Y);
-                labelControl24.Location= new Point(txtTylechonHH.Location.X - labelControl24.Width - 5, labelControl24.Location.Y);
-                radioButton1.Location= new Point(0, radioButton1.Location.Y);
-                chktaituweb.Location= new Point(radioButton1.Location.X + radioButton1.Width+10, radioButton1.Location.Y);
-                btnSetting.Location= new Point(chktaituweb.Location.X + chktaituweb.Width + 5, chktaituweb.Location.Y);
+                //btnKTTen.Width = (int)(screenWidth * 07);
+                //btnKTTen.Location = new Point(screenWidth - btnKTTen.Width-30, btnKTTen.Location.Y);
+                //txtDVTMacdinh.Width= (int)(screenWidth * 05);
+                //txtDVTMacdinh.Location = new Point(screenWidth - txtDVTMacdinh.Width - btnKTTen.Width- 30, txtDVTMacdinh.Location.Y);
+                //chkDVTMacdinh.Width= (int)(screenWidth * 08); 
+                //chkDVTMacdinh.Location= new Point(screenWidth - chkDVTMacdinh.Width - txtDVTMacdinh.Width - btnKTTen.Width - 50, chkDVTMacdinh.Location.Y);
+                //chkUutiensoluong.Location= new Point(chkDVTMacdinh.Location.X - chkUutiensoluong.Width - 20, chkUutiensoluong.Location.Y);
+                //txtTylechonHH.Location= new Point(chkUutiensoluong.Location.X - txtTylechonHH.Width - 20, txtTylechonHH.Location.Y);
+                //labelControl24.Location= new Point(txtTylechonHH.Location.X - labelControl24.Width - 5, labelControl24.Location.Y);
+                //radioButton1.Location= new Point(0, radioButton1.Location.Y);
+                //chktaituweb.Location= new Point(radioButton1.Location.X + radioButton1.Width+10, radioButton1.Location.Y);
+                //btnSetting.Location= new Point(chktaituweb.Location.X + chktaituweb.Width + 5, chktaituweb.Location.Y);
                 // XtraMessageBox.Show("xin chao");
                 AddDeleterow(gridView1, gridControl1);
                 AddDeleterow(gridView3, gridControl2);
@@ -6932,7 +6927,6 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             {
                 XtraMessageBox.Show(ex.Message);
             }
-            lblThongbaos.Text = "Thiet lap thanh cong";
             GetMST();
             string fileName = Path.GetFileName(dbPath.Trim());
             CheckDB();
@@ -7817,7 +7811,6 @@ Chỉ trả lời: CÓ hoặc KHÔNG
         private void LoadXmlFiles(string path, int type)
         {
             progressPanel1.Visible = true;
-            lblThongbao.Text = "Bắt đầu chạy";
             progressPanel1.Caption = "Bắt đầu chạy...";
             if (type == 1)
                 people = new BindingList<FileImport>();
@@ -7833,7 +7826,6 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             var files = Directory.EnumerateFiles(path, "*.xml", SearchOption.AllDirectories)
                 .Where(file => IsFileInMonthRange(file, path, dtTungay.DateTime.Month, dtDenngay.DateTime.Month)).ToList();
             //Lọc thêm điều kiện theo ngày
-            lblThongbao.Text = "Đếm file xml";
             progressPanel1.Caption = "Đếm file xml...";
             List<string> lstdelete = new List<string>();
             foreach (var item in files)
@@ -7867,7 +7859,6 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             }
 
             int countXml = files.Count();
-            lblThongbao.Text = "Đếm file excel";
             progressPanel1.Caption = "Đếm file excel...";
             Dictionary<string, string> lstHodpn = new Dictionary<string, string>();
             //Lấy danh sách hóa đơn để kiểm tra cho excel
@@ -7928,7 +7919,6 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             //} 
             foreach (string file in files)
             {
-                lblThongbao.Text = "Đọc file thứ " + (files.IndexOf(file) + 1);
                 //progressPanel1.Caption = "Đọc file thứ " + (files.IndexOf(file) + 1) +"/ "+ totalCount;
                 progressPanel1.Caption = "Đang load files...";
                 progressPercentage = (filesLoaded * 100) / totalCount;
@@ -8010,7 +8000,6 @@ Chỉ trả lời: CÓ hoặc KHÔNG
             new OleDbParameter("KyHieu", KHHDon),          // Sử dụng chỉ số mà không cần tên
             new OleDbParameter("SoHD", "%" + SHDon + "%")  // Thêm ký tự % cho LIKE
                 };
-                lblThongbao.Text = "Kiểm tra hóa đơn ";
                 Application.DoEvents();
                 var kq = ExecuteQuery(query, parameters);
                 if (kq.Rows.Count > 0)
@@ -8021,7 +8010,6 @@ Chỉ trả lời: CÓ hoặc KHÔNG
                 {
                     continue;
                 }
-                lblThongbao.Text = "Kiểm tra table import ";
                 Application.DoEvents();
                 query = "SELECT * FROM tbimport WHERE KHHDon = ? AND SHDon LIKE ?";
                 parameters = new OleDbParameter[]
@@ -8141,7 +8129,6 @@ Chỉ trả lời: CÓ hoặc KHÔNG
                 string querykh = @" SELECT TOP 1 *  FROM KhachHang As kh
 WHERE kh.MST = ?"; // Sử dụng ? thay cho @mst trong OleDb
 
-                lblThongbao.Text = "Kiểm tra khách hàng";
                 Application.DoEvents();
                 System.Data.DataTable result = ExecuteQuery(querykh, new OleDbParameter("?", mst));
                 if (result.Rows.Count == 0 && !string.IsNullOrEmpty(mst))
@@ -8184,7 +8171,6 @@ WHERE kh.SoHieu = ?";
                     peopleTemp.Add(new FileImport(true,file, SHDon, KHHDon, NLap, NLap, ten, diengiai, TkNo.ToString(), TkCo.ToString(), TkThue, mst, Thanhtien, Vat, 1, "", isAcess, TPhi, TgTCThue,0,0,0, TgTThue, true, 1, 0, 0, 0, 0, 0, "",false));
                 }
 
-                lblThongbao.Text = "Thêm danh sách sản phẩm con";
                 Application.DoEvents();
                 for (int i = 0; i < hhdVuList.Count; i++)
                 {
@@ -9732,7 +9718,6 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
         {
 
             progressPanel1.Visible = true;
-            lblThongbao.Text = "Bắt đầu chạy";
             progressPanel1.Caption = "Bắt đầu chạy...";
 
             BindingList<FileImport> currentPeopleList = (type == 1) ? people = new BindingList<FileImport>() : people2 = new BindingList<FileImport>();
@@ -10221,8 +10206,6 @@ WHERE LCase(TenVattu) = LCase(?) AND LCase(DonVi) = LCase(?)";
                     item.Checked = false;
                 }
             }
-             
-            lblThongbao.Text = "Hoàn thành";
 
             // Fill cho BindingList chính
             if (type == 1)
@@ -17244,7 +17227,7 @@ VALUES (@MaPhanLoai, @SoHieu, @Ten, @DiaChi, @MST, @Tel)";
 
         private void simpleButton2_Click_1(object sender, EventArgs e)
         {
-            var options = new ChromeOptions();
+           var options = new ChromeOptions();
             // Tắt các cảnh báo bảo mật (Safe Browsing)
 
             // Tắt Safe Browsing và các tính năng bảo mật can thiệp
@@ -22240,7 +22223,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             Console.WriteLine($"🔍 Đang tìm: {normalizedTen}");
             Console.WriteLine($"   Quy cách: '{quyCach}'");
 
-            double minPercent = 70;
+            double minPercent = int.Parse(txtTylechonHH.Text);
 
             // ========== 1. TÌM CHÍNH XÁC ==========
             var exactMatch = _optimizedVatTu
@@ -22437,81 +22420,82 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             }
             else
             {
-                // ========== 6. FALLBACK ==========
-                Console.WriteLine($"⚠️ Không tìm thấy ở ngưỡng {minPercent}%, thử tìm tất cả...");
+                tbImportDetail.SoHieu = GenerateResultString(Helpers.NormalizeVietnameseString(normalizedTen));
+                tbImportDetail.Percent = 0;
+                Console.WriteLine($"❌ Không tìm thấy vật tư cho: {normalizedTen}");
 
-                var allResults = new List<(string Key, double Percent, string TenChuan, string QuyCach, string DonVi, int MatchCount)>();
+                //Console.WriteLine($"⚠️ Không tìm thấy ở ngưỡng {minPercent}%, thử tìm tất cả...");
 
-                foreach (var kvp in _optimizedVatTu)
-                {
-                    string tenChuanHoa = NormalizeNameForSearch(kvp.Value.TenChuan);
-                    string tenKhongNgoac = ExtractMainName(tenChuanHoa);
-                    string tenHoaDonKhongNgoac = ExtractMainName(normalizedTen);
+                //var allResults = new List<(string Key, double Percent, string TenChuan, string QuyCach, string DonVi, int MatchCount)>();
 
-                    int tokenScoreNoBracket = Fuzz.TokenSetRatio(tenKhongNgoac, tenHoaDonKhongNgoac);
-                    int partialScoreNoBracket = Fuzz.PartialRatio(tenKhongNgoac, tenHoaDonKhongNgoac);
-                    double percentNoBracket = Math.Max(tokenScoreNoBracket, partialScoreNoBracket);
+                //foreach (var kvp in _optimizedVatTu)
+                //{
+                //    string tenChuanHoa = NormalizeNameForSearch(kvp.Value.TenChuan);
+                //    string tenKhongNgoac = ExtractMainName(tenChuanHoa);
+                //    string tenHoaDonKhongNgoac = ExtractMainName(normalizedTen);
 
-                    int tokenScore = Fuzz.TokenSetRatio(tenChuanHoa, normalizedTen);
-                    int partialScore = Fuzz.PartialRatio(tenChuanHoa, normalizedTen);
-                    double percent = Math.Max(tokenScore, partialScore);
+                //    int tokenScoreNoBracket = Fuzz.TokenSetRatio(tenKhongNgoac, tenHoaDonKhongNgoac);
+                //    int partialScoreNoBracket = Fuzz.PartialRatio(tenKhongNgoac, tenHoaDonKhongNgoac);
+                //    double percentNoBracket = Math.Max(tokenScoreNoBracket, partialScoreNoBracket);
 
-                    double finalPercent = Math.Max(percent, percentNoBracket);
+                //    int tokenScore = Fuzz.TokenSetRatio(tenChuanHoa, normalizedTen);
+                //    int partialScore = Fuzz.PartialRatio(tenChuanHoa, normalizedTen);
+                //    double percent = Math.Max(tokenScore, partialScore);
 
-                    int matchCount = 0;
-                    foreach (var word in words)
-                    {
-                        if (tenChuanHoa.Contains(word) || tenKhongNgoac.Contains(word))
-                            matchCount++;
-                    }
+                //    double finalPercent = Math.Max(percent, percentNoBracket);
 
-                    finalPercent += matchCount * 5;
+                //    int matchCount = 0;
+                //    foreach (var word in words)
+                //    {
+                //        if (tenChuanHoa.Contains(word) || tenKhongNgoac.Contains(word))
+                //            matchCount++;
+                //    }
 
-                    // Fallback: giới hạn tối đa 85%
-                    bool isMatchByNoBracket = percentNoBracket > 80 && percentNoBracket > percent;
-                    if (isMatchByNoBracket)
-                    {
-                        if (finalPercent > 85)
-                        {
-                            finalPercent = 85;
-                        }
-                    }
-                    else
-                    {
-                        if (finalPercent > 90)
-                        {
-                            finalPercent = 90;
-                        }
-                    }
+                //    finalPercent += matchCount * 5;
 
-                    if (finalPercent > 50)
-                    {
-                        allResults.Add((kvp.Key, Math.Min(finalPercent, 100), kvp.Value.TenChuan, kvp.Value.QuyCach, kvp.Value.DonVi, matchCount));
-                    }
-                }
+                //    // Fallback: giới hạn tối đa 85%
+                //    bool isMatchByNoBracket = percentNoBracket > 80 && percentNoBracket > percent;
+                //    if (isMatchByNoBracket)
+                //    {
+                //        if (finalPercent > 85)
+                //        {
+                //            finalPercent = 85;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (finalPercent > 90)
+                //        {
+                //            finalPercent = 90;
+                //        }
+                //    }
 
-                if (allResults.Any())
-                {
-                    var sorted = allResults
-                        .OrderByDescending(x => x.MatchCount)
-                        .ThenByDescending(x => x.Percent)
-                        .ToList();
+                //    if (finalPercent > 50)
+                //    {
+                //        allResults.Add((kvp.Key, Math.Min(finalPercent, 100), kvp.Value.TenChuan, kvp.Value.QuyCach, kvp.Value.DonVi, matchCount));
+                //    }
+                //}
 
-                    var best = sorted.First();
-                    tbImportDetail.SoHieu = best.Key;
-                    tbImportDetail.Percent = best.Percent;
-                    tbImportDetail.DVT = best.DonVi;
+                //if (allResults.Any())
+                //{
+                //    var sorted = allResults
+                //        .OrderByDescending(x => x.MatchCount)
+                //        .ThenByDescending(x => x.Percent)
+                //        .ToList();
 
-                    Console.WriteLine($"✅ Fallback tìm thấy: {best.TenChuan}");
-                    Console.WriteLine($"   Độ tương đồng: {best.Percent}%");
-                    Console.WriteLine($"   Quy cách: {best.QuyCach}");
-                }
-                else
-                {
-                    tbImportDetail.SoHieu = "KHONG_TIM_THAY";
-                    tbImportDetail.Percent = 0;
-                    Console.WriteLine($"❌ Không tìm thấy vật tư cho: {normalizedTen}");
-                }
+                //    var best = sorted.First();
+                //    tbImportDetail.SoHieu = best.Key;
+                //    tbImportDetail.Percent = best.Percent;
+                //    tbImportDetail.DVT = best.DonVi;
+
+                //    Console.WriteLine($"✅ Fallback tìm thấy: {best.TenChuan}");
+                //    Console.WriteLine($"   Độ tương đồng: {best.Percent}%");
+                //    Console.WriteLine($"   Quy cách: {best.QuyCach}");
+                //}
+                //else
+                //{
+                    
+                //}
             }
         }
         // Hàm bỏ ngoặc
@@ -23474,6 +23458,32 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 btnChonthang.PerformClick();
 
             }
+            //Lấy ra danh sách file đã đọc trước đó
+            string pathType = chkDauvao.Checked ? "HDVao" : "HDRa";
+            int fromMonth = dtTungay.DateTime.Month;
+            int toMonth = dtDenngay.DateTime.Month;
+            string monthFolder = Path.Combine(savedPath, pathYear, pathType, fromMonth.ToString());
+            var filesInMonth = Directory.GetFiles(monthFolder, "*.xml", SearchOption.TopDirectoryOnly)
+             .Where(file =>
+             {
+                 string fileName = Path.GetFileNameWithoutExtension(file);
+
+                 if (fileName.Length < 8)
+                     return false;
+
+                 if (!DateTime.TryParseExact(
+                         fileName.Substring(0, 8),
+                         "yyyyMMdd",
+                         CultureInfo.InvariantCulture,
+                         DateTimeStyles.None,
+                         out DateTime ngay))
+                     return false;
+
+                 return ngay >= dtTungay.DateTime.Date && ngay <= dtDenngay.DateTime.Date;
+             })
+             .ToList();
+
+
             progressPanel1.Caption = $"Đang đọc file thứ {currentProgress} / {totalInvoices}";
             tongsohodadon = excelFiles.Count;
             int i = 1;
@@ -30875,6 +30885,15 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 // ============================================================
                 var frmThongkeImport = new frmThongkeImport();
                 frmThongkeImport.frmmain = this;
+                if (chkDaura.Checked)
+                {
+                    vb6Tinhgiavon vbtgv = new vb6Tinhgiavon();
+                    vbtgv.TinhGiaVon(dtTungay.DateTime.Month, dtTungay.DateTime.Month,lstImportRa.ToList());
+                }
+                AutoSumTonkho autoSumTonkho = new AutoSumTonkho();
+                autoSumTonkho.TinhTonkho();
+                AutoSumHTTK autoSumHTTK = new AutoSumHTTK();
+                autoSumHTTK.TinhHTTK();
                 frmThongkeImport.ShowDialog();
 
                 if (lstImportResult.Count(m => m.Status == -1) == 0)
@@ -34084,17 +34103,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
         }
  
         bool hienthimau = true;
-        private void chkHienthimau_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkHienthimau.Checked)
-            {
-                hienthimau = true;
-            }
-            else
-            {
-                hienthimau = false;
-            }
-        }
+       
 
         private void gridView1_MouseEnter(object sender, EventArgs e)
         {
@@ -34534,24 +34543,24 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             }
         }
 
-        private void chkTudong_CheckedChanged(object sender, EventArgs e)
-            {
-            string query = @"UPDATE tbRegister SET taitd = ?";
+     //   private void chkTudong_CheckedChanged(object sender, EventArgs e)
+     //       {
+     //       string query = @"UPDATE tbRegister SET taitd = ?";
 
-            var parameters = new OleDbParameter[]
-     {
-                                new OleDbParameter("?",chkTudong.Checked?"1":"0"), 
-     };
-            int rowsAffected = ExecuteQueryResult(query, parameters);
-            if(chkTudong.Checked)
-            {
-                AddToStartup();
-            }
-            else
-            {
-                RemoveFromStartup();
-            }
-        }
+     //       var parameters = new OleDbParameter[]
+     //{
+     //                           new OleDbParameter("?",chkTudong.Checked?"1":"0"), 
+     //};
+     //       int rowsAffected = ExecuteQueryResult(query, parameters);
+     //       if(chkTudong.Checked)
+     //       {
+     //           AddToStartup();
+     //       }
+     //       else
+     //       {
+     //           RemoveFromStartup();
+     //       }
+     //   }
         bool allowUncheck = false;
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)

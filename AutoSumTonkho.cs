@@ -29,7 +29,7 @@ namespace SaovietTax
         private int _pGiaUSD = 0;
         private int _maskN = 1;
 
-        private void AutoSumTonkho_Load(object sender, EventArgs e)
+        public void TinhTonkho()
         {
             try
             {
@@ -45,6 +45,10 @@ namespace SaovietTax
                 XtraMessageBox.Show($"Lỗi: {ex.Message}", "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private void AutoSumTonkho_Load(object sender, EventArgs e)
+        {
+            TinhTonkho();
         }
 
         /// <summary>
