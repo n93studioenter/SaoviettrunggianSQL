@@ -3090,14 +3090,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SaovietTax.exe" size="9061376">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SaovietTax.exe" size="9097216">
       <assemblyIdentity name="SaovietTax" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>pX1Pqwu7r7JOs/y0qQk+KcZB0bwxU+HcEwhW34yRtew=</dsig:DigestValue>
+        <dsig:DigestValue>vN3wZsw/uMs0AcU0MTrYcan9TQ654qoFY7GWSg3JHqs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -7928,13 +7928,13 @@
       <dsig:DigestValue>61M17eqm8hIsBE6CqrI1HcjJtOD+XleMcZIvthvihec=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="SaovietTax.exe.config" size="9622">
+  <file name="SaovietTax.exe.config" size="9624">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>WajIpoOISn1Bxh3jAC6mOYaGZHYQaUWuw4pSnOhi+VA=</dsig:DigestValue>
+      <dsig:DigestValue>E1S0vOMFlm6PZNhBhCpivfux7dtvTX/xQedBD2/Ag0k=</dsig:DigestValue>
     </hash>
   </file>
   <file name="selenium-manager\linux\selenium-manager" size="5422816">
