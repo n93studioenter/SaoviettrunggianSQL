@@ -95,6 +95,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Data.OleDb;
 using System.Data.SqlClient;
@@ -30812,7 +30813,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                                 bulk.WriteToServer(dtChungTu);
                                             }
                                         }
-
+                                        DebugDataTableBeforeBulkCopy(dtHoaDon);
                                         if (dtHoaDon.Rows.Count > 0)
                                         {
                                             using (var bulk = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, tran))
@@ -30862,7 +30863,36 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                     catch (Exception ex)
                                     {
                                         tran.Rollback();
-                                        throw;
+                                        var realException = ex;
+
+                                        // Nếu là TargetInvocationException, lấy InnerException
+                                        if (ex is TargetInvocationException targetEx)
+                                        {
+                                            realException = targetEx.InnerException;
+                                        }
+
+                                        // Kiểm tra nếu là DbUpdateException
+                                        if (realException is DbUpdateException dbEx)
+                                        {
+                                            Console.WriteLine("=== Found DbUpdateException ===");
+                                            foreach (DbEntityEntry entry in dbEx.Entries)
+                                            {
+                                                Console.WriteLine($"Entity: {entry.Entity.GetType().Name}");
+
+                                                foreach (var propName in entry.CurrentValues.PropertyNames)
+                                                {
+                                                    var value = entry.CurrentValues[propName];
+                                                    var propInfo = entry.Entity.GetType().GetProperty(propName);
+                                                    var propType = propInfo?.PropertyType;
+
+                                                    Console.WriteLine($"{propName}: '{value}' (Expected: {propType?.Name})");
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($"Error: {realException.GetType().Name} - {realException.Message}");
+                                        }
                                     }
                                 }
                             }
@@ -30902,6 +30932,66 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             catch (Exception ex)
             {
                 XtraMessageBox.Show($"Lỗi: {GetFullExceptionMessage(ex)}");
+            }
+        }
+        private void DebugDataTableBeforeBulkCopy(DataTable dt)
+        {
+            Console.WriteLine("=== KIỂM TRA DATATABLE TRƯỚC KHI BULKCOPY ===");
+
+            // Lấy danh sách các cột FLOAT trong database
+            var floatColumns = new[] { "SoLuong", "ThanhTien", "GiaTT", "TyGia", "has_e_invoice" };
+
+            // Kiểm tra thêm các cột có thể là float (nếu có trong DataTable)
+            var allColumns = dt.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToList();
+            var possibleFloatColumns = allColumns.Where(c =>
+                c.Contains("Gia") || c.Contains("Tien") || c.Contains("Luong") ||
+                c.Contains("TyLe") || c.Contains("TyGia") || c.Contains("So") ||
+                c == "Gif" || c == "Gif Chen"
+            ).ToList();
+
+            Console.WriteLine($"Các cột có thể là FLOAT: {string.Join(", ", possibleFloatColumns)}");
+
+            // Kiểm tra từng row
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                var row = dt.Rows[i];
+                Console.WriteLine($"\n--- ROW {i} ---");
+
+                foreach (var colName in possibleFloatColumns)
+                {
+                    if (!dt.Columns.Contains(colName)) continue;
+
+                    var value = row[colName];
+                    var type = value?.GetType().Name ?? "NULL";
+
+                    Console.WriteLine($"  {colName}: '{value}' (Type: {type})");
+
+                    // KIỂM TRA LỖI:
+                    // 1. Nếu là DBNull
+                    if (value == DBNull.Value)
+                    {
+                        Console.WriteLine($"    ⚠️ LỖI: {colName} là DBNull!");
+                        // Fix: set thành 0
+                        row[colName] = 0;
+                    }
+                    // 2. Nếu là string rỗng
+                    else if (value is string strVal && string.IsNullOrEmpty(strVal))
+                    {
+                        Console.WriteLine($"    ⚠️⚠️⚠️ LỖI: {colName} là STRING RỖNG!");
+                        // Fix: set thành 0
+                        row[colName] = 0;
+                    }
+                    // 3. Nếu là string nhưng không parse được
+                    else if (value is string strVal2)
+                    {
+                        if (!double.TryParse(strVal2, NumberStyles.Any, CultureInfo.InvariantCulture, out _))
+                        {
+                            Console.WriteLine($"    ⚠️⚠️⚠️ LỖI: {colName} là STRING không parse được: '{strVal2}'");
+                            // Fix: set thành 0
+                            row[colName] = 0;
+                        }
+                    }
+                }
             }
         }
         // ============================================================
@@ -31225,27 +31315,27 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             row["SoHD"] = item.SHDon ?? "";
             row["NgayPH"] = item.NLap;
             row["MatHang"] = Helpers.ConvertUnicodeToVni(item.Noidung ?? "");
-            row["SoLuong"] = 0.0;
+            row["SoLuong"] = 0;
             row["ThanhTien"] = Convert.ToDouble(thanhTien);
             row["TyLe"] = tyLe;
-            row["HD"] = (short)1;
-            row["KCT"] = (short)0;
-            row["GiaTT"] = 0.0;
-            row["HTTT"] = "";
+            row["HD"] = 1;
+            row["KCT"] = 0;
+            row["GiaTT"] = 0;
+            row["HTTT"] = "...";
             row["MauSo"] = "0";
-            row["HDBL"] = (short)0;
-            row["NK"] = (short)0;
-            row["TS"] = (short)0;
-            row["DC"] = (short)0;
-            row["TyGia"] = 0.0;
+            row["HDBL"] =0;
+            row["NK"] = 0;
+            row["TS"] = 0;
+            row["DC"] = 0;
+            row["TyGia"] = 0;
             row["pathInvoice"] = "";
             row["Ghichuhd"] = "";
-            row["IdNhap"] = "";
-            row["StatusPH"] = "";
-            row["IdTemplate"] = "";
-            row["TendoHDid"] = "";
-            row["TendoHDState"] = "";
-            row["has_e_invoice"] = 0.0;
+            row["IdNhap"] = "...";
+            row["StatusPH"] = "...";
+            row["IdTemplate"] = "...";
+            row["TendoHDid"] = "...";
+            row["TendoHDState"] = "...";
+            row["has_e_invoice"] = 0;
 
             dt.Rows.Add(row);
         }

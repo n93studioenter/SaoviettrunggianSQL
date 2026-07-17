@@ -925,3 +925,4 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.exe
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.pdb
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.frmThongkeImport.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.vb6Tinhgiavon.resources
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.vb6Xoahoadon.resources

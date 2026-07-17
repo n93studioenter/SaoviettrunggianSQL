@@ -820,6 +820,12 @@
     <Compile Include="vb6Tinhgiavon.Designer.cs">
       <DependentUpon>vb6Tinhgiavon.cs</DependentUpon>
     </Compile>
+    <Compile Include="vb6Xoahoadon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="vb6Xoahoadon.Designer.cs">
+      <DependentUpon>vb6Xoahoadon.cs</DependentUpon>
+    </Compile>
     <Compile Include="VNPTInvoice.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -966,6 +972,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="vb6Tinhgiavon.resx">
       <DependentUpon>vb6Tinhgiavon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="vb6Xoahoadon.resx">
+      <DependentUpon>vb6Xoahoadon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VNPTInvoice.resx">
       <DependentUpon>VNPTInvoice.cs</DependentUpon>

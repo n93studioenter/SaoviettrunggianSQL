@@ -3007,7 +3007,6 @@
             this.lblDpPath.Size = new System.Drawing.Size(146, 17);
             this.lblDpPath.TabIndex = 7;
             this.lblDpPath.Text = "Đường dẫn Database";
-            this.lblDpPath.Visible = false;
             // 
             // btnKTTen
             // 

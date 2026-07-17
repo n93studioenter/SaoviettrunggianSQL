@@ -136,6 +136,7 @@ namespace SaovietTax {
                         case "11": Application.Run(new AutoSumTonkho()); break;
                         case "12": Application.Run(new AutoSumHTTK()); break;
                         case "13": Application.Run(new vb6Tinhgiavon()); break;
+                        case "14": Application.Run(new vb6Xoahoadon()); break;
                     }
                 }
             }
