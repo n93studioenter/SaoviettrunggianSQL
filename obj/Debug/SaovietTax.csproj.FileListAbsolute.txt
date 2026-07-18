@@ -1,12 +1,6 @@
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.BonusSkins.v22.1.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Dashboard.v22.1.Core.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Dashboard.v22.1.Win.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Data.v22.1.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.DataAccess.v22.1.UI.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.DataVisualization.v22.1.Core.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Diagram.v22.1.Core.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.PivotGrid.v22.1.Core.xml
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Spreadsheet.v22.1.Core.xml
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraPrinting.v22.1.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraReports.v22.1.Extensions.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraTreeList.v22.1.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\LdaNative.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\onnxruntime.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\onnxruntime_providers_shared.dll
@@ -660,10 +654,17 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\CrystalDecisions.Cr
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\CrystalDecisions.ReportSource.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\CrystalDecisions.Shared.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\CrystalDecisions.Windows.Forms.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.BonusSkins.v22.1.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Charts.v22.1.Core.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.CodeParser.v22.1.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Dashboard.v22.1.Core.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Dashboard.v22.1.Win.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Data.Desktop.v22.1.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Data.v22.1.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.DataAccess.v22.1.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.DataAccess.v22.1.UI.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.DataVisualization.v22.1.Core.dll
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Diagram.v22.1.Core.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Drawing.v22.1.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Map.v22.1.Core.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Office.v22.1.Core.dll
@@ -694,9 +695,7 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraLayo
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraMap.v22.1.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraNavBar.v22.1.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraPivotGrid.v22.1.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraPrinting.v22.1.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraReports.v22.1.dll
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraReports.v22.1.Extensions.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraRichEdit.v22.1.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraSpreadsheet.v22.1.dll
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraTreeList.v22.1.dll
@@ -733,7 +732,9 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Map.v22.
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Office.v22.1.Core.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Pdf.v22.1.Core.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Pdf.v22.1.Drawing.xml
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.PivotGrid.v22.1.Core.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.RichEdit.v22.1.Core.xml
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Spreadsheet.v22.1.Core.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.TreeMap.v22.1.Core.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Utils.v22.1.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.Sparkline.v22.1.Core.xml
@@ -759,7 +760,6 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraRepo
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraReports.v22.1.Extensions.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraRichEdit.v22.1.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraSpreadsheet.v22.1.xml
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraTreeList.v22.1.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraTreeMap.v22.1.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraTreeMap.v22.1.UI.xml
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\bin\Debug\DevExpress.XtraVerticalGrid.v22.1.xml
@@ -899,6 +899,7 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.FrmRepor
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.frmTaiCoQuanThue.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.frmTaihoadonvb.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.frmTaikhoan.resources
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.frmThongkeImport.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.frmWebbrowser.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.HanghoaControl.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.KhachHangControl.resources
@@ -913,6 +914,9 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.Suggesti
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.SuggestVattu.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.TendoInvoice.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.VattuControl.resources
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.vb6Tinhgiavon.resources
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.vb6Xoahoadon.resources
+D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.vb6Xoaphatsinhthang.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.VNPTInvoice.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.XtraForm1.resources
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.csproj.GenerateResource.cache
@@ -923,6 +927,3 @@ D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.applicat
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.csproj.Up2Date
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.exe
 D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.pdb
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.frmThongkeImport.resources
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.vb6Tinhgiavon.resources
-D:\DA3\SourcePmTrungGiangsQL\SaovietTax\SaovietTax\obj\Debug\SaovietTax.vb6Xoahoadon.resources

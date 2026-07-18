@@ -30532,7 +30532,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                     tkno, tkco, tkno, tkco, mavattu,
                                     tien,        // SoPS = tiền bán
                                     0,           // SoPS2No = 0
-                                    soLuong);    // SoPS2Co = số lượng xuất
+                                    soLuong, getKH.MaSo);    // SoPS2Co = số lượng xuất
                                                  // ⭐ CT_ID = 0
 
                                 // ⭐ DÒNG GIÁ VỐN (MaLoai = 2) - DÙNG maCTGocGiaVon
@@ -30547,13 +30547,13 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                     500000000L + maSoBanHang);  // CT_ID = 500000000 + maSoBanHang
                             }
                             // ---- TẠO DÒNG THUẾ ----
-                            if (item.TVat > 0)
+                            if (item.TVat > 0 || 1<2)
                             {
                                 maxMaSo = GetNextAvailableMaSo(usedMaSo, maxMaSo);
                                 usedMaSo.Add(maxMaSo);
                                 listMaSoDongThue.Add(maxMaSo);
                                 AddChungTuRow(dtChungTu, item, null, maxMaSo, maCTGoc, 8, makho,
-                                    tknothue, tkcothue, tknothue, tkcothue, 0, item.TVat, 0, 0);
+                                    tknothue, tkcothue, tknothue, tkcothue, 0, item.TVat, 0, 0, getKH.MaSo);
                             }
 
                             if (item.TgTCThue2 > 0 && item.TVat2 > 0)
@@ -30562,7 +30562,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                 usedMaSo.Add(maxMaSo);
                                 listMaSoDongThue.Add(maxMaSo);
                                 AddChungTuRow(dtChungTu, item, null, maxMaSo, maCTGoc, 8, makho,
-                                    tknothue, tkcothue, tknothue, tkcothue, 0, item.TVat2, 0, 0);
+                                    tknothue, tkcothue, tknothue, tkcothue, 0, item.TVat2, 0, 0, getKH.MaSo);
                             }
                             int maSoLQ = maxMaSo;  // Hoặc maxMaSo + 1 tùy logic
 
@@ -30737,16 +30737,16 @@ private static readonly Dictionary<string, string[]> BrandAliases =
 
                                 AddChungTuRow(dtChungTu, item, dt, maxMaSo, maCTGoc, maLoai, maKho,
                                     tkno, tkco, tkno, tkco, mavattu, isTongHop ? dt.TTien : Math.Round(dt.TTien),
-                                    isTongHop ? 0 : dt.Soluong, 0);
+                                    isTongHop ? 0 : dt.Soluong, 0, getKH.MaSo);
                             }
 
-                            if (item.TVat > 0)
+                            if (item.TVat > 0 || 1<2)
                             {
                                 maxMaSo = GetNextAvailableMaSo(usedMaSo, maxMaSo);
                                 usedMaSo.Add(maxMaSo);
                                 listMaSoDongThue.Add(maxMaSo);
                                 AddChungTuRow(dtChungTu, item, null, maxMaSo, maCTGoc, 1, makho,
-                                    tkcothue, tknothue, tkcothue, tknothue, 0, item.TVat, 0, 0);
+                                    tkcothue, tknothue, tkcothue, tknothue, 0, item.TVat, 0, 0, getKH.MaSo);
                             }
 
                             if (item.TgTCThue2 > 0 && item.TVat2 > 0)
@@ -30755,7 +30755,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                                 usedMaSo.Add(maxMaSo);
                                 listMaSoDongThue.Add(maxMaSo);
                                 AddChungTuRow(dtChungTu, item, null, maxMaSo, maCTGoc, 1, makho,
-                                    tkcothue, tknothue, tkcothue, tknothue, 0, item.TVat2, 0, 0);
+                                    tkcothue, tknothue, tkcothue, tknothue, 0, item.TVat2, 0, 0, getKH.MaSo);
                             }
 
                             if (listMaSoDongThue.Count == 0)
@@ -30918,12 +30918,12 @@ private static readonly Dictionary<string, string[]> BrandAliases =
                 if (chkDaura.Checked)
                 {
                     vb6Tinhgiavon vbtgv = new vb6Tinhgiavon();
-                    vbtgv.TinhGiaVon(dtTungay.DateTime.Month, dtTungay.DateTime.Month,lstImportRa.ToList());
+                     vbtgv.TinhGiaVon(dtTungay.DateTime.Month, dtTungay.DateTime.Month,lstImportRa.ToList());
                 }
                 AutoSumTonkho autoSumTonkho = new AutoSumTonkho();
                 autoSumTonkho.TinhTonkho();
                 AutoSumHTTK autoSumHTTK = new AutoSumHTTK();
-                autoSumHTTK.TinhHTTK();
+                autoSumHTTK.TinhHTTK(dtDenngay.DateTime.Month);
                 frmThongkeImport.ShowDialog();
 
                 if (lstImportResult.Count(m => m.Status == -1) == 0)
@@ -31224,7 +31224,7 @@ private static readonly Dictionary<string, string[]> BrandAliases =
         private void AddChungTuRow(DataTable dt, FileImport item, FileImportDetail detail,
       int maSo, int maCT, int maLoai, int maKho,
       int tkNo, int tkCo, int tkTCNo, int tkTCCo, int maVattu,
-      double soPS, double soPS2No, double soPS2Co)
+      double soPS, double soPS2No, double soPS2Co,int getKH)
         {
             var row = dt.NewRow();
 
@@ -31241,9 +31241,21 @@ private static readonly Dictionary<string, string[]> BrandAliases =
             row["MaTKTCCo"] = tkTCCo;
             row["MaVattu"] = maVattu;
             row["MaDT"] = 1;
-            row["MaKH"] = 0;
-            row["CTGS"] = 1;
-            row["MaKHC"] = 0;
+            if (maLoai == 8)
+            {
+                row["MaKH"] = getKH;
+            }
+            else
+            {
+                row["MaKH"] = 0;
+            }
+                row["CTGS"] = 1;
+            if (maLoai == 1)
+            {
+                row["MaKHC"] = getKH;
+            }
+            else
+                row["MaKHC"] = 0;
             row["MaTP"] = 0;
             row["DVT"] = (short)0;
             row["User_ID"] = 1;

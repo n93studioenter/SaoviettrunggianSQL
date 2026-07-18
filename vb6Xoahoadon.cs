@@ -43,51 +43,31 @@ namespace SaovietTax
                                 .Where(s => !string.IsNullOrEmpty(s))
                                 .Select(s => int.Parse(s))
                                 .ToList();
-
-                            // Lấy danh sách ChungTu cần xóa
-                            var chungTuToDelete = db.ChungTus
-                                .Where(ct => getsplit.Contains(ct.MaCT.Value))
-                                .ToList();
-
-                            if (chungTuToDelete.Any())
+                            foreach(var item in getsplit)
                             {
-                                // Lấy danh sách MaSo từ ChungTu
-                                var listMaSo = chungTuToDelete.Select(ct => ct.MaSo).ToList();
-
-                                // Lấy danh sách HoaDon cần xóa
-                                var hoaDonToDelete = db.HoaDons
-                                    .Where(hd => listMaSo.Contains(hd.MaSo))
-                                    .ToList();
-
-                                // Xóa HoaDon trước (nếu có)
-                                if (hoaDonToDelete.Any())
+                                var getfirstCt=db.ChungTus.Where(m=>m.MaCT.Value==item).FirstOrDefault();
+                                var getremain = db.ChungTus.ToList().Where(m => m.SoHieu.Contains(getfirstCt.SoHieu) && m.NgayCT.Value.Date == getfirstCt.NgayCT.Value.Date).ToList();
+                                List<SaovietTax.Models.ChungTu> lastordefault = getremain.Where(m=>m.SoPS2No==0 && m.SoPS2Co==0).ToList();
+                                if (getfirstCt.MaLoai == 0)
                                 {
-                                    db.HoaDons.RemoveRange(hoaDonToDelete);
+                                    lastordefault = lastordefault.Skip(1).ToList();
                                 }
-
-                                // Xóa ChungTu
-                                db.ChungTus.RemoveRange(chungTuToDelete);
-
-                                // Lưu thay đổi
-                                db.SaveChanges();
-
-                                // Commit transaction
-                                transaction.Commit();
-
-                                XtraMessageBox.Show(
-                                    $"Đã xóa thành công !",
-                                    "Thành công",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
+                                var tbimp = db.tbimports.ToList().Where(m => m.SHDon == getfirstCt.SoHieu && m.NLap.Value.Date == getfirstCt.NgayCT.Value.Date).FirstOrDefault();
+                                if (tbimp != null)
+                                {
+                                    tbimp.Status = 0;
+                                }
+                              
+                                foreach (var hd in lastordefault)
+                                {
+                                    var hoadon=db.HoaDons.Where(m=>m.MaSo==hd.MaSo).FirstOrDefault();
+                                    db.HoaDons.Remove(hoadon);
+                                }
+                                db.ChungTus.RemoveRange(getremain);
                             }
-                            else
-                            {
-                                XtraMessageBox.Show(
-                                    "Không tìm thấy hóa đơn nào để xóa!",
-                                    "Thông báo",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Warning);
-                            }
+                            db.SaveChanges();
+                            transaction.Commit();
+                            
                         }
                         catch (Exception ex)
                         {
@@ -98,6 +78,12 @@ namespace SaovietTax
                                 "Lỗi",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
+                        }
+                        finally
+                        {
+                                            int rowsAffected = db.Database.ExecuteSqlCommand(
+                       "UPDATE tbResponse SET Status = 1",
+                       1000, 131); 
                         }
                     }
                 }

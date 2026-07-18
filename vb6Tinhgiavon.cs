@@ -1015,24 +1015,61 @@ namespace SaovietTax
                         Console.WriteLine($"Max MaCT trước khi xóa: {maxMaCT}");
 
                         // 7. Xóa dữ liệu cũ
-                        string deleteChungTu8 = "DELETE FROM ChungTu WHERE ThangCT >= @TuThang AND ThangCT <= @DenThang AND MaLoai = 8";
-                        using (SqlCommand cmd = new SqlCommand(deleteChungTu8, conn, transaction))
-                        {
-                            cmd.Parameters.AddWithValue("@TuThang", tuThang);
-                            cmd.Parameters.AddWithValue("@DenThang", denThang);
-                            int deleted = cmd.ExecuteNonQuery();
-                            Console.WriteLine($"Đã xóa {deleted} dòng ChungTu MaLoai=8");
-                        }
+                        //string deleteChungTu8 = "DELETE FROM ChungTu WHERE ThangCT >= @TuThang AND ThangCT <= @DenThang AND MaLoai = 8";
+                        //using (SqlCommand cmd = new SqlCommand(deleteChungTu8, conn, transaction))
+                        //{
+                        //    cmd.Parameters.AddWithValue("@TuThang", tuThang);
+                        //    cmd.Parameters.AddWithValue("@DenThang", denThang);
+                        //    int deleted = cmd.ExecuteNonQuery();
+                        //    Console.WriteLine($"Đã xóa {deleted} dòng ChungTu MaLoai=8");
+                        //}
 
-                        string deleteChungTu2 = "DELETE FROM ChungTu WHERE ThangCT >= @TuThang AND ThangCT <= @DenThang AND MaLoai = 2";
-                        using (SqlCommand cmd = new SqlCommand(deleteChungTu2, conn, transaction))
-                        {
-                            cmd.Parameters.AddWithValue("@TuThang", tuThang);
-                            cmd.Parameters.AddWithValue("@DenThang", denThang);
-                            int deleted = cmd.ExecuteNonQuery();
-                            Console.WriteLine($"Đã xóa {deleted} dòng ChungTu MaLoai=2");
-                        }
+                        //string deleteChungTu2 = "DELETE FROM ChungTu WHERE ThangCT >= @TuThang AND ThangCT <= @DenThang AND MaLoai = 2";
+                        //using (SqlCommand cmd = new SqlCommand(deleteChungTu2, conn, transaction))
+                        //{
+                        //    cmd.Parameters.AddWithValue("@TuThang", tuThang);
+                        //    cmd.Parameters.AddWithValue("@DenThang", denThang);
+                        //    int deleted = cmd.ExecuteNonQuery();
+                        //    Console.WriteLine($"Đã xóa {deleted} dòng ChungTu MaLoai=2");
+                        //}
+                        // 7. Xóa dữ liệu cũ theo danh sách dtDauRa
+                        // 7. Xóa dữ liệu cũ
+                        var listMaSo = dtDauRa.AsEnumerable()
+                            .Where(m => SafeGetInt(m, "ThangCT") >= tuThang && SafeGetInt(m, "ThangCT") <= denThang)
+                            .Select(m => 500000000 + SafeGetInt(m, "MaSo")) // CT_ID của giá vốn
+                            .Where(m => m > 500000000)
+                            .Distinct()
+                            .ToList();
 
+                        var listMaCT = dtDauRa.AsEnumerable()
+                            .Where(m => SafeGetInt(m, "ThangCT") >= tuThang && SafeGetInt(m, "ThangCT") <= denThang)
+                            .Select(m => SafeGetInt(m, "MaCT"))
+                            .Where(m => m > 0)
+                            .Distinct()
+                            .ToList();
+
+                        if (listMaCT.Count > 0)
+                        {
+                            var p = string.Join(",", listMaCT.Select((_, i) => $"@p{i}"));
+
+                            // Xóa hàng hóa (MaLoai = 8)
+                            using (SqlCommand cmd = new SqlCommand($"DELETE FROM ChungTu WHERE MaCT IN ({p}) AND MaLoai = 8", conn, transaction))
+                            {
+                                for (int i = 0; i < listMaCT.Count; i++) cmd.Parameters.AddWithValue($"@p{i}", listMaCT[i]);
+                                cmd.ExecuteNonQuery();
+                            }
+
+                            // Xóa giá vốn (MaLoai = 2) theo CT_ID
+                            if (listMaSo.Count > 0)
+                            {
+                                var s = string.Join(",", listMaSo.Select((_, i) => $"@s{i}"));
+                                using (SqlCommand cmd = new SqlCommand($"DELETE FROM ChungTu WHERE CT_ID IN ({s}) AND MaLoai = 2", conn, transaction))
+                                {
+                                    for (int i = 0; i < listMaSo.Count; i++) cmd.Parameters.AddWithValue($"@s{i}", listMaSo[i]);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
                         // ====== 8. XÓA HÓA ĐƠN CŨ ======
                         var maSoCanXoa = lstBakhd
                             .Select(m => SafeGetInt(m, "MaSo"))
